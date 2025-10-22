@@ -1,6 +1,6 @@
 # TshirtShop
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.5. This e-shop front-end has pages to show products, customer account and admin pages.
 
 ## Development server
 
