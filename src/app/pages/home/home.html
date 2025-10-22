@@ -1,0 +1,16 @@
+<app-navbar [menuButtons]="menuButtons" [profileMenu]="profileMenuItems" [perfilInfo]="perfilInfo"
+  [shopCartAmount]="shopCartAmount" [isConnected]="true"/>
+<div class="flex flex-col content-page-height">
+
+  <header class="my-5 mx-2">
+
+  </header>
+
+  <main class="flex-1 m-2">
+    <router-outlet />
+  </main>
+
+  <footer class="mt-3">
+    <app-footer label="&copy; 2025 Sua Estampa. Todos os direitos reservados." />
+  </footer>
+</div>

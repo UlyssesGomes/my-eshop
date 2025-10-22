@@ -1,0 +1,20 @@
+<span class="inline-flex items-center gap-1 px-2 py-2">
+    <ng-template *ngIf="perfilInfo?.image; then showImage else showDefaultImage"></ng-template>
+    <ng-template #showImage>
+        <img *ngIf="perfilInfo?.image" class="perfil-image me-2" [src]="perfilInfo?.image"
+            alt="Imagem de perfil do usuário.">
+    </ng-template>
+    <ng-template #showDefaultImage>
+        <img *ngIf="!perfilInfo?.image" class="perfil-image me-2" src="resources/images/icon/perfil-image.png"
+            alt="Imagem de perfil padrão.">
+    </ng-template>
+    <div class="flex flex-col">
+        <span *ngIf="!perfilInfo?.name">Usuário não logado</span>
+        <span class="text-sm font-semibold">
+            {{perfilInfo?.name}} <span class="text-primary">{{perfilInfo?.lastName}}</span>
+        </span>
+        <span class="text-xs">
+            {{perfilInfo?.role}}
+        </span>
+    </div>
+</span>

@@ -1,0 +1,15 @@
+@use 'utils';
+
+.clean-button {
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px;
+
+    @extend .hover-effect;
+}
+
+.button-min-width-size {
+    button {
+        width: 155px;
+    }
+}

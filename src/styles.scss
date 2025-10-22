@@ -1,0 +1,41 @@
+@use "resources/styles/utils";
+@use "resources/styles/menu";
+@use "resources/styles/button";
+@use "resources/styles/divider";
+@use "resources/styles/paginator";
+@use "resources/styles/table";
+@use "resources/styles/input";
+@use "resources/styles/responsive-objects";
+@use "tailwindcss";
+@import "primeicons/primeicons.css";
+
+//@plugin "tailwindcss-primeui";
+
+:root {
+  --body-background: var(--p-slate-950);
+  --primary-background: var(--p-blue-950);
+  --secondary-background: #283f78;  
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--body-background);
+    @apply text-white;
+}
+
+h1 {
+  @apply text-4xl font-bold;
+}
+
+h2 {
+  @apply text-3xl font-bold;
+}
+
+h3 {
+  @apply text-2xl font-semibold;
+}
+
+h4 {
+  @apply text-xl font-semibold;
+}

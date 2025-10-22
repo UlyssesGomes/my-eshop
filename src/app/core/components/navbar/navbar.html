@@ -1,0 +1,55 @@
+<nav class="navbar flex justify-between">
+    <div class="flex">
+        <!-- LEFT SIDE -->
+        <div class="flex items-center px-2 animate-slidedown">
+            <!-- logo -->
+            <img class="me-3 logo-navbar" src="resources/images/logo/SuaEstampa logo s.png" alt="Logo da marca." />
+            <h2>Sua Estampa</h2>
+        </div>
+        <div class="flex items-center">
+            <!-- menu -->
+            <div class="ms-2 nav-menus clean-button show-element-md" *ngFor="let item of menuButtons">
+                <ng-container *ngIf="item.icon; then showIcon else showImage"></ng-container>
+                <ng-template #showIcon>
+                    <i class="me-2 {{item.icon}} text-xl md:text-lg"></i>
+                </ng-template>
+                <ng-template #showImage>
+                    <img class="inline me-2 image-icon" [src]="item.alternativeIcon"
+                        alt="Ícone para {{item.title}}">
+                </ng-template>
+                <!-- <i class="me-2 {{item.icon}}"></i> -->
+                <a class="nav-link" [routerLink]="item.path">{{item.title}}</a>
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center">
+        <!-- RIGHT SIDE -->
+        <button class="clean-button show-element-md" aria-label="Carrinho de compras">
+            <ng-container *ngIf="shopCartAmount > 0; then withChip else withoutChip" />
+            <ng-template #withChip>
+                <p-overlaybadge [value]="4" badgeSize="small">
+                    <i class="mx-2 pi pi-shopping-cart text-2xl"></i>
+                </p-overlaybadge>
+            </ng-template>
+            <ng-template #withoutChip>
+                <i class="mx-2 pi pi-shopping-cart text-2xl"></i>
+            </ng-template>
+        </button>
+        <button class="clean-button show-element-md">
+            <i class="ms-2 me-2 pi pi-user text-2xl" (click)="openPerfilMenu(profileMenuContext, $event)"></i>
+        </button>
+
+        <button class="clean-button hide-element-md" (click)="openSidebar()">
+            <i class="pi pi-bars text-2xl"></i>
+        </button>
+
+        <span class="show-element-md" *ngIf="perfilInfo">Olá, <span class="font-bold">{{perfilInfo.name}}</span></span>
+        <p-menu #profileMenuContext [model]="profileMenu" [popup]="true">
+            <ng-template #start>
+                <app-profile-view [perfilInfo]="perfilInfo"></app-profile-view>
+            </ng-template>
+        </p-menu>
+    </div>
+</nav>
+
+<app-simple-sidebar [menuButtons]="menuButtons" [(isOpen)]="isOpen" [perfilInfo]="perfilInfo"/>

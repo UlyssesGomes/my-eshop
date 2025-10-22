@@ -1,0 +1,22 @@
+<div class="sidebar-pane p-3" [ngClass]="{'show-sidebar': isOpen, 'hide-sidebar': !isOpen}">
+    <div>
+        <app-profile-view [perfilInfo]="perfilInfo"></app-profile-view>
+    </div>
+    <p-divider />
+    @for (menu of menuButtons; track menu.title) {
+    <div class="mb-4">
+        <button class="clean-button w-full text-left flex align-center" (click)="navigateTo(menu.path)">
+            <ng-container *ngIf="menu.icon; then showIcon else showImage"></ng-container>
+            <ng-template #showIcon>
+                <i class="me-2 {{menu.icon}} text-xl md:text-lg"></i>
+            </ng-template>
+            <ng-template #showImage>
+                <img class="me-2 image-icon" [src]="menu.alternativeIcon"
+                    alt="Ícone para {{menu.title}}">
+            </ng-template>
+            <span class="text-xl md:text-lg">{{menu.title}}</span>
+        </button>
+    </div>
+    }
+</div>
+<div class="block-pane" [ngStyle]="{'display': isOpen? 'block' : 'none'}" (click)="closeSidebar()"></div>

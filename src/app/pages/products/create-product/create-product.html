@@ -1,0 +1,132 @@
+<app-content-panel>
+    <div>
+        <h3 class="mb-4">CADASTRO DE PRODUTOS</h3>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="my-3 flex md:flex-row flex-col">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT SELECT TYPE
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <div>
+                <p-floatlabel class="w-full md:w-56" variant="on">
+                    <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
+                        optionValue="value" (onChange)="productChange()" optionDisabled="disabled" class="w-full" />
+                    <label class="label-background font-semibold" for="type">Tipo do Produto</label>
+                </p-floatlabel>
+                <p-message *ngIf="form.get('type')?.errors && !form.get('type')?.pristine && form.get('type')?.touched"
+                    severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                    form.get('type')?.errors | errorReader}}</p-message>
+            </div>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT IMAGES
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <app-upload-file #uploadFile [(files)]="files" [maxFileSize]="maxFileSize" (errorEvent)="fileUploadErrorEvent($event)"
+                [isMultiple]="true" (onChangeFilesSelected)="onChangeImages($event)"></app-upload-file>
+            <!-- && !form.get('images')?.pristine && form.get('images')?.touched -->
+            <p-message *ngIf="form.get('images')?.errors " severity="error" size="small" variant="simple"
+                icon="pi pi-exclamation-triangle">{{
+                form.get('images')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3 product-option-pane">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT OPTIONS
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <h5 class="mb-3 text-bold">
+                Opções do Produto
+            </h5>
+            <ng-container *ngIf="form.get('options')" formArrayName="options">
+                <div *ngFor="let option of options.controls; index as i">
+                    <div [formGroupName]="i" class="flex">
+                        <div class="m-3">
+                            <p-floatlabel class="w-full md:w-56" variant="on">
+                                <p-select formControlName="indexImage" inputId="type" [options]="imagesSelectOptions"
+                                    optionLabel="name" optionValue="index" (onChange)="productChange()" class="w-full" />
+                                <label class="label-background font-semibold" for="type">Imagem do Produto</label>
+                            </p-floatlabel>
+                            <p-message
+                                *ngIf="form.get('indexImage')?.errors && !form.get('indexImage')?.pristine && form.get('indexImage')?.touched"
+                                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                                form.get('indexImage')?.errors | errorReader}}</p-message>
+                        </div>
+                        <div class="m-3">
+                            <p-floatlabel class="w-full md:w-56" variant="on">
+                                <p-select formControlName="idMaterial" inputId="type" [options]="productsMaterialOptions"
+                                    optionLabel="name" optionValue="id" (onChange)="productChange()" class="w-full" />
+                                <label class="label-background font-semibold" for="type">Tipo do Produto</label>
+                            </p-floatlabel>
+                            <p-message
+                                *ngIf="form.get('idMaterial')?.errors && !form.get('idMaterial')?.pristine && form.get('idMaterial')?.touched"
+                                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                                form.get('idMaterial')?.errors | errorReader}}</p-message>
+                        </div>
+                        <div class="m-3">
+                            <p-button icon="pi pi-times"
+                                (click)="removeProductOption(i)" [outlined]="true"
+                                [rounded]="true" severity="danger" areaLabel="Remover esta opção" />
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <p-button label="Adicionar Opção" fluid="true" areaLabel="Adicionar Opção" (click)="createProductOption()"></p-button>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT PRICE
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <p-floatlabel variant="on">
+                <p-inputnumber id="price" formControlName="price" prefix="R$ " inputId="minmaxfraction" mode="decimal"
+                    currency="BRL" locale="pt-BR" [minFractionDigits]="2" [maxFractionDigits]="2" fluid="true" />
+                <label class="label-background font-semibold" for="price">Preço</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('price')?.errors && !form.get('price')?.pristine && form.get('price')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('price')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT PRODUCT NAME
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <p-floatlabel variant="on">
+                <input pInputText id="name" formControlName="name" fluid="true" />
+                <label class="label-background font-semibold" for="name">Nome do Produto</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('name')?.errors && !form.get('name')?.pristine && form.get('name')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('name')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT DESCRIPTION
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <p-floatlabel variant="on">
+                <textarea pTextarea id="description" formControlName="description" rows="5" fluid="true"
+                    style="resize: none"></textarea>
+                <label class="label-background font-semibold" for="description">Descrição</label>
+            </p-floatlabel>
+            <p-message
+                *ngIf="form.get('description')?.errors && !form.get('description')?.pristine && form.get('description')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('description')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-7 flex flex-row-reverse">
+            <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid"
+                label="Salvar" fluid="false" areaLabel="Salvar"></p-button>
+            <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar"
+                fluid="true" areaLabel="Salvar"></p-button>
+        </div>
+    </form>
+</app-content-panel>
