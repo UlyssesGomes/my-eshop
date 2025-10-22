@@ -1,0 +1,55 @@
+<p-fileupload #fileUpload [multiple]="isMultiple" accept="image/*" [maxFileSize]="maxFileSize"
+    (onSelect)="onSelectedFiles($event)" (onRemove)="onRemoveFile($event)">
+    <ng-template #header let-files let-chooseCallback="chooseCallback" let-clearCallback="clearCallback"
+        let-uploadCallback="uploadCallback">
+        <div class="flex flex-wrap justify-between items-center flex-1 gap-4">
+            <div class="flex gap-2">
+                <p-button (onClick)="choose($event, chooseCallback)" icon="pi pi-images" [rounded]="true"
+                    [outlined]="true" areaLabel="Adicionar imagens"/>
+                <p-button (onClick)="clearAll(clearCallback)" icon="pi pi-times" [rounded]="true" [outlined]="true"
+                    severity="danger" [disabled]="!files || files.length === 0" areaLabel="Excluir todas as imagens"/>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #content let-files let-uploadedFiles="uploadedFiles" let-removeFileCallback="removeFileCallback"
+        let-removeUploadedFileCallback="removeUploadedFileCallback">
+        <div class="flex flex-col gap-8 pt-4">
+            <div *ngIf="files?.length > 0">
+                <div class="flex flex-wrap gap-4">
+                    <div *ngFor="let file of files; index as i"
+                        class="p-4 flex flex-col border border-surface items-center gap-4 card-image">
+                        <div class="card-image-view flex items-center justify-center">
+                            <img role="presentation" [alt]="file.name" [src]="file.objectURL" />
+                        </div>
+                        <div class="flex flex-col gap-1 items-center card-bottom-view">
+                            <span class="font-semibold max-w-full ellipsis" appEllipisTooltip>{{file.name}}</span>
+                            <div>{{ formatSize(file.size) }}</div>
+                            <p-button icon="pi pi-times"
+                                (click)="onRemoveTemplatingFile($event, file, removeFileCallback, i)" [outlined]="true"
+                                [rounded]="true" severity="danger" areaLabel="Excluir esta imagem"/>
+                        </div>
+                        <div class="card-top-view">
+                            <ng-container
+                                *ngIf="customFiles[i].isHighlight; then showStarFilled else showStarEmpty"></ng-container>
+                            <ng-template #showStarFilled>
+                                <p-button icon="pi pi-star-fill" (click)="changeHighlightStatus(i)" [text]="true"
+                                    [rounded]="true" severity="success" areaLabel="Selecionar esta imagem como destaque"/>
+                            </ng-template>
+                            <ng-template #showStarEmpty>
+                                <p-button icon="pi pi-star" (click)="changeHighlightStatus(i)" [text]="true"
+                                    [rounded]="true" severity="success" areaLabel="Deselecionar esta imagem como destaque"/>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <!-- <ng-template #file></ng-template> -->
+    <ng-template #empty>
+        <div class="flex items-center justify-center flex-col">
+            <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
+            <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+        </div>
+    </ng-template>
+</p-fileupload>

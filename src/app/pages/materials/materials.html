@@ -1,0 +1,81 @@
+<app-content-panel>
+    <h2 class="mb-3">Materiais</h2>
+
+    <!-- <p-table [value]="paginatedMaterials" stripedRows [scrollable]="true" scrollHeight="580px" dataKey="id" editMode="row"
+        size="small" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template #header>
+            <tr style="border-radius: 10px;">
+                <th style="width:12%">ID</th>
+                <th style="width:32%">Nome</th>
+                <th style="width:22%">Tipo</th>
+                <th style="width:22%">Quantidade</th>
+                <th style="width:12%"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-material let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="material">
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <input pInputText type="text" [(ngModel)]="material.id" />
+                        </ng-template>
+                        <ng-template #output>
+                            {{material.id}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <input pInputText type="text" [(ngModel)]="material.name" required />
+                        </ng-template>
+                        <ng-template #output>
+                            {{material.name}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <p-select [options]="types" appendTo="body" [(ngModel)]="material.type"
+                                [style]="{'width':'100%'}" />
+                        </ng-template>
+                        <ng-template #output>
+                            {{material.type}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template #input>
+                            <input pInputText type="text" [(ngModel)]="material.quantity" />
+                        </ng-template>
+                        <ng-template #output>
+                            {{material.quantity}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <div class="flex items-center justify-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                            (click)="onRowEditInit(material)" text rounded severity="secondary"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                            (click)="onRowEditSave(material)" text rounded severity="secondary"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                            (click)="onRowEditCancel(material, ri)" text rounded severity="secondary"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table> -->
+    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth"></app-u-table>
+
+    <div class="flex items-center justify-end">
+        <span class="mx-1 text-color">Items per page: </span>
+        <p-select [options]="paginationOptions" optionLabel="label" optionValue="value" [(ngModel)]="rows"
+            (ngModelChange)="first = 0" (onChange)="onPageFrameSize()"/>
+        <p-paginator [first]="first" [rows]="rows" [totalRecords]="materials.length" (onPageChange)="onPageChange($event)"
+            [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}"
+            [showPageLinks]="false" [showFirstLastIcon]="false"></p-paginator>
+    </div>
+</app-content-panel>

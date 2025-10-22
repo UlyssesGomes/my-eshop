@@ -1,0 +1,19 @@
+.hover-effect {
+    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+
+    &:hover {
+        box-shadow: -1px 1px 18px -3px rgba(255, 255, 255, 0.75);
+        background-color: #ffffff3f;
+    }
+}
+
+.ellipsis {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.image-icon {
+    width: 24px; 
+    height: 24px;
+}
