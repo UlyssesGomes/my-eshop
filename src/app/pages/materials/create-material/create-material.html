@@ -1,1 +1,73 @@
-<p>create-material works!</p>
+<app-content-panel>
+    <div>
+        <h3 class="mb-4">CADASTRO DE MATERIAIS</h3>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="my-3 flex md:flex-row flex-col">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT SELECT MATERIAL TYPE
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <div>
+                <p-floatlabel class="w-full md:w-56" variant="on">
+                    <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
+                        optionValue="value" (onChange)="materialChange($event)" optionDisabled="disabled" class="w-full" />
+                    <label class="label-background font-semibold" for="type">Tipo do Produto</label>
+                </p-floatlabel>
+                <p-message *ngIf="form.get('type')?.errors && !form.get('type')?.pristine && form.get('type')?.touched"
+                    severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                    form.get('type')?.errors | errorReader}}</p-message>
+            </div>
+
+            
+        </div>
+        <div class="my-3 flex md:flex-row flex-col">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT SELECT MATERIAL SIZE
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <div *ngIf="form.get('type')?.value === typeShirt">
+                <p-floatlabel class="w-full md:w-56" variant="on">
+                    <p-select formControlName="size" inputId="size" [options]="productSizes" optionLabel="value"
+                        optionValue="value" optionDisabled="disabled" class="w-full" />
+                    <label class="label-background font-semibold" for="size">Tamanho do Produto</label>
+                </p-floatlabel>
+                <p-message *ngIf="form.get('size')?.errors && !form.get('size')?.pristine && form.get('size')?.touched"
+                    severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                    form.get('size')?.errors | errorReader}}</p-message>
+            </div>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT MATERIAL NAME
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <p-floatlabel variant="on">
+                <input pInputText id="name" formControlName="name" fluid="true" />
+                <label class="label-background font-semibold" for="name">Nome do Material</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('name')?.errors && !form.get('name')?.pristine && form.get('name')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('name')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3">
+            <p-floatlabel variant="on">
+                <p-inputnumber id="quantity" formControlName="quantity" fluid="true" />
+                <label class="label-background font-semibold" for="price">Quantidade</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('quantity')?.errors && !form.get('quantity')?.pristine && form.get('quantity')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('quantity')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-7 flex flex-row-reverse">
+            <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid"
+                label="Salvar" fluid="false" areaLabel="Salvar"></p-button>
+            <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar"
+                fluid="true" areaLabel="Salvar"></p-button>
+        </div>     
+    </form>
+
+</app-content-panel>
