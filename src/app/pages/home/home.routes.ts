@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { Products } from '../products/products';
-
 export const homeRoutes: Routes = [
     {
         path: '',
@@ -14,6 +12,10 @@ export const homeRoutes: Routes = [
             {
                 path: 'admin/materials',
                 loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
+            },
+            {
+                path: 'admin/users',
+                loadChildren: () => import('../users/users.routes').then(p => p.usersRoutes),
             },
             {
                 path: '',

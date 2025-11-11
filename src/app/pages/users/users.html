@@ -1,13 +1,13 @@
 <app-content-panel>
-    <h2 class="mb-3">Materiais</h2>
+    <h2 class="mb-3">Usuários</h2>
 
-    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth"></app-u-table>
+    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth"></app-u-table>
 
     <div class="flex items-center justify-end">
         <span class="mx-1 text-color">Items per page: </span>
         <p-select [options]="paginationOptions" optionLabel="label" optionValue="value" [(ngModel)]="rows"
             (ngModelChange)="first = 0" (onChange)="onPageFrameSize()"/>
-        <p-paginator [first]="first" [rows]="rows" [totalRecords]="materials.length" (onPageChange)="onPageChange($event)"
+        <p-paginator [first]="first" [rows]="rows" [totalRecords]="users.length" (onPageChange)="onPageChange($event)"
             [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}"
             [showPageLinks]="false" [showFirstLastIcon]="false"></p-paginator>
     </div>
