@@ -20,7 +20,7 @@ export class Users {
   users: User[] = [];
   paginatedUsers: User[] = [];
 
-  columnsWidth: number[] = [10, 36, 22, 10, 22];
+  columnsWidth: number[] = [5, 30, 20, 20, 35];
   paginationOptions = [
     { label: 5, value: 5 },
     { label: 10, value: 10 },
@@ -65,15 +65,27 @@ export class Users {
     this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
   }
 
+  editItem(item: any) {
+    window.alert(`Go to edit item ${item.id}.`);
+  }
+
   private loadMaterials() {
-    for (let u = 0; u < 20; u++) {
+    this.users.push({
+      id: 0,
+      fullName: 'Ulysses de Medeiros Gomes Blabla Tututu',
+      cpf: '000.000.000-00',
+      birth: new Date(),
+      email: `user-email@email.com`,
+    });
+    for (let u = 1; u < 20; u++) {
       this.users.push({
         id: u,
-        firstName: `Primeiro Nome ${u}`,
-        lastName: `Segundo Nome ${u}`,
+        fullName: `Nome completo do usuário ${u}`,
+        cpf: `000.000.000-0${u}`,
         birth: new Date(),
         email: `user-email${u}@email.com`,
-      })
+      });
     }
+
   }
 }

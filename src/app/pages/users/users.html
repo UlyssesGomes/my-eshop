@@ -1,7 +1,7 @@
 <app-content-panel>
     <h2 class="mb-3">Usuários</h2>
 
-    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth"></app-u-table>
+    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth" (editAction)="editItem($event)"></app-u-table>
 
     <div class="flex items-center justify-end">
         <span class="mx-1 text-color">Items per page: </span>

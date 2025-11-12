@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { ShowDatePipe } from '../../pipes/show-date/show-date-pipe';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-u-table',
-  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, SelectModule, TableModule],
+  imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, SelectModule, ShowDatePipe, TableModule],
   templateUrl: './u-table.html',
   styleUrl: './u-table.scss'
 })
@@ -33,6 +34,11 @@ export class UTable implements OnInit, OnChanges {
   columns: any[] = [];
   clonedMaterials: { [s: string]: any } = {};
 
+  @Input()
+  isShowTimeInDateColumn = false;
+
+  @Output()
+  editAction = new EventEmitter<any>();
 
   ngOnInit(): void {
 
@@ -46,6 +52,10 @@ export class UTable implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  onRowEdit(item: any) {
+    this.editAction.emit(item);
   }
 
   onRowEditInit(item: any) {
