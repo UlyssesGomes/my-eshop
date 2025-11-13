@@ -5,16 +5,12 @@
             <ng-template *ngIf="columnsWidth.length > 0; then withWidth else default"></ng-template>
             <ng-template #withWidth>
                 <th *ngFor="let col of columns; index as i" [ngStyle]="{'width': columnsWidth[i] + '%'}">{{col}}</th>
-                <th [ngStyle]="{'width': columnsWidth[columnsWidth.length -1] + '%'}"></th>
+                <th *ngIf="showActionColumn" [ngStyle]="{'width': columnsWidth[columnsWidth.length -1] + '%'}"></th>
             </ng-template>
             <ng-template #default>
                 <th *ngFor="let col of columns">{{col}}</th>
-                <th></th>
+                <th *ngIf="showActionColumn"></th>
             </ng-template>
-            <!-- <th style="width:12%">ID</th>
-            <th style="width:32%">Nome</th>
-            <th style="width:22%">Tipo</th>
-            <th style="width:22%">Quantidade</th> -->
         </tr>
     </ng-template>
     <ng-template #body let-material let-ri="rowIndex">
@@ -64,16 +60,14 @@
                     </ng-template>
                 </p-cellEditor>
             </td> -->
-            <td>
+            <td *ngIf="showActionColumn">
                 <div class="flex items-center justify-center gap-2">
-                    <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
-                        (click)="onRowEditInit(material)" text rounded severity="secondary"></button>
-                    <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
-                        (click)="onRowEditSave(material)" text rounded severity="secondary"></button>
-                    <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
-                        (click)="onRowEditCancel(material, ri)" text rounded severity="secondary"></button> -->
+                    <button pButton pRipple type="button" icon="pi pi-eye"
+                        text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.VIEW, material)"></button>
                     <button pButton pRipple type="button" icon="pi pi-pencil"
-                        text rounded severity="secondary" (click)="onRowEdit(material)"></button>
+                            text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.EDIT, material)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash"
+                        text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.DELETE, material)"></button>
                 </div>
             </td>
         </tr>

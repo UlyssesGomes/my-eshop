@@ -1,17 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { User } from '../../shared/models/user/user';
 import { UTable } from '../../shared/components/u-table/u-table';
+import { UserType } from '../../shared/enums/user-type';
 
 @Component({
   selector: 'app-users',
-  imports: [CommonModule, ContentPanel, FormsModule, PaginatorModule, SelectModule, UTable],
+  imports: [CommonModule, ContentPanel, FormsModule, ButtonModule, PaginatorModule, SelectModule, UTable],
   templateUrl: './users.html',
   styleUrl: './users.scss'
 })
@@ -20,7 +23,7 @@ export class Users {
   users: User[] = [];
   paginatedUsers: User[] = [];
 
-  columnsWidth: number[] = [5, 30, 20, 20, 35];
+  columnsWidth: number[] = [5, 25, 15, 10, 25, 15];
   paginationOptions = [
     { label: 5, value: 5 },
     { label: 10, value: 10 },
@@ -30,7 +33,9 @@ export class Users {
   first: number = 0;
   rows: number = 10;
 
-  constructor() {
+  constructor(private readonly router: Router, 
+    private readonly route: ActivatedRoute
+  ) {
     this.loadMaterials();
     this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
   }
@@ -65,8 +70,12 @@ export class Users {
     this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
   }
 
-  editItem(item: any) {
-    window.alert(`Go to edit item ${item.id}.`);
+  columnActionEvent(event: any) {
+    window.alert(`Execute action ${event.action} in ${event.item.id}.`);
+  }
+
+  goToNewUser() {
+    this.router.navigate(['create'], { relativeTo: this.route });
   }
 
   private loadMaterials() {
@@ -76,6 +85,7 @@ export class Users {
       cpf: '000.000.000-00',
       birth: new Date(),
       email: `user-email@email.com`,
+      type: UserType.OWNER
     });
     for (let u = 1; u < 20; u++) {
       this.users.push({
@@ -84,6 +94,7 @@ export class Users {
         cpf: `000.000.000-0${u}`,
         birth: new Date(),
         email: `user-email${u}@email.com`,
+        type: UserType.CUSTOMER
       });
     }
 

@@ -1,7 +1,10 @@
 <app-content-panel>
-    <h2 class="mb-3">Materiais</h2>
+    <div class="flex justify-between">
+        <h2 class="mb-3">Materiais</h2>
+        <button pButton pRipple type="button" icon="pi pi-plus" rounded (click)="goToNewMaterial()"></button>
+    </div>
 
-    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth"></app-u-table>
+    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="false" [size]="undefined" (columnAction)="columnActionEvent($event)"></app-u-table>
 
     <div class="flex items-center justify-end">
         <span class="mx-1 text-color">Items per page: </span>

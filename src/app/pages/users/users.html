@@ -1,7 +1,10 @@
 <app-content-panel>
-    <h2 class="mb-3">Usuários</h2>
+    <div class="flex justify-between">
+        <h2 class="mb-3">Usuários</h2>
+        <button pButton pRipple type="button" icon="pi pi-plus" rounded (click)="goToNewUser()"></button>
+    </div>
 
-    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth" (editAction)="editItem($event)"></app-u-table>
+    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth" (columnAction)="columnActionEvent($event)" [showActionColumn]="true"></app-u-table>
 
     <div class="flex items-center justify-end">
         <span class="mx-1 text-color">Items per page: </span>

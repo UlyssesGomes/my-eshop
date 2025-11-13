@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
@@ -13,7 +15,7 @@ import { UTable } from '../../shared/components/u-table/u-table';
 
 @Component({
   selector: 'app-materials',
-  imports: [CommonModule, FormsModule, ContentPanel, PaginatorModule, SelectModule, UTable],
+  imports: [CommonModule, FormsModule, ButtonModule, ContentPanel, PaginatorModule, SelectModule, UTable],
   templateUrl: './materials.html',
   styleUrl: './materials.scss'
 })
@@ -42,7 +44,10 @@ export class Materials {
   rows: number = 10;
 
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService,
+    private readonly router: Router, 
+    private readonly route: ActivatedRoute
+  ) {
     this.loadMaterials();
     this.paginatedMaterials = this.materials.slice(this.first, this.first + this.rows);
   }
@@ -75,6 +80,14 @@ export class Materials {
 
   onPageFrameSize() {
     this.paginatedMaterials = this.materials.slice(this.first, this.first + this.rows);
+  }
+
+  goToNewMaterial() {
+    this.router.navigate(['create'], { relativeTo: this.route });
+  }
+
+  columnActionEvent(event: any) {
+    
   }
 
   private loadMaterials() {

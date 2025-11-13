@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ShowDatePipe } from '../../pipes/show-date/show-date-pipe';
 import { TableModule } from 'primeng/table';
+import { UTableColumnAction } from './u-table-column-action';
+import { UTableActionEnum } from './u-table-action-enum';
 
 @Component({
   selector: 'app-u-table',
@@ -20,7 +22,7 @@ export class UTable implements OnInit, OnChanges {
   items: any[] = [];
 
   @Input()
-  size: "small" | "large" | undefined = 'small';
+  size: 'small' | 'large' | undefined = "small";
 
   @Input()
   scrollable = true;
@@ -34,11 +36,16 @@ export class UTable implements OnInit, OnChanges {
   columns: any[] = [];
   clonedMaterials: { [s: string]: any } = {};
 
+  columnActionEnum = UTableActionEnum;
+
   @Input()
   isShowTimeInDateColumn = false;
 
+  @Input()
+  showActionColumn = false;
+
   @Output()
-  editAction = new EventEmitter<any>();
+  columnAction = new EventEmitter<UTableColumnAction>();
 
   ngOnInit(): void {
 
@@ -54,8 +61,11 @@ export class UTable implements OnInit, OnChanges {
     }
   }
 
-  onRowEdit(item: any) {
-    this.editAction.emit(item);
+  onColumnAction(actionEvent: UTableActionEnum, itemEvent: any) {
+    this.columnAction.emit({
+      action: actionEvent,
+      item: itemEvent
+    });
   }
 
   onRowEditInit(item: any) {
