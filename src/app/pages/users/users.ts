@@ -23,7 +23,7 @@ export class Users {
   users: User[] = [];
   paginatedUsers: User[] = [];
 
-  columnsWidth: number[] = [5, 25, 15, 10, 25, 15];
+  columnsWidth: number[] = [5, 12, 30, 13, 10, 25];
   paginationOptions = [
     { label: 5, value: 5 },
     { label: 10, value: 10 },
@@ -81,20 +81,20 @@ export class Users {
   private loadMaterials() {
     this.users.push({
       id: 0,
-      fullName: 'Ulysses de Medeiros Gomes Blabla Tututu',
+      type: UserType.OWNER,
+      fullName: 'Ulysses de Medeiros Gomes Gomes Medeiros',
       cpf: '000.000.000-00',
       birth: new Date(),
-      email: `user-email@email.com`,
-      type: UserType.OWNER
+      email: `user-email@email.com`
     });
     for (let u = 1; u < 20; u++) {
       this.users.push({
         id: u,
+        type: UserType.CUSTOMER,
         fullName: `Nome completo do usuário ${u}`,
         cpf: `000.000.000-0${u}`,
         birth: new Date(),
-        email: `user-email${u}@email.com`,
-        type: UserType.CUSTOMER
+        email: `user-email${u}@email.com`
       });
     }
 
