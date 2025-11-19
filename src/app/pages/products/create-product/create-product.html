@@ -26,29 +26,28 @@
             // INPUT IMAGES
             // ----------------------------------------------------------------------------------------------------- 
             -->
-            <app-upload-file #uploadFile [(files)]="files" [maxFileSize]="maxFileSize" (errorEvent)="fileUploadErrorEvent($event)"
-                [isMultiple]="true" (onChangeFilesSelected)="onChangeImages($event)"></app-upload-file>
+            <app-upload-file #uploadFile [(files)]="files" [maxFileSize]="maxFileSize"
+                (errorEvent)="fileUploadErrorEvent($event)" [isMultiple]="true"
+                (onChangeFilesSelected)="onChangeImages($event)"></app-upload-file>
             <!-- && !form.get('images')?.pristine && form.get('images')?.touched -->
             <p-message *ngIf="form.get('images')?.errors " severity="error" size="small" variant="simple"
                 icon="pi pi-exclamation-triangle">{{
                 form.get('images')?.errors | errorReader}}</p-message>
         </div>
-        <div class="my-3 product-option-pane">
-            <!-- 
-            // -----------------------------------------------------------------------------------------------------
-            // INPUT OPTIONS
-            // ----------------------------------------------------------------------------------------------------- 
-            -->
-            <h5 class="mb-3 text-bold">
-                Opções do Produto
-            </h5>
+        <!-- 
+        // -----------------------------------------------------------------------------------------------------
+        // INPUT OPTIONS
+        // ----------------------------------------------------------------------------------------------------- 
+        -->
+        <app-multifield-panel title="Opções do Produto" buttonLabel="Adicionar Opções" (eventButton)="createProductOption()">
             <ng-container *ngIf="form.get('options')" formArrayName="options">
                 <div *ngFor="let option of options.controls; index as i">
                     <div [formGroupName]="i" class="flex">
                         <div class="m-3">
                             <p-floatlabel class="w-full md:w-56" variant="on">
                                 <p-select formControlName="indexImage" inputId="type" [options]="imagesSelectOptions"
-                                    optionLabel="name" optionValue="index" (onChange)="productChange()" class="w-full" />
+                                    optionLabel="name" optionValue="index" (onChange)="productChange()"
+                                    class="w-full" />
                                 <label class="label-background font-semibold" for="type">Imagem do Produto</label>
                             </p-floatlabel>
                             <p-message
@@ -58,8 +57,9 @@
                         </div>
                         <div class="m-3">
                             <p-floatlabel class="w-full md:w-56" variant="on">
-                                <p-select formControlName="idMaterial" inputId="type" [options]="productsMaterialOptions"
-                                    optionLabel="name" optionValue="id" (onChange)="productChange()" class="w-full" />
+                                <p-select formControlName="idMaterial" inputId="type"
+                                    [options]="productsMaterialOptions" optionLabel="name" optionValue="id"
+                                    (onChange)="productChange()" class="w-full" />
                                 <label class="label-background font-semibold" for="type">Tipo do Produto</label>
                             </p-floatlabel>
                             <p-message
@@ -68,15 +68,13 @@
                                 form.get('idMaterial')?.errors | errorReader}}</p-message>
                         </div>
                         <div class="m-3">
-                            <p-button icon="pi pi-times"
-                                (click)="removeProductOption(i)" [outlined]="true"
+                            <p-button icon="pi pi-times" (click)="removeProductOption(i)" [outlined]="true"
                                 [rounded]="true" severity="danger" areaLabel="Remover esta opção" />
                         </div>
                     </div>
                 </div>
             </ng-container>
-            <p-button label="Adicionar Opção" fluid="true" areaLabel="Adicionar Opção" (click)="createProductOption()"></p-button>
-        </div>
+        </app-multifield-panel>
         <div class="my-3">
             <!-- 
             // -----------------------------------------------------------------------------------------------------

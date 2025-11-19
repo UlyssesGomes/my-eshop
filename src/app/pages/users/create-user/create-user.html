@@ -93,6 +93,29 @@
                 severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
                 form.get('phone')?.errors | errorReader}}</p-message>
         </div>
+        <!-- 
+        // -----------------------------------------------------------------------------------------------------
+        // INPUT ADDRESS
+        // ----------------------------------------------------------------------------------------------------- 
+        -->
+        <app-multifield-panel title="Endereços" buttonLabel="Adicionar Endereço" (eventButton)="addAddressField()">
+            <ng-container *ngIf="form.get('addresses')" formArrayName="addresses">
+                <div *ngFor="let address of addressArray.controls; index as i">
+                    <div [formGroupName]="i" class="flex">
+                        <div class="m-3">
+                            <p-floatlabel variant="on">
+                                <input pInputText id="cep" formControlName="cep" fluid="true" />
+                                <label class="label-background font-semibold" for="cep">CEP</label>
+                            </p-floatlabel>
+                            <p-message
+                                *ngIf="form.get('cep')?.errors && !form.get('cep')?.pristine && form.get('cep')?.touched"
+                                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                                form.get('cep')?.errors | errorReader}}</p-message>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </app-multifield-panel>
         <div class="my-7 flex flex-row-reverse">
             <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid"
                 label="Salvar" fluid="false" areaLabel="Salvar"></p-button>

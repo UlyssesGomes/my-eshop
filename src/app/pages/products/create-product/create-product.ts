@@ -16,6 +16,7 @@ import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
+import { MultifieldPanel } from '../../../shared/components/multifield-panel/multifield-panel';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
 import { ProductType } from '../../../shared/enums/product-type';
 
@@ -29,6 +30,7 @@ import { ProductType } from '../../../shared/enums/product-type';
     FloatLabelModule,
     InputTextModule,
     MessageModule,
+    MultifieldPanel,
     ErrorReaderPipe,
     TextareaModule,
     InputNumberModule,

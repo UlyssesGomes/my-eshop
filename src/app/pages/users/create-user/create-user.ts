@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -13,10 +13,11 @@ import { SelectModule } from 'primeng/select';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
+import { CpfValidator } from '../../../shared/validators/cpf/cpf-validator';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { EmailValidator } from '../../../shared/validators/email/email-validator';
+import { MultifieldPanel } from '../../../shared/components/multifield-panel/multifield-panel';
 import { UserType } from '../../../shared/enums/user-type';
-import { CpfValidator } from '../../../shared/validators/cpf/cpf-validator';
 
 @Component({
   selector: 'app-create-user',
@@ -32,6 +33,7 @@ import { CpfValidator } from '../../../shared/validators/cpf/cpf-validator';
     InputNumberModule,
     InputTextModule,
     MessageModule,
+    MultifieldPanel,
     SelectModule,
     NgxMaskDirective
   ],
@@ -45,6 +47,8 @@ export class CreateUser {
 
   maxDate = new Date();
   phoneMask: string = '(99) 9 9999-9999';
+
+  addressArray: FormArray;
 
   userTypes = [
     { type: 'Proprietário', value: UserType.OWNER },
@@ -63,7 +67,34 @@ export class CreateUser {
       birth: [null, [Validators.required]],
       email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate()]],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]]
-    })
+    });
+
+    this.addressArray = this.fb.array([]);
+  }
+
+  addAddressField() {
+    if(!this.form.get('addresses'))
+      this.form.addControl('addresses', this.addressArray);
+    
+    this.addressArray.push(this.fb.group({
+      cep: ['', []],
+      street: ['', []],
+      number: ['', []],
+      neighborhood: ['', []],
+      city: ['', []],
+      state: ['', []],
+      country: ['', []]
+    }));
+  }
+
+  removeAddressField(index: number) {
+    let addressFormArray: FormArray = this.form.get('addresses') as FormArray;
+    if(addressFormArray.length > 0) {
+      addressFormArray.removeAt(index);
+
+      if(addressFormArray.length == 0)
+        this.form.removeControl('addresses')
+    }
   }
 
   save() {

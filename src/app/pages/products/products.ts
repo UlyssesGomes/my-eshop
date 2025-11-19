@@ -5,9 +5,9 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { MessageService } from 'primeng/api';
 
+import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { ItemCardList } from '../../shared/components/item-card-list/item-card-list';
 import { Product } from '../../shared/models/product/product';
-import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 
 @Component({
   selector: 'app-products',

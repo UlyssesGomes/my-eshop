@@ -1,0 +1,10 @@
+<div class="my-3 product-option-pane">
+    <h5 class="mb-3 text-bold">
+        {{title}}
+    </h5>
+    <ng-content>
+
+    </ng-content>
+    <p-button [label]="buttonLabel" fluid="true" [aria-label]="buttonLabel"
+        (click)="eventButtonFunction()"></p-button>
+</div>
