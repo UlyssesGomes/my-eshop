@@ -1,0 +1,13 @@
+.address-pane {
+    border: white 1px solid;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 16px 0;
+    position: relative;
+    
+    .close-button {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+}
