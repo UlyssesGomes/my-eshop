@@ -30,6 +30,11 @@ export class Home {
       path: '/canecas'
     },
     {
+      alternativeIcon: 'resources/images/icon/material/outline/icon-botton-24.svg',
+      title: 'Bottons',
+      path: '/bottons'
+    },
+    {
       alternativeIcon: 'resources/images/icon/material/outline/icon-palette-24.svg',
       title: 'Personalize',
       path: '/personalize'

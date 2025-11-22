@@ -1,21 +1,4 @@
-<form [formGroup]="form" (submit)="save()">
-    <div class="flex md:flex-row flex-col">
-        <!-- 
-                // -----------------------------------------------------------------------------------------------------
-                // INPUT SELECT USER TYPE
-                // ----------------------------------------------------------------------------------------------------- 
-                -->
-        <div>
-            <p-floatlabel class="w-full md:w-56" variant="on">
-                <p-select formControlName="type" inputId="type" [options]="userTypes" optionLabel="type"
-                    optionValue="value" optionDisabled="disabled" class="w-full" />
-                <label class="label-background font-semibold" for="type">Tipo do Usuário</label>
-            </p-floatlabel>
-            <p-message *ngIf="form.get('type')?.errors && !form.get('type')?.pristine && form.get('type')?.touched"
-                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                form.get('type')?.errors | errorReader}}</p-message>
-        </div>
-    </div>
+<div [formGroup]="form">
     <div class="my-3">
         <!-- 
             // -----------------------------------------------------------------------------------------------------
@@ -98,7 +81,7 @@
                 <div class="mb-5 ms-3">
                     Endereço {{i + 1}}
                 </div>
-                <div class="close-button">
+                <div class="close-button" *ngIf="addressArray.length > 1">
                     <p-button size="small" icon="pi pi-times" (click)="removeAddressField(i)" [outlined]="true"
                         [rounded]="true" severity="danger" areaLabel="Remover opção de endereço." />
                 </div>
@@ -188,10 +171,10 @@
             </div>
         </ng-container>
     </app-multifield-panel>
-    <div class="my-7 flex flex-row-reverse">
+    <!-- <div class="my-7 flex flex-row-reverse">
         <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid" label="Salvar"
             fluid="false" areaLabel="Salvar"></p-button>
         <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar" fluid="true"
             areaLabel="Salvar"></p-button>
-    </div>
-</form>
+    </div> -->
+</div>

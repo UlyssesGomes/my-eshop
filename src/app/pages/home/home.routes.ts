@@ -14,6 +14,10 @@ export const homeRoutes: Routes = [
                 loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
             },
             {
+                path: 'novo-usuario',
+                loadComponent: () => import('../new-user/new-user').then(m => m.NewUser)
+            },
+            {
                 path: 'admin/users',
                 loadChildren: () => import('../users/users.routes').then(p => p.usersRoutes),
             },
