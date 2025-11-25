@@ -1,1 +1,14 @@
-<p>new-user works!</p>
+<app-content-panel>
+    <div>
+        <h3>Cadastro de Novo Usuário</h3>
+    </div>
+    <form [formGroup]="form" (submit)="save()">
+        <app-user-common-form [form]="form"></app-user-common-form>
+        <div class="my-7 flex flex-row-reverse">
+            <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid"
+                label="Salvar" fluid="false" areaLabel="Salvar"></p-button>
+            <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar"
+                fluid="true" areaLabel="Salvar"></p-button>
+        </div>
+    </form>
+</app-content-panel>

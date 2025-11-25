@@ -11,7 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 
-import { NgxMaskDirective } from 'ngx-mask';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 import { debounceTime, Subject, take } from 'rxjs';
 
@@ -35,7 +35,8 @@ import { MultifieldPanel } from '../multifield-panel/multifield-panel';
     NgxMaskDirective,
   ],
   templateUrl: './user-common-form.html',
-  styleUrl: './user-common-form.scss'
+  styleUrl: './user-common-form.scss',
+  providers: [provideNgxMask()]
 })
 export class UserCommonForm implements OnInit, OnDestroy {
   @Input()

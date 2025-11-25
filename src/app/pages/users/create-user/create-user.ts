@@ -39,8 +39,7 @@ import { UserCommonForm } from '../../../shared/components/user-common-form/user
     UserCommonForm
   ],
   templateUrl: './create-user.html',
-  styleUrl: './create-user.scss',
-  providers: [provideNgxMask()]
+  styleUrl: './create-user.scss'
 })
 export class CreateUser {
 
@@ -68,7 +67,7 @@ export class CreateUser {
           {
             cep: ['', [Validators.required]],
             street: ['', [Validators.required, Validators.maxLength(60)]],
-            number: ['', [Validators.required, Validators.minLength(2)]],
+            number: ['', [Validators.required, Validators.minLength(1)]],
             complement: ['', [Validators.maxLength(20)]],
             neighborhood: ['', [Validators.required, Validators.maxLength(20)]],
             city: ['', [Validators.required, Validators.maxLength(20)]],
