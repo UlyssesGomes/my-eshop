@@ -52,7 +52,7 @@ export class NewUser {
   save() {
     const newUser = this.extractDataFromForm(this.form.value); 
     this.service.createNewCustomer(newUser).pipe(take(1)).subscribe(response => this.messageService.add(
-      { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.` }
+      { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
     ));
     this.form.reset();
   }

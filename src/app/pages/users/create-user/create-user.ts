@@ -69,8 +69,8 @@ export class CreateUser {
             street: ['', [Validators.required, Validators.maxLength(60)]],
             number: ['', [Validators.required, Validators.minLength(1)]],
             complement: ['', [Validators.maxLength(20)]],
-            neighborhood: ['', [Validators.required, Validators.maxLength(20)]],
-            city: ['', [Validators.required, Validators.maxLength(20)]],
+            neighborhood: ['', [Validators.required, Validators.maxLength(40)]],
+            city: ['', [Validators.required, Validators.maxLength(40)]],
             state: ['', [Validators.required, Validators.maxLength(20)]]
           })])
     });

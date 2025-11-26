@@ -31,9 +31,6 @@ export class Navbar {
   perfilInfo?: PerfilMenu;
 
   @Input()
-  isConnected: boolean = true;
-
-  @Input()
   shopCartAmount!: number;
 
   isOpen = false;
@@ -41,7 +38,7 @@ export class Navbar {
   constructor(private router: Router) {}
 
   openPerfilMenu(contextMenu: any, event: Event) {
-    if(this.isConnected) {
+    if(this.perfilInfo != null) {
       contextMenu.toggle(event);
     }
     else {
