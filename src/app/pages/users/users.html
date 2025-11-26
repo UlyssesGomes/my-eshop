@@ -4,7 +4,7 @@
         <button pButton pRipple type="button" icon="pi pi-plus" rounded (click)="goToNewUser()"></button>
     </div>
 
-    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth" (columnAction)="columnActionEvent($event)" [showActionColumn]="true"></app-u-table>
+    <app-u-table [items]="paginatedUsers" [columnsWidth]="columnsWidth" [columns]="columnNames" (columnAction)="columnActionEvent($event)" [showActionColumn]="true"></app-u-table>
 
     <div class="flex items-center justify-end">
         <span class="mx-1 text-color">Items per page: </span>

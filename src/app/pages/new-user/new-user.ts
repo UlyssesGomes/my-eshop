@@ -12,6 +12,9 @@ import { ContentPanel } from '../../shared/components/content-panel/content-pane
 import { EmailValidator } from '../../shared/validators/email/email-validator';
 import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pipe';
 import { FieldConfirmValidator } from '../../shared/validators/confirm-field/field-confirm-validator';
+import { UserService } from '../users/user-service';
+import { take } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-user',
@@ -36,7 +39,7 @@ export class NewUser {
 
   private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly service: UserService, private messageService: MessageService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
       email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
@@ -47,7 +50,10 @@ export class NewUser {
   }
 
   save() {
-    console.log('Salvando: ', this.extractDataFromForm(this.form.value));
+    const newUser = this.extractDataFromForm(this.form.value); 
+    this.service.createNewCustomer(newUser).pipe(take(1)).subscribe(response => this.messageService.add(
+      { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.` }
+    ));
     this.form.reset();
   }
 

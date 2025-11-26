@@ -56,11 +56,11 @@ export class CreateUser {
 
   constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: MessageService) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
+      name: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(10)]],
       type: [0, [Validators.required]],
       cpf: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(14), new CpfValidator().validate()]],
       birth: [null, []],
-      email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate()]],
+      email: ['', [Validators.required, Validators.maxLength(255), new EmailValidator(this.emailRegex).validate()]],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(11)]],
       addresses: this.fb.array([
         this.fb.group(

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -25,7 +26,8 @@ import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pi
     InputTextModule, 
     PasswordModule, 
     MessageModule, 
-    ErrorReaderPipe
+    ErrorReaderPipe,
+    RouterLink
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss'

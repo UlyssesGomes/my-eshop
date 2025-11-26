@@ -2,7 +2,7 @@ import { UserType } from "../../enums/user-type";
 
 export class User {
     id?: number;
-    fullName?: string;
+    name?: string;
     cpf?: string;
     birth?: Date;
     email?: string;

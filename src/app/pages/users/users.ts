@@ -7,10 +7,13 @@ import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 
+import { take } from 'rxjs';
+
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { User } from '../../shared/models/user/user';
 import { UTable } from '../../shared/components/u-table/u-table';
 import { UserType } from '../../shared/enums/user-type';
+import { UserService } from './user-service';
 
 @Component({
   selector: 'app-users',
@@ -23,6 +26,7 @@ export class Users {
   users: User[] = [];
   paginatedUsers: User[] = [];
 
+  columnNames = [ 'id', 'type', 'name', 'cpf', 'birth', 'email' ];
   columnsWidth: number[] = [5, 12, 30, 13, 10, 25];
   paginationOptions = [
     { label: 5, value: 5 },
@@ -33,11 +37,14 @@ export class Users {
   first: number = 0;
   rows: number = 10;
 
-  constructor(private readonly router: Router, 
-    private readonly route: ActivatedRoute
+  constructor(private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly service: UserService
   ) {
-    this.loadMaterials();
-    this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
+    this.service.listAll().pipe(take(1)).subscribe(usersList => {
+      this.users = usersList
+      this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
+    });
   }
 
   onRowEditInit(user: User) {
@@ -76,27 +83,5 @@ export class Users {
 
   goToNewUser() {
     this.router.navigate(['create'], { relativeTo: this.route });
-  }
-
-  private loadMaterials() {
-    this.users.push({
-      id: 0,
-      type: UserType.OWNER,
-      fullName: 'Ulysses de Medeiros Gomes Gomes Medeiros',
-      cpf: '000.000.000-00',
-      birth: new Date(),
-      email: `user-email@email.com`
-    });
-    for (let u = 1; u < 20; u++) {
-      this.users.push({
-        id: u,
-        type: UserType.CUSTOMER,
-        fullName: `Nome completo do usuário ${u}`,
-        cpf: `000.000.000-0${u}`,
-        birth: new Date(),
-        email: `user-email${u}@email.com`
-      });
-    }
-
   }
 }

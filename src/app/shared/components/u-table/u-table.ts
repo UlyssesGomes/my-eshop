@@ -33,6 +33,7 @@ export class UTable implements OnInit, OnChanges {
   @Input()
   columnsWidth: number[] = [];
 
+  @Input()
   columns: any[] = [];
   clonedMaterials: { [s: string]: any } = {};
 
@@ -53,7 +54,7 @@ export class UTable implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items'] && this.columns.length == 0) {
-      if (this.items[0]) {
+      if (this.items[0] && this.columns.length == 0) {
         for (let u in this.items[0]) {
           this.columns.push(u);
         }
