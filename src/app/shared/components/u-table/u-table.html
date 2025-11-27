@@ -4,11 +4,11 @@
         <tr>
             <ng-template *ngIf="columnsWidth.length > 0; then withWidth else default"></ng-template>
             <ng-template #withWidth>
-                <th *ngFor="let col of columns; index as i" [ngStyle]="{'width': columnsWidth[i] + '%'}">{{col}}</th>
+                <th *ngFor="let col of columns; index as i" [ngStyle]="{'width': columnsWidth[i] + '%'}">{{col | uppercase}}</th>
                 <th *ngIf="showActionColumn" [ngStyle]="{'width': columnsWidth[columnsWidth.length -1] + '%'}"></th>
             </ng-template>
             <ng-template #default>
-                <th *ngFor="let col of columns">{{col}}</th>
+                <th *ngFor="let col of columns">{{col | uppercase}}</th>
                 <th *ngIf="showActionColumn"></th>
             </ng-template>
         </tr>

@@ -42,8 +42,10 @@ export class Users {
     private readonly service: UserService
   ) {
     this.service.listAll().pipe(take(1)).subscribe(usersList => {
-      this.users = usersList
+      this.users = usersList;
+      this.users.map( u => u.birth = new Date(u.birth!.toString()));
       this.paginatedUsers = this.users.slice(this.first, this.first + this.rows);
+ 
     });
   }
 
