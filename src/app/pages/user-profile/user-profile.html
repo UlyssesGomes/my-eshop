@@ -1,0 +1,17 @@
+<app-content-panel>
+    <div class="flex md:flex-row flex-col items-stretch gap-4 p2">
+        <div class="flex-none menu-perfil-panel">
+
+            <div class="perfil-view-panel mb-2 pb-2 show-element-md">
+                <app-profile-view [perfilInfo]="userPerfilView"></app-profile-view>
+            </div>
+            <div class="flex md:flex-col flex-row">
+                <button [ngClass]="{'button-selected': item.path === lastUrlPath}" class="clean-button text-start m-1" *ngFor="let item of items" (click)="buttonNavigate(item.path)"><i [ngClass]="[item.icon]" class="icon-button"></i> {{item.title}}</button>
+            </div>
+
+        </div>
+        <div class="grow content-perfil-panel">
+            <router-outlet />
+        </div>
+    </div>
+</app-content-panel>

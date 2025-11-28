@@ -65,7 +65,8 @@ export class UserCommonForm implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    if(this.subscription)
+      this.subscription.unsubscribe();
   }
 
   addAddressField() {

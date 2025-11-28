@@ -6,24 +6,28 @@ export const homeRoutes: Routes = [
         loadComponent: () => import('./home').then(h => h.Home),
         children: [
             {
-                path: 'products',
+                path: 'produtos',
                 loadChildren: () => import('../products/products.routes').then(p => p.productRoutes),
             },
             {
-                path: 'admin/materials',
+                path: 'admin/materiais',
                 loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
+            },
+            {
+                path: 'perfil',
+                loadChildren: () => import('../user-profile/user-profile.routes').then(p => p.userProfileRoutes),
             },
             {
                 path: 'novo-usuario',
                 loadComponent: () => import('../new-user/new-user').then(m => m.NewUser)
             },
             {
-                path: 'admin/users',
+                path: 'admin/usuarios',
                 loadChildren: () => import('../users/users.routes').then(p => p.usersRoutes),
             },
             {
                 path: '',
-                redirectTo: 'products',
+                redirectTo: 'produtos',
                 pathMatch: 'full'
             }
         ]

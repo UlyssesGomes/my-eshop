@@ -1,0 +1,29 @@
+import { Routes } from "@angular/router";
+
+import { Address } from "./address/address";
+import { ChangePassword } from "./change-password/change-password";
+import { PersonalInfo } from "./personal-info/personal-info";
+import { UserProfile } from "./user-profile";
+
+export const userProfileRoutes: Routes = [
+    {
+        path: '',
+        component: UserProfile,
+        children: [
+            {
+                path: 'enderecos',
+                component: Address
+            },
+            {
+                path: 'dados-pessoais',
+                component: PersonalInfo
+            },
+            {
+                path: 'senha',
+                component: ChangePassword
+            }
+        ]
+    },
+
+];
+

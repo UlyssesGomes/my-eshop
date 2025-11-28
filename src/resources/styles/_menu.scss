@@ -1,3 +1,12 @@
 .p-menu-start {
     border-bottom: 1px solid var(--p-slate-600);
 }
+
+:root {
+    --p-menu-background: var(--secondary-background);
+    --p-menu-color: white;
+    --p-menu-border-color: none;
+    --p-menu-submenu-label-color : white;
+    --p-menu-item-color: white;
+    --p-menu-separator-border-color: white;
+}

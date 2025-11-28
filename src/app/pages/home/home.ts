@@ -23,7 +23,7 @@ export class Home implements OnInit {
     {
       alternativeIcon: 'resources/images/icon/material/outline/icon-shirt-24.svg',
       title: 'Camisetas',
-      path: '/products'
+      path: '/produtos'
     },
     {
       alternativeIcon: 'resources/images/icon/material/outline/icon-mug-24.svg',
@@ -47,7 +47,7 @@ export class Home implements OnInit {
       label: 'Perfil',
       icon: 'pi pi-user',
       command: () => {
-        console.warn('not implemented yet.');
+        this.router.navigate(['/perfil']);
       }
     },
     {

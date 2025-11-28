@@ -11,6 +11,8 @@
 
 //@plugin "tailwindcss-primeui";
 
+$contrast-background-value: #071446;
+
 :root {
   --body-background: var(--p-slate-950);
   --primary-background: var(--p-blue-950);
@@ -20,7 +22,7 @@
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background-color: var(--body-background);
+    background: linear-gradient(135deg, $contrast-background-value, var(--body-background), $contrast-background-value);
     @apply text-white;
 }
 

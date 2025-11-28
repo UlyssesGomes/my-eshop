@@ -47,7 +47,7 @@ $screen-sizes: (
             }
         }
 
-        // .hide-element-<x> => resolutions lower than and equal to x receive display none. 
+        // .hide-element-<x> => resolutions greater than and equal to x receive display none. 
         // Example: .hide-element-md will hide resolutions md, lg, xl and 2xl.
         @if $is-hide {
             .hide-element-#{$name} {
