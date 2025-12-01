@@ -4,8 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
-import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 import { NavbarMenuItem } from '../../../shared/models/menu-item/navbar-menu-item';
@@ -15,7 +15,7 @@ import { ProfileView } from '../../../shared/components/profile-view/profile-vie
 
 @Component({
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule, Menu, BadgeModule, ButtonModule, OverlayBadgeModule, SimpleSidebar, ProfileView],
+  imports: [CommonModule, RouterModule, MenuModule, BadgeModule, ButtonModule, OverlayBadgeModule, SimpleSidebar, ProfileView],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
