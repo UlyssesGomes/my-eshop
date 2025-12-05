@@ -44,12 +44,12 @@ export class SimpleSidebar {
 
   navigateTo(path: string) {
     this.router.navigate([path]);
+    this.closeSidebar();
   }
 
   userMenuCommand(action: any) {
-    this.active = 1;
     action();
-    this.isOpenChange.emit(false);
+    this.closeSidebar();
   }
 
 }

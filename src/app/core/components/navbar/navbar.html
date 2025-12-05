@@ -40,7 +40,7 @@
                 <i class="ms-2 me-2 pi pi-user text-2xl" (click)="openPerfilMenu(profileMenuContext, $event)"></i>
     
             </button>
-            <p-menu #profileMenuContext [model]="profileMenu" [popup]="true">
+            <p-menu #profileMenuContext [model]="profileMenu" [popup]="true" appendTo="body">
                 <ng-template #start>
                     <app-profile-view [perfilInfo]="perfilInfo"></app-profile-view>
                 </ng-template>

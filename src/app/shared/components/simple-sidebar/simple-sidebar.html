@@ -17,7 +17,7 @@
                     @else {
                     <button class="clean-button w-full text-left" routerLink="/login">
                         <ng-container [ngTemplateOutlet]="menuButton"
-                            [ngTemplateOutletContext]="{title: 'Login', icon: 'pi-sign-in', altIcon: ''}" />
+                            [ngTemplateOutletContext]="{title: 'Login', icon: 'pi pi-sign-in', altIcon: ''}" />
                     </button>
                     }
                 </p-accordion-content>
@@ -40,7 +40,7 @@
     <div class="flex items-center">
         <ng-container *ngIf="icon; then showIcon else showImage"></ng-container>
         <ng-template #showIcon>
-            <i class="me-2 pi {{icon}} text-xl md:text-lg"></i>
+            <i class="me-2 {{icon}} text-xl md:text-lg"></i>
         </ng-template>
         <ng-template #showImage>
             <img class="me-2 image-icon" [src]="altIcon" alt="Ícone para {{title}}">

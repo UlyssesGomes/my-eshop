@@ -45,28 +45,28 @@ export class Home implements OnInit {
   profileMenuItems: MenuItem[] = [
     {
       label: 'Perfil',
-      icon: 'pi-user',
+      icon: 'pi pi-user',
       command: () => {
         this.router.navigate(['/perfil']);
       }
     },
     {
       label: 'Pedidos',
-      icon: 'pi-shopping-bag',
+      icon: 'pi pi-shopping-bag',
       command: () => {
         console.warn('not implemented yet.');
       }
     },
     {
       label: 'Configuração',
-      icon: 'pi-cog',
+      icon: 'pi pi-cog',
       command: () => {
         console.warn('not implemented yet.');
       }
     },
     {
       label: 'Sair',
-      icon: 'pi-sign-out',
+      icon: 'pi pi-sign-out',
       command: () => {
         localStorage.removeItem(LocalStoageKey.LOGGED_USER);
         this.router.navigate(['/login']);
