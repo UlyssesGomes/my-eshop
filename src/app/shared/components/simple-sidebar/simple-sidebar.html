@@ -1,22 +1,50 @@
 <div class="sidebar-pane p-3" [ngClass]="{'show-sidebar': isOpen, 'hide-sidebar': !isOpen}">
     <div>
-        <app-profile-view [perfilInfo]="perfilInfo"></app-profile-view>
+        <p-accordion [(value)]="active">
+            <p-accordion-panel value="0">
+                <p-accordion-header>
+                    <app-profile-view [perfilInfo]="perfilInfo"></app-profile-view>
+                </p-accordion-header>
+                <p-accordion-content>
+                    @if(perfilInfo) {
+                        @for(perfilItemMenu of perfilMenuItems; track perfilItemMenu.label) {
+                        <button class="mb-1 clean-button w-full text-left" (click)="userMenuCommand(perfilItemMenu.command)">
+                            <ng-container [ngTemplateOutlet]="menuButton"
+                                [ngTemplateOutletContext]="{title: perfilItemMenu.label, icon: perfilItemMenu.icon, altIcon: ''}" />
+                        </button>
+                        }
+                    }
+                    @else {
+                    <button class="clean-button w-full text-left" routerLink="/login">
+                        <ng-container [ngTemplateOutlet]="menuButton"
+                            [ngTemplateOutletContext]="{title: 'Login', icon: 'pi-sign-in', altIcon: ''}" />
+                    </button>
+                    }
+                </p-accordion-content>
+            </p-accordion-panel>
+        </p-accordion>
     </div>
     <p-divider />
     @for (menu of menuButtons; track menu.title) {
-    <div class="mb-4">
-        <button class="clean-button w-full text-left flex align-center" (click)="navigateTo(menu.path)">
-            <ng-container *ngIf="menu.icon; then showIcon else showImage"></ng-container>
-            <ng-template #showIcon>
-                <i class="me-2 {{menu.icon}} text-xl md:text-lg"></i>
-            </ng-template>
-            <ng-template #showImage>
-                <img class="me-2 image-icon" [src]="menu.alternativeIcon"
-                    alt="Ícone para {{menu.title}}">
-            </ng-template>
-            <span class="text-xl md:text-lg">{{menu.title}}</span>
+    <div class="mb-1">
+        <button class="clean-button w-full text-left" (click)="navigateTo(menu.path)">
+            <ng-container [ngTemplateOutlet]="menuButton"
+                [ngTemplateOutletContext]="{title: menu.title, icon: menu.icon, altIcon: menu.alternativeIcon}" />
         </button>
     </div>
     }
 </div>
 <div class="block-pane" [ngStyle]="{'display': isOpen? 'block' : 'none'}" (click)="closeSidebar()"></div>
+
+<ng-template #menuButton let-title="title" let-icon="icon" let-altIcon="altIcon">
+    <div class="flex items-center">
+        <ng-container *ngIf="icon; then showIcon else showImage"></ng-container>
+        <ng-template #showIcon>
+            <i class="me-2 pi {{icon}} text-xl md:text-lg"></i>
+        </ng-template>
+        <ng-template #showImage>
+            <img class="me-2 image-icon" [src]="altIcon" alt="Ícone para {{title}}">
+        </ng-template>
+        <span class="text-xl md:text-lg">{{title}}</span>
+    </div>
+</ng-template>

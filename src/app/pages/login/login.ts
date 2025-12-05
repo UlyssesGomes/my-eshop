@@ -51,7 +51,6 @@ export class Login {
   submit() {
     this.userService.login(this.form.value).pipe(take(1)).subscribe({
       next: response => {
-        console.info('Login response: ', response);
         this.messageService.add(
           { severity: 'success', summary: 'Autorizado', detail: `Login realizado com sucesso.`, life: 5000 }
         );
