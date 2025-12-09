@@ -21,6 +21,11 @@ export const userProfileRoutes: Routes = [
             {
                 path: 'senha',
                 component: ChangePassword
+            },
+            {
+                path: '',
+                redirectTo: 'dados-pessoais',
+                pathMatch: 'full'
             }
         ]
     },

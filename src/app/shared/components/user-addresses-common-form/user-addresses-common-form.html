@@ -1,0 +1,103 @@
+<div [formGroup]="form">
+    <!-- 
+        // -----------------------------------------------------------------------------------------------------
+        // INPUT ADDRESS
+        // ----------------------------------------------------------------------------------------------------- 
+        -->
+    <app-multifield-panel title="Endereços" buttonLabel="Adicionar Endereço" (eventButton)="addAddressField()">
+        <ng-container *ngIf="form.get('addresses')" formArrayName="addresses">
+            <div class="address-pane" *ngFor="let address of addressArray.controls; index as i">
+                <div class="mb-5 ms-3">
+                    Endereço {{i + 1}}
+                </div>
+                <div class="close-button" *ngIf="addressArray.length > 1">
+                    <p-button size="small" icon="pi pi-times" (click)="removeAddressField(i)" [outlined]="true"
+                        [rounded]="true" severity="danger" areaLabel="Remover opção de endereço." />
+                </div>
+                <div [formGroupName]="i">
+                    <!-- CEP -->
+                    <div class="m-3">
+                        <p-floatlabel variant="on">
+                            <input mask="00000-000" pInputText id="cep" formControlName="cep" fluid="true"
+                                (input)="getDelayedAddress($event, i)" />
+                            <label class="label-background font-semibold" for="cep">CEP</label>
+                        </p-floatlabel>
+                        <p-message
+                            *ngIf="form.get('cep')?.errors && !form.get('cep')?.pristine && form.get('cep')?.touched"
+                            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                            form.get('cep')?.errors | errorReader}}</p-message>
+                    </div>
+
+                    <div class="m-3 flex md:flex-row flex-col gap-3">
+                        <!-- STREET -->
+                        <div class="flex-auto">
+                            <p-floatlabel variant="on">
+                                <input pInputText id="street" formControlName="street" fluid="true" />
+                                <label class="label-background font-semibold" for="street">Rua</label>
+                            </p-floatlabel>
+                            <p-message
+                                *ngIf="form.get('street')?.errors && !form.get('street')?.pristine && form.get('street')?.touched"
+                                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                                form.get('street')?.errors | errorReader}}</p-message>
+                        </div>
+                        <!-- NUMBER -->
+                        <div>
+                            <p-floatlabel variant="on">
+                                <input pInputText id="number" formControlName="number" fluid="true" />
+                                <label class="label-background font-semibold" for="number">Número</label>
+                            </p-floatlabel>
+                            <p-message
+                                *ngIf="form.get('number')?.errors && !form.get('number')?.pristine && form.get('number')?.touched"
+                                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                                form.get('number')?.errors | errorReader}}</p-message>
+                        </div>
+                    </div>
+                    <!-- COMPLEMENT -->
+                    <div class="m-3">
+                        <p-floatlabel variant="on">
+                            <input pInputText id="complement" formControlName="complement" fluid="true" />
+                            <label class="label-background font-semibold" for="complement">Complemento</label>
+                        </p-floatlabel>
+                        <p-message
+                            *ngIf="form.get('complement')?.errors && !form.get('complement')?.pristine && form.get('complement')?.touched"
+                            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                            form.get('complement')?.errors | errorReader}}</p-message>
+                    </div>
+                    <!-- NEIGHBORHOOD -->
+                    <div class="m-3">
+                        <p-floatlabel variant="on">
+                            <input pInputText id="neighborhood" formControlName="neighborhood" fluid="true" />
+                            <label class="label-background font-semibold" for="neighborhood">Biarro</label>
+                        </p-floatlabel>
+                        <p-message
+                            *ngIf="form.get('neighborhood')?.errors && !form.get('neighborhood')?.pristine && form.get('neighborhood')?.touched"
+                            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                            form.get('neighborhood')?.errors | errorReader}}</p-message>
+                    </div>
+                    <!-- CITY -->
+                    <div class="m-3">
+                        <p-floatlabel variant="on">
+                            <input pInputText id="city" formControlName="city" fluid="true" />
+                            <label class="label-background font-semibold" for="city">Cidade</label>
+                        </p-floatlabel>
+                        <p-message
+                            *ngIf="form.get('city')?.errors && !form.get('city')?.pristine && form.get('city')?.touched"
+                            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                            form.get('city')?.errors | errorReader}}</p-message>
+                    </div>
+                    <!-- STATE -->
+                    <div class="m-3">
+                        <p-floatlabel variant="on">
+                            <input pInputText id="state" formControlName="state" fluid="true" />
+                            <label class="label-background font-semibold" for="state">Estado</label>
+                        </p-floatlabel>
+                        <p-message
+                            *ngIf="form.get('state')?.errors && !form.get('state')?.pristine && form.get('state')?.touched"
+                            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                            form.get('state')?.errors | errorReader}}</p-message>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </app-multifield-panel>
+</div>

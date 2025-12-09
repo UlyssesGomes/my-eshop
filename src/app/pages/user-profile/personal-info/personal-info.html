@@ -1,2 +1,11 @@
 <h3>Dados Pessoais</h3>
-<app-user-common-form [form]="form"></app-user-common-form>
+<form [formGroup]="form" (submit)="save()">
+    <app-user-info-common-form [form]="form" />
+
+    <div class="my-7 flex flex-row-reverse">
+        <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid" label="Salvar"
+            fluid="false" areaLabel="Salvar"></p-button>
+        <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar" fluid="true"
+            areaLabel="Salvar"></p-button>
+    </div>
+</form>

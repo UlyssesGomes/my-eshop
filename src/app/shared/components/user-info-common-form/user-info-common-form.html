@@ -1,0 +1,59 @@
+<div [formGroup]="form">
+    <div class="my-3">
+        <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT USER NAME
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+        <p-floatlabel variant="on">
+            <input pInputText id="name" formControlName="name" fluid="true" />
+            <label class="label-background font-semibold" for="name">Nome Completo</label>
+        </p-floatlabel>
+        <p-message *ngIf="form.get('name')?.errors && !form.get('name')?.pristine && form.get('name')?.touched"
+            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+            form.get('name')?.errors | errorReader}}</p-message>
+    </div>
+    <div class="my-3">
+        <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT CPF NAME
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+        <p-floatlabel variant="on">
+            <input mask="000.000.000-00||00.000.000/0000-00" pInputText id="cpf" formControlName="cpf" fluid="true" />
+            <label class="label-background font-semibold" for="cpf">CPF</label>
+        </p-floatlabel>
+        <p-message *ngIf="form.get('cpf')?.errors && !form.get('cpf')?.pristine && form.get('cpf')?.touched"
+            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+            form.get('cpf')?.errors | errorReader}}</p-message>
+    </div>
+    <div class="my-3">
+        <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT BIRTH DATE
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+        <p-floatlabel variant="on">
+            <p-datepicker inputId="birth" formControlName="birth" showIcon iconDisplay="input" dateFormat="dd.mm.yy"
+                [showClear]="true" [maxDate]="maxDate" fluid="true" />
+            <label class="label-background font-semibold" for="birth">Nascimento</label>
+        </p-floatlabel>
+        <p-message *ngIf="form.get('birth')?.errors && !form.get('birth')?.pristine && form.get('birth')?.touched"
+            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+            form.get('birth')?.errors | errorReader}}</p-message>
+    </div>
+    <div class="my-3">
+        <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT PHONE NUMBER
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+        <p-floatlabel variant="on">
+            <input mask="(00) 0000-0000||(00) 0 0000-0000" pInputText id="phone" formControlName="phone" fluid="true" />
+            <label class="label-background font-semibold" for="phone">Telefone</label>
+        </p-floatlabel>
+        <p-message *ngIf="form.get('phone')?.errors && !form.get('phone')?.pristine && form.get('phone')?.touched"
+            severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+            form.get('phone')?.errors | errorReader}}</p-message>
+    </div>
+</div>
