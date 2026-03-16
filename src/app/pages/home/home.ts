@@ -9,6 +9,7 @@ import { Navbar } from '../../core/components/navbar/navbar';
 import { PerfilMenu } from '../../shared/models/perfil-menu/perfil-menu';
 import { Footer } from '../../core/components/footer/footer';
 import { LocalStoageKey } from '../../shared/enums/localstorage-key';
+import { TokenUtils } from '../../shared/utils/token-utils';
 
 @Component({
   selector: 'app-home',
@@ -68,7 +69,7 @@ export class Home implements OnInit {
       label: 'Sair',
       icon: 'pi pi-sign-out',
       command: () => {
-        localStorage.removeItem(LocalStoageKey.LOGGED_USER);
+        TokenUtils.clearUserAndToken();
         this.router.navigate(['/login']);
       }
     }
@@ -83,12 +84,15 @@ export class Home implements OnInit {
   }
 
   private extractLoginUserData() {
-    const loggedUser = localStorage.getItem(LocalStoageKey.LOGGED_USER);
+    const loggedUser = TokenUtils.getValidLoggedUser();
     if (loggedUser != null) {
-      this.perfilInfo = JSON.parse(loggedUser);
-      const nameSplited: any = this.perfilInfo?.name?.split(' ');
+      this.perfilInfo = new PerfilMenu();
+      const nameSplited: any = loggedUser.name.split(' ');
       this.perfilInfo!.name = nameSplited[0];
       this.perfilInfo!.lastName = nameSplited != null && nameSplited.length > 1 ? nameSplited[nameSplited.length - 1] : '';
+      this.perfilInfo!.type = loggedUser.type.toString();
+    } else {
+      this.perfilInfo = undefined;
     }
   }
 }

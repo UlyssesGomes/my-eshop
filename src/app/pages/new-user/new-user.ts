@@ -39,7 +39,7 @@ export class NewUser {
 
   private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
 
-  constructor(private readonly fb: FormBuilder, private readonly service: UserService, private messageService: MessageService) {
+  constructor(private readonly fb: FormBuilder, private messageService: MessageService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
       email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
@@ -51,9 +51,9 @@ export class NewUser {
 
   save() {
     const newUser = this.extractDataFromForm(this.form.value); 
-    this.service.createNewCustomer(newUser).pipe(take(1)).subscribe(response => this.messageService.add(
-      { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
-    ));
+    // this.service.createNewCustomer(newUser).pipe(take(1)).subscribe(response => this.messageService.add(
+    //   { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
+    // ));
     this.form.reset();
   }
 

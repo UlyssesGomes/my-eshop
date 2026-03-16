@@ -1,4 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 
 import { providePrimeNG } from 'primeng/config';
@@ -6,8 +7,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import Aura from '@primeuix/themes/aura';
 // import Lara from '@primeuix/themes/lara';
 
+import { authInterceptor } from './shared/services/auth/auth.interceptor';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
 // import { CustomAuraTheme } from '../resources/theme/custom-aura-theme';
 
 export const appConfig: ApplicationConfig = {
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(), // habilita o HttpClient
+    provideHttpClient(withInterceptors([authInterceptor])),          // enable HttpClient
     providePrimeNG({
       theme: {
         preset: Aura, // CustomAuraTheme,

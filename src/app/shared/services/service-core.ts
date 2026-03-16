@@ -1,8 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { environment } from "../../../environments/environment";
-import { catchError, Observable, retry, tap, throwError } from "rxjs";
+import { catchError, Observable, retry, tap } from "rxjs";
 import { Injectable } from "@angular/core";
+
+import { ErrorHandler } from "./error-handler";
 
 export interface PaginatedResponse<T> {
     data: T[];
@@ -12,10 +14,11 @@ export interface PaginatedResponse<T> {
 }
 
 @Injectable()
-export abstract class ServiceCore<M> {
+export abstract class ServiceCore<M> extends ErrorHandler {
     protected urlBase = environment.apiUrl;
 
     constructor(protected readonly http: HttpClient) {
+        super();
         if (environment.enableDebug) {
             console.log('Backend API URL:', this.urlBase);
         }
@@ -182,65 +185,7 @@ export abstract class ServiceCore<M> {
             'Content-Type': 'application/json'
         });
 
-        // Add api key when exists
-        // if (environment.apiKey) {
-        //     headers = headers.set('X-API-Key', environment.apiKey);
-        // }
-
-        // Add auth when exists
-        // const token = this.getAuthToken();
-        // if (token) {
-        //     headers = headers.set('Authorization', `Bearer ${token}`);
-        // }
-
         return headers;
     }
 
-    /**
-     * Tratamento de erros
-     */
-    protected handleError(error: HttpErrorResponse): Observable<never> {
-        let errorMessage = 'Ocorreu um erro desconhecido';
-
-        if (error.error instanceof ErrorEvent) {
-            // Erro do lado do cliente
-            errorMessage = `Erro: ${error.error.message}`;
-        } else {
-            // Erro do lado do servidor
-            switch (error.status) {
-                case 400:
-                    errorMessage = 'Requisição inválida';
-                    break;
-                case 401:
-                    errorMessage = 'Não autorizado. Faça login novamente';
-                    break;
-                case 403:
-                    errorMessage = 'Acesso negado';
-                    break;
-                case 404:
-                    errorMessage = 'Recurso não encontrado';
-                    break;
-                case 500:
-                    errorMessage = 'Erro interno do servidor';
-                    break;
-                case 503:
-                    errorMessage = 'Serviço indisponível';
-                    break;
-                default:
-                    errorMessage = `Erro ${error.status}: ${error.message}`;
-            }
-
-            // Adiciona mensagem do backend se existir
-            if (error.error?.message) {
-                errorMessage += ` - ${error.error.message}`;
-            }
-        }
-
-        if (environment.enableDebug) {
-            console.error('Error HTTP:', error);
-            console.error('Message:', errorMessage);
-        }
-
-        return throwError(() => new Error(errorMessage));
-    }
 }
