@@ -1,5 +1,5 @@
 <div class="card-item relative">
-    <img src="https://picsum.photos/600" [alt]="item?.name">
+    <img src="https://picsum.photos/id/{{picid}}/600/600" [alt]="item?.name">
     <p-rating class="my-2" [(ngModel)]="item!.rate" [readonly]="true" />
     <h3 class="font-semibold mb-2 ellipsis" [title]="item?.name">{{item?.name}}</h3>
     <div class="flex justify-between items-center">

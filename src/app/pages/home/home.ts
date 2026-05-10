@@ -4,6 +4,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MenuItem } from 'primeng/api';
 
+import { HeaderHighlights } from '../../shared/components/header-highlights/header-highlights';
 import { NavbarMenuItem } from '../../shared/models/menu-item/navbar-menu-item';
 import { Navbar } from '../../core/components/navbar/navbar';
 import { PerfilMenu } from '../../shared/models/perfil-menu/perfil-menu';
@@ -13,7 +14,7 @@ import { TokenUtils } from '../../shared/utils/token-utils';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, ContextMenuModule, Navbar, Footer],
+  imports: [RouterOutlet, ContextMenuModule, HeaderHighlights, Navbar, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

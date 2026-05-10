@@ -1,0 +1,73 @@
+
+.gallery {
+  --s: 800px; /* the size */
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(.5, -0.5, .5, 1.5);
+  --_p: perspective(calc(2.5*var(--s)));
+}
+
+.image-1-anim {
+    transform: var(--_p) rotate3d(0, 0, 0, 0deg)
+}
+.image-2-anim {
+    transform: var(--_p) rotate3d(-1, 1, 0, 180deg)
+}
+.image-3-anim {
+    transform: var(--_p) rotate3d(0, -1, 0, 90deg)
+}
+.image-4-anim {
+    transform: var(--_p) rotate3d(1, 0, 0, 90deg)
+}
+.image-5-anim {
+    transform: var(--_p) rotate3d(0, 1, 0, 90deg)
+}
+.image-6-anim {
+    transform: var(--_p) rotate3d(-1, 0, 0, 90deg)
+}
+
+.gallery img {
+  grid-area: 1/1;
+  width: var(--s);
+  height: calc(--s / 1.5);
+  //aspect-ratio: 1;
+  transform: var(--_t,) translateZ(calc(var(--s)/2));
+}
+.gallery img:nth-child(2) {--_t: rotateX(-90deg)}
+.gallery img:nth-child(3) {--_t: rotateY( 90deg)}
+.gallery img:nth-child(4) {--_t: rotateX(180deg) rotate( 90deg)}
+.gallery img:nth-child(5) {--_t: rotateX( 90deg)}
+.gallery img:nth-child(6) {--_t: rotateY(-90deg)}
+
+@keyframes r {
+  0%,3%   {transform: var(--_p) rotate3d(0, 0, 0, 0deg)}
+  14%,19% {transform: var(--_p) rotate3d(-1, 1, 0, 180deg)}
+  31%,36% {transform: var(--_p) rotate3d(0, -1, 0, 90deg)}
+  47%,52% {transform: var(--_p) rotate3d(1, 0, 0, 90deg)}
+  64%,69% {transform: var(--_p) rotate3d(1, 0, 0, -90deg)}
+  81%,86% {transform: var(--_p) rotate3d(0, 1, 0, 90deg)}
+  97%,100%{transform: var(--_p) rotate3d(-1, 0, 0, 90deg)}
+}
+
+.panel-3d {
+  margin: 0;
+  display: grid;
+  place-content: center;
+  overflow-y: hidden;
+}
+
+.index-button {
+    width: 35px;
+    height: 7px;
+    background-color: var(--p-highlight-background);
+    border-radius: 3px;
+    transition: background-color 0.5s ease-out;
+
+    &:hover {
+        background-color: var(--p-primary-hover-color);
+    }
+}
+
+.selected {
+    background-color: var(--p-primary-color);
+}
