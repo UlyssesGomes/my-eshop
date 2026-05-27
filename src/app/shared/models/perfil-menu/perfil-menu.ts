@@ -1,6 +1,6 @@
 export class PerfilMenu {
     name?: string;
     lastName?: string;
-    type?: string;
+    role?: string;
     image?: any;
 }

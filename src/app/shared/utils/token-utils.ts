@@ -24,9 +24,9 @@ export class TokenUtils {
             const currentDate: Date = new Date();
 
             if(expirationDate > currentDate)
-                return user
+                return user;
             else
-                this.clearUserAndToken()
+                this.clearUserAndToken();
         }
 
         return undefined;
@@ -38,8 +38,9 @@ export class TokenUtils {
             id: userJson.id,
             name: userJson.name,
             email: userJson.sub,
-            type: userJson.type,
-            expiration: userJson.exp
+            role: userJson.role,
+            expiration: userJson.exp,
+            authorities: userJson.authorities
         };
 
         return user;
@@ -48,5 +49,23 @@ export class TokenUtils {
     static clearUserAndToken() {
         localStorage.removeItem(LocalStoageKey.LOGGED_USER);
         localStorage.removeItem(LocalStoageKey.ACCESS_TOKEN);
+    }
+
+    static isValidToken(token: string) {
+        const payload = token.split('.')[1];
+        const payloadDecoded = atob(payload);
+        const userJson = JSON.parse(payloadDecoded);
+        
+        if(userJson)
+        {
+            const currentDate: Date = new Date();
+            if((userJson.exp * this.ONE_SEC_IN_MILIS) > currentDate.getTime())
+                return true;
+            else {
+                this.clearUserAndToken();
+                return false;
+            }
+        }
+        return false;
     }
 }

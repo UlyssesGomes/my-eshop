@@ -39,7 +39,7 @@ import { TokenUtils } from '../../shared/utils/token-utils';
 })
 export class Login {
 
-  private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/g;
+  private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
   form: FormGroup;
 
 

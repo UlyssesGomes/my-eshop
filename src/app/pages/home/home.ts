@@ -14,7 +14,7 @@ import { TokenUtils } from '../../shared/utils/token-utils';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, ContextMenuModule, HeaderHighlights, Navbar, Footer],
+  imports: [RouterOutlet, ContextMenuModule, Navbar, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -91,7 +91,7 @@ export class Home implements OnInit {
       const nameSplited: any = loggedUser.name.split(' ');
       this.perfilInfo!.name = nameSplited[0];
       this.perfilInfo!.lastName = nameSplited != null && nameSplited.length > 1 ? nameSplited[nameSplited.length - 1] : '';
-      this.perfilInfo!.type = loggedUser.type.toString();
+      this.perfilInfo!.role = loggedUser.role.toString();
     } else {
       this.perfilInfo = undefined;
     }

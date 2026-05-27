@@ -5,5 +5,6 @@ export interface LoggedUser {
     name: string;
     email: string;
     expiration: Date;
-    type: UserType
+    role: UserType
+    authorities: string []
 }

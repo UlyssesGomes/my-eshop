@@ -1,17 +1,20 @@
 import { Routes } from '@angular/router';
 
+import { Home } from './home';
+import { Showcase } from '../showcase/showcase';
+
 export const homeRoutes: Routes = [
     {
         path: '',
         loadComponent: () => import('./home').then(h => h.Home),
         children: [
             {
-                path: 'produtos',
-                loadChildren: () => import('../products/products.routes').then(p => p.productRoutes),
+                path: 'vitrine',
+                component: Showcase
             },
             {
-                path: 'admin/materiais',
-                loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
+                path: 'produtos',
+                loadChildren: () => import('../products/products.routes').then(p => p.productRoutes),
             },
             {
                 path: 'perfil',
@@ -26,8 +29,16 @@ export const homeRoutes: Routes = [
                 loadChildren: () => import('../users/users.routes').then(p => p.usersRoutes),
             },
             {
+                path: 'admin/highlights',
+                loadChildren: () => import('../highlights/highlights.routes').then(h => h.highlightsRoutes)
+            },
+            {
+                path: 'admin/materiais',
+                loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
+            },
+            {
                 path: '',
-                redirectTo: 'produtos',
+                redirectTo: 'vitrine',
                 pathMatch: 'full'
             }
         ]

@@ -1,0 +1,40 @@
+<app-content-panel>
+    <div>
+        <h3 class="mb-4">CADASTRO DE HIGHLIGHTS</h3>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT LINK
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <p-floatlabel variant="on">
+                <input pInputText id="link" formControlName="link" fluid="true" />
+                <label class="label-background font-semibold" for="link">Link dos produtos</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('link')?.errors && !form.get('link')?.pristine && form.get('nlinkame')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('link')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3">
+            <!-- 
+            // -----------------------------------------------------------------------------------------------------
+            // INPUT IMAGES
+            // ----------------------------------------------------------------------------------------------------- 
+            -->
+            <app-upload-file #uploadFile [(files)]="img" [maxFileSize]="maxFileSize"
+                (errorEvent)="fileUploadErrorEvent($event)" [isMultiple]="false"
+                (onChangeFilesSelected)="onChangeImages($event)"></app-upload-file>
+            <p-message *ngIf="form.get('img')?.errors && !imgPristineAttr" severity="error" size="small" variant="simple"
+                icon="pi pi-exclamation-triangle">{{
+                form.get('img')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-7 flex flex-row-reverse">
+            <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid"
+                label="Salvar" fluid="false" areaLabel="Salvar"></p-button>
+            <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar"
+                fluid="true" areaLabel="Salvar"></p-button>
+        </div>
+    </form>
+</app-content-panel>

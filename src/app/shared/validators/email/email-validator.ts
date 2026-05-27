@@ -2,7 +2,7 @@ import { AbstractControl, ValidationErrors } from "@angular/forms";
 import { CustomValidator } from "../core/custom-validator";
 
 export class EmailValidator extends CustomValidator {
-  private readonly regex;
+  private regex;
 
   constructor(regex: any) {
     super();

@@ -28,20 +28,34 @@ export class AuthenticationService extends ErrorHandler {
       console.info(`POST ${this.endpoint}: `, this.urlPath, {email: email, password: password});
     }
 
-    return this.http.post<any>(this.urlPath, {email: email, password: password}, { headers }).pipe(
+    return this.http.post<any>(this.urlPath, {email: email, password: password}, { headers, withCredentials: true }).pipe(
       tap(response => {
         if (environment.enableDebug) {
           console.info(`${this.endpoint} POST response: `, response);
         }
       }),
-      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  refresh() {
+    if (environment.enableDebug) {
+      console.info(`GET ${this.endpoint}/refresh`);
+    }
+
+    return this.http.get<any>(`${this.urlPath}/refresh`,{ withCredentials: true }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.endpoint}/refresh GET response: `, response);
+        }
+      }),
       catchError(this.handleError)
     );
   }
 
   protected getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
 
     return headers;

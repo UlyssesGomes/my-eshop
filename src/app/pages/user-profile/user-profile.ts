@@ -77,7 +77,7 @@ export class UserProfile implements OnInit, OnDestroy {
       const names: string[] = perfil.name.split(' ');
       this.userPerfilView.name = names[0];
       this.userPerfilView.lastName = names[names.length - 1];
-      this.userPerfilView.type = perfil.type;
+      this.userPerfilView.role = perfil.role;
     }
   }
 

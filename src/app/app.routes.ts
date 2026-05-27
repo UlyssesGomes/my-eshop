@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
+import { Login } from './pages/login/login';
 import { PageNotFound } from './pages/page-not-found/page-not-found';
-import { NewUser } from './pages/new-user/new-user';
 
 export const routes: Routes = [
     {
@@ -10,7 +10,7 @@ export const routes: Routes = [
     },
     {
         path: 'login',
-        loadComponent: () => import('./pages/login/login').then(m => m.Login)
+        component: Login
     },
     { path: '**', component: PageNotFound }
 ];

@@ -1,13 +1,15 @@
 <div class="panel-3d">
     <div class="gallery" [ngClass]="currentImg">
-        <img src="https://picsum.photos/id/174/800/600" alt="img 1">
-        <img src="https://picsum.photos/id/175/800/600" alt="img 2">
-        <img src="https://picsum.photos/id/188/800/600" alt="img 3">
-        <img src="https://picsum.photos/id/211/800/600" alt="img 4">
-        <img src="https://picsum.photos/id/22/800/600" alt="img 5">
-        <img src="https://picsum.photos/id/28/800/600" alt="img 6">
+
+        @for (highlight of highlights; track highlight.id) {
+            <div><a (click)="selectImage(1)"><img [src]="highlight.img"></a></div>
+        }
     </div>
 </div>
 <div class="flex justify-center">
-    <button class="clean-button index-button m-4" [ngClass]="{'selected': item == selectedImgIndex}" *ngFor="let item of buttonArray" (click)="next(item)"></button>
+
+    @for (item of buttonArray; track $index) {
+        <button class="clean-button index-button m-4" [ngClass]="{'selected': item == selectedImgIndex}"
+            (click)="next(item)"></button>
+    }
 </div>

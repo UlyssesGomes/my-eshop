@@ -38,7 +38,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} POST response: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -57,7 +56,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} GET response by ID: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -76,7 +74,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} GET all response: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -112,7 +109,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} GET all paginated response: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -131,7 +127,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} PUT: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -150,7 +145,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} PATCH: `, response);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }
@@ -169,7 +163,6 @@ export abstract class ServiceCore<M> extends ErrorHandler {
                     console.info(`${this.getEndpoint()} DELETE was deleted with success. `);
                 }
             }),
-            retry(1),
             catchError(this.handleError)
         );
     }

@@ -26,18 +26,18 @@
     transform: var(--_p) rotate3d(-1, 0, 0, 90deg)
 }
 
-.gallery img {
+.gallery div {
   grid-area: 1/1;
   width: var(--s);
   height: calc(--s / 1.5);
   //aspect-ratio: 1;
   transform: var(--_t,) translateZ(calc(var(--s)/2));
 }
-.gallery img:nth-child(2) {--_t: rotateX(-90deg)}
-.gallery img:nth-child(3) {--_t: rotateY( 90deg)}
-.gallery img:nth-child(4) {--_t: rotateX(180deg) rotate( 90deg)}
-.gallery img:nth-child(5) {--_t: rotateX( 90deg)}
-.gallery img:nth-child(6) {--_t: rotateY(-90deg)}
+.gallery div:nth-child(2) {--_t: rotateX(-90deg)}
+.gallery div:nth-child(3) {--_t: rotateY( 90deg)}
+.gallery div:nth-child(4) {--_t: rotateX(180deg) rotate( 90deg)}
+.gallery div:nth-child(5) {--_t: rotateX( 90deg)}
+.gallery div:nth-child(6) {--_t: rotateY(-90deg)}
 
 @keyframes r {
   0%,3%   {transform: var(--_p) rotate3d(0, 0, 0, 0deg)}
@@ -54,6 +54,7 @@
   display: grid;
   place-content: center;
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .index-button {
