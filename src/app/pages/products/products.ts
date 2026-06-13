@@ -6,12 +6,12 @@ import { MenuModule } from 'primeng/menu';
 import { MessageService } from 'primeng/api';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
-import { ItemCardList } from '../../shared/components/item-card-list/item-card-list';
 import { Product } from '../../shared/models/product/product';
+import { ShopItemCardList } from '../../shared/components/shop-item-card-list/shop-item-card-list';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, ButtonModule, MenuModule, ItemCardList, ContentPanel],
+  imports: [CommonModule, ButtonModule, MenuModule, ShopItemCardList, ContentPanel],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })

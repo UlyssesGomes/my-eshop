@@ -1,0 +1,22 @@
+<div class="card-item relative flex flex-col">
+    <div class="flex-grow-0 flex justify-between">
+        <div class="w-65">
+            <h3 class="font-semibold mb-2 ellipsis" [title]="item.title">{{item.title}}</h3>
+        </div>
+        <div>
+            <p-button *ngIf="isShowDelete" icon="pi pi-trash" severity="danger" [rounded]="true" [raised]="true"
+                [text]="true" (click)="deleteClick(item.id)" />
+            <p-button *ngIf="isShowEdit" icon="pi pi-pencil" severity="success" [rounded]="true" [raised]="true"
+                [text]="true" (click)="editClick(item.id)" />
+        </div>
+    </div>
+
+    <div class="flex-grow flex flex-col justify-center content-center" style="flex-grow: 1;">
+        <img [src]="item.img" [alt]="item.title" (click)="imageZoom()">
+    </div>
+
+</div>
+<p-dialog [header]="item.title" [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [draggable]="false" [resizable]="false">
+    <img [src]="item.img" [alt]="item.title">
+</p-dialog>

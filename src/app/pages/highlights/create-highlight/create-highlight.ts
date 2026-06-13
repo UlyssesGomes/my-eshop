@@ -1,6 +1,8 @@
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -35,23 +37,45 @@ import { AuthenticationService } from '../../../shared/services/auth/authenticat
   templateUrl: './create-highlight.html',
   styleUrl: './create-highlight.scss'
 })
-export class CreateHighlight {
+export class CreateHighlight implements OnInit {
 
   form: FormGroup;
 
-  maxFileSize = 1500000; // 1500kb
+  maxFileSize = 2097152; // 2MB
 
-  img: ProductImageModel [] = [];
+  img: ProductImageModel[] = [];
   imgPristineAttr = true;
 
   @ViewChild('uploadFile')
   uploadFileComponent!: UploadFile;
 
-  constructor(private fb: FormBuilder, private messageService: MessageService, private highlighService: HighlightsService, private authService: AuthenticationService) {
+  id: any;
+
+  constructor(private fb: FormBuilder, private messageService: MessageService, private highlighService: HighlightsService, private authService: AuthenticationService, private readonly location: Location, private readonly route: ActivatedRoute) {
     this.form = fb.group({
       img: ['', [Validators.required]],
       link: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(256)]],
     });
+  }
+
+
+  ngOnInit(): void {
+    this.loadCreatOrEditRoute();
+  }
+
+  private loadCreatOrEditRoute() {
+    if (this.route.snapshot.url.toString().endsWith('edit')) {
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.highlighService.getById(this.id).subscribe((highlightResponse) => {
+        console.log('respo: ', highlightResponse);
+        this.form.patchValue(highlightResponse);
+        this.img.push({
+          indexImage: 0, 
+          file: new File(highlightResponse.img, ''),
+          isHighlight: false
+        });
+      });
+    }
   }
 
   onChangeImages(event: FileEvent) {
@@ -83,11 +107,15 @@ export class CreateHighlight {
     return (byteValue / 1024.0).toFixed(2);
   }
 
+  back() {
+    this.location.back();
+  }
+
   save() {
     const formData = new FormData();
     formData.append('link', this.form.get('link')?.value);
     formData.append('img', this.img[0].file);
-    this.highlighService.createWithFormData(formData).pipe(take(1)).subscribe( {
+    this.highlighService.createWithFormData(formData).pipe(take(1)).subscribe({
       next: (response) => {
         this.messageService.add(
           { severity: 'success', summary: 'Criado Com Sucesso', detail: `Highlight criado com sucesso.`, life: 5000 }

@@ -11,5 +11,9 @@ export const highlightsRoutes: Routes = [
     {
         path: 'create',
         component: CreateHighlight
+    },
+    {
+        path: ':id/edit',
+        component: CreateHighlight
     }
 ];

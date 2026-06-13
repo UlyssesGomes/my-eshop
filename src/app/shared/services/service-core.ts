@@ -82,7 +82,7 @@ export abstract class ServiceCore<M> extends ErrorHandler {
         page: number = 1,
         pageSize: number = 10,
         filters?: { [key: string]: any }
-    ): Observable<PaginatedResponse<M>> {
+    ): Observable<any> {
         const url = `${this.urlBase}${this.getEndpoint()}`;
         const headers = this.getHeaders();
 

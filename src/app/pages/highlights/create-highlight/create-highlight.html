@@ -1,5 +1,8 @@
 <app-content-panel>
-    <div>
+    <div class="flex items-center">
+        <p class="mb-3 mr-2">
+            <a (click)="back()"><i class="pi pi-arrow-left text-xl md:text-lg cursor-pointer" ></i></a>
+        </p>
         <h3 class="mb-4">CADASTRO DE HIGHLIGHTS</h3>
     </div>
     <form [formGroup]="form" (ngSubmit)="save()">

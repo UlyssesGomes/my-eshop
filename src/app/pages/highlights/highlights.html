@@ -1,1 +1,20 @@
-<p>highlights works!</p>
+<app-content-panel>
+    <div class="mb-6 flex justify-between">
+        <h2>Highlights</h2>
+        <div>
+            <p-button routerLink="/admin/highlights/create" class="show-element-md button-min-width-size" type="submit"
+                label="Cadastrar" fluid="false" areaLabel="Cadastrar"></p-button>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+        @for (highlightItem of highlightList; track highlightItem.id) {
+        <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"
+            (editButton)="editSelectedHightlight($event)" (deleteButton)="deleteSelectedHighlight($event)" />
+        } @empty {
+            @if(!isLoading) {
+                <p>Nenhum highlight foi cadastrado ainda.</p>
+            }
+        }
+    </div>
+</app-content-panel>
+<app-loading-block [isLoading]="isLoading"/>

@@ -16,8 +16,9 @@ $contrast-background-value: #071446;
 
 :root {
   --body-background: var(--p-slate-950);
-  --primary-background: var(--p-blue-950);
+  --primary-background: rgb(108, 66, 192);
   --secondary-background: #283f78;  
+  --third-background: rgb(69, 186, 134);
 }
 
 body {
