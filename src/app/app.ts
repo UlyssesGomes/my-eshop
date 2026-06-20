@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
@@ -10,7 +10,7 @@ import { ToastModule } from 'primeng/toast';
     RouterOutlet, 
     ToastModule
   ],
-  providers: [MessageService],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

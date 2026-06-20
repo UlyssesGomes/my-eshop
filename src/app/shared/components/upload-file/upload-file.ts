@@ -150,6 +150,11 @@ export class UploadFile {
     this.onChangeFilesSelected.emit({ eventType: FileEventEnum.UPDATE, index: [index] });
   }
 
+  setImage(image: ProductImageModel) {
+    this.fileUpload.files.push(image);
+    this.fileUpload.cd.markForCheck();
+  }
+
   private clearFileList() {
     this.files = [];
     this.filesChange.emit(this.files);

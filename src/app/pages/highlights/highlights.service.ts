@@ -33,4 +33,40 @@ export class HighlightsService extends ServiceCore<Highlight> {
       catchError(this.handleError)
     );
   }
+
+  updateWithFormData(id: number, formData: FormData): Observable<any> {
+    const url = `${this.urlBase}${this.getEndpoint()}/highlight-image/${id}`
+    const headers = new HttpHeaders();
+
+    if (environment.enableDebug) {
+      console.info(`PATCH ${this.getEndpoint()}: `, url, formData);
+    }
+
+    return this.http.patch<FormData>(url, formData, { headers }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.getEndpoint()} PATCH response: `, response);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getImageById(id: number): Observable<any> {
+    const url = `${this.urlBase}${this.getEndpoint()}/highlight-image/${id}`
+    const headers = new HttpHeaders();
+
+    if (environment.enableDebug) {
+      console.info(`GET ${this.getEndpoint()}: `, url);
+    }
+
+    return this.http.get(url, { headers, responseType: 'blob' }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.getEndpoint()} GET response: `, response);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
 }

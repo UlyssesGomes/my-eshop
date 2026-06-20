@@ -50,14 +50,20 @@ export class CreateHighlight implements OnInit {
   uploadFileComponent!: UploadFile;
 
   id: any;
+  imgTemp: ProductImageModel = new ProductImageModel();
 
-  constructor(private fb: FormBuilder, private messageService: MessageService, private highlighService: HighlightsService, private authService: AuthenticationService, private readonly location: Location, private readonly route: ActivatedRoute) {
+  constructor(
+    private fb: FormBuilder,
+    private messageService: MessageService,
+    private highlightService: HighlightsService,
+    private authService: AuthenticationService,
+    private readonly location: Location,
+    private readonly route: ActivatedRoute) {
     this.form = fb.group({
       img: ['', [Validators.required]],
       link: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(256)]],
     });
   }
-
 
   ngOnInit(): void {
     this.loadCreatOrEditRoute();
@@ -66,14 +72,24 @@ export class CreateHighlight implements OnInit {
   private loadCreatOrEditRoute() {
     if (this.route.snapshot.url.toString().endsWith('edit')) {
       this.id = this.route.snapshot.paramMap.get('id');
-      this.highlighService.getById(this.id).subscribe((highlightResponse) => {
-        console.log('respo: ', highlightResponse);
+      this.highlightService.getById(this.id).subscribe((highlightResponse) => {
         this.form.patchValue(highlightResponse);
-        this.img.push({
-          indexImage: 0, 
-          file: new File(highlightResponse.img, ''),
-          isHighlight: false
+      });
+
+      this.highlightService.getImageById(this.id).subscribe((image) => {
+
+        const f: File = new File([image], 'imagem.jpg', { type: image.type });
+        Object.defineProperty(f, 'objectURL', {
+          value: URL.createObjectURL(image)
         });
+
+        this.imgTemp.indexImage = 0,
+          this.imgTemp.file = f;
+        this.imgTemp.isHighlight = false;
+
+        this.img.push(this.imgTemp);
+        this.uploadFileComponent.setImage(this.imgTemp.file);
+
       });
     }
   }
@@ -115,7 +131,16 @@ export class CreateHighlight implements OnInit {
     const formData = new FormData();
     formData.append('link', this.form.get('link')?.value);
     formData.append('img', this.img[0].file);
-    this.highlighService.createWithFormData(formData).pipe(take(1)).subscribe({
+
+    if (!this.id)
+      this.create(formData);
+    else
+      this.update(formData);
+
+  }
+
+  create(formData: any) {
+    this.highlightService.createWithFormData(formData).pipe(take(1)).subscribe({
       next: (response) => {
         this.messageService.add(
           { severity: 'success', summary: 'Criado Com Sucesso', detail: `Highlight criado com sucesso.`, life: 5000 }
@@ -129,7 +154,25 @@ export class CreateHighlight implements OnInit {
           { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
         );
       }
-    }
-    );
+    });
+  }
+
+  update(formData: any) {
+    this.highlightService.updateWithFormData(this.id, formData).pipe(take(1)).subscribe({
+      next: (response) => {
+        this.messageService.add(
+          { severity: 'success', summary: 'Atualizado Com Sucesso', detail: `Highlight atualizado com sucesso.`, life: 5000 }
+        );
+        this.uploadFileComponent.clearList();
+        this.imgPristineAttr = true;
+        this.form.reset();
+        this.location.back();
+      },
+      error: (e) => {
+        this.messageService.add(
+          { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
+        );
+      }
+    });
   }
 }

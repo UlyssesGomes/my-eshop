@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { HighlightsService } from './highlights.service';
@@ -14,7 +15,7 @@ import { SimpleItemCardList } from '../../shared/components/simple-item-card-lis
 
 @Component({
   selector: 'app-highlights',
-  imports: [CommonModule, ButtonModule, ContentPanel, LoadingBlock, MessageModule, RouterLink, SimpleItemCardList],
+  imports: [CommonModule, ButtonModule, ConfirmDialogModule, ContentPanel, LoadingBlock, MessageModule, RouterLink, SimpleItemCardList],
   templateUrl: './highlights.html',
   styleUrl: './highlights.scss'
 })
@@ -27,7 +28,14 @@ export class Highlights {
 
   isLoading = false;
 
-  constructor(private readonly highlightService: HighlightsService, private readonly messageService: MessageService, private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
+  constructor(
+    private readonly highlightService: HighlightsService,
+    private readonly messageService: MessageService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly confirmationService: ConfirmationService
+  ) {
+
     this.reloadItems();
   }
 
@@ -37,13 +45,41 @@ export class Highlights {
     });
   }
 
-  deleteSelectedHighlight(id: any) {
-    this.highlightService.deleteById(id).subscribe(() => {
-      this.messageService.add(
-        { severity: 'success', summary: 'Deletado', detail: `Item ${id} deletado com sucesso.`, life: 5000 }
-      );
-      this.reloadItems();
+  deleteSelectedHighlight(event: Event) {
+
+    console.log('ev: ', event)
+
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Você tem certeza que deseja deletar esse item?',
+      header: 'Atenção!',
+      icon: 'pi pi-exclamation-triangle',
+      rejectLabel: 'Cancel',
+      rejectButtonProps: {
+        label: 'Cancel',
+        severity: 'secondary',
+        outlined: true
+      },
+      acceptButtonProps: {
+        label: 'Delete',
+        severity: 'danger'
+      },
+
+      accept: () => {
+        this.highlightService.deleteById(+event).subscribe(() => {
+          this.messageService.add(
+            { severity: 'success', summary: 'Deletado', detail: `Item ${+event} deletado com sucesso.`, life: 5000 }
+          );
+          this.reloadItems();
+        });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'warn', summary: 'Cancelado', detail: 'Operação de remoção cancelada.' });
+      }
     });
+
+
+
   }
 
   reloadItems() {
