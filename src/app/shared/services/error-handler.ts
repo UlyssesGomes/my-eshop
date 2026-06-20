@@ -46,8 +46,10 @@ export abstract class ErrorHandler {
             }
 
             // Adiciona mensagem do backend se existir
-            if (error?.error) {
+            if (error?.error.error) {
                 errorMessage = `${error.error.error}`;
+            } else if(error.status) {
+                errorMessage = errorTitle;
             }
         }
 

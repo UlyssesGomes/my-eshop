@@ -76,20 +76,25 @@ export class CreateHighlight implements OnInit {
         this.form.patchValue(highlightResponse);
       });
 
-      this.highlightService.getImageById(this.id).subscribe((image) => {
+      this.highlightService.getImageById(this.id).subscribe({
+        next: (image) => {
 
-        const f: File = new File([image], 'imagem.jpg', { type: image.type });
-        Object.defineProperty(f, 'objectURL', {
-          value: URL.createObjectURL(image)
-        });
+          const f: File = new File([image], 'imagem.jpg', { type: image.type });
+          Object.defineProperty(f, 'objectURL', {
+            value: URL.createObjectURL(image)
+          });
 
-        this.imgTemp.indexImage = 0,
-          this.imgTemp.file = f;
-        this.imgTemp.isHighlight = false;
+          this.imgTemp.indexImage = 0,
+            this.imgTemp.file = f;
+          this.imgTemp.isHighlight = false;
 
-        this.img.push(this.imgTemp);
-        this.uploadFileComponent.setImage(this.imgTemp.file);
+          this.img.push(this.imgTemp);
+          this.uploadFileComponent.setImage(this.imgTemp.file);
 
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: error.title, life: 6000, detail: error.description });
+        }
       });
     }
   }

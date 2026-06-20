@@ -47,8 +47,6 @@ export class Highlights {
 
   deleteSelectedHighlight(event: Event) {
 
-    console.log('ev: ', event)
-
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Você tem certeza que deseja deletar esse item?',
@@ -84,19 +82,25 @@ export class Highlights {
 
   reloadItems() {
     this.isLoading = true;
-    this.highlightService.listWithPagination(this.page, this.pageSize).subscribe((response) => {
-      let highlights = response.content;
+    this.highlightService.listWithPagination(this.page, this.pageSize).subscribe({
+      next: (response) => {
+        let highlights = response.content;
 
-      this.highlightList = highlights.map((h: any) => {
-        const i = new ItemList();
-        i.id = h.id;
-        i.title = h.link;
-        i.img = `data:image/png;base64,${h.img}`;
+        this.highlightList = highlights.map((h: any) => {
+          const i = new ItemList();
+          i.id = h.id;
+          i.title = h.link;
+          i.img = `data:image/png;base64,${h.img}`;
 
-        return i;
-      });
-      this.isLoading = false;
-    });
+          return i;
+        });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description });
+        this.isLoading = false;
+      }
+     });
   }
 
 }
