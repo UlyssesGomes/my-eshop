@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 
 import { UserAddressesCommonForm } from '../../../shared/components/user-addresses-common-form/user-addresses-common-form';
+import { UserProfileService } from '../user-profile.service';
 
 @Component({
   selector: 'app-address',
@@ -14,10 +14,10 @@ import { UserAddressesCommonForm } from '../../../shared/components/user-address
   templateUrl: './address.html',
   styleUrl: './address.scss'
 })
-export class Address {
+export class Address implements OnInit {
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: MessageService) {
+  constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private messageService: MessageService) {
     this.form = this.fb.group({
       addresses: this.fb.array([
         this.fb.group(
@@ -33,7 +33,26 @@ export class Address {
     });
   }
 
-  save() {
+  ngOnInit(): void {
+    this.userProfileService.getUserAddresses().subscribe({
+      next: response => {
+        this.form.patchValue(response);
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000 });
+      }
+    });
+  }
 
+  save() {
+    this.userProfileService.patchUserAddress(this.form.value).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Endereço do usuário atualizado com sucesso.', life: 6000 });
+        this.userProfileService.setValidAddress(true);
+      },
+      error: error => {
+        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000 });
+      }
+    });
   }
 }

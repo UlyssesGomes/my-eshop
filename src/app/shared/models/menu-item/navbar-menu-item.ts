@@ -3,4 +3,5 @@ export class NavbarMenuItem {
     alternativeIcon?: string;
     title!: string;
     path!: string;
+    isValid?: boolean;
 }

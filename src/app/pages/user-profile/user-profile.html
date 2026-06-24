@@ -6,9 +6,12 @@
                 <app-profile-view [perfilInfo]="userPerfilView"></app-profile-view>
             </div>
             <div class="flex md:flex-col flex-row">
-                <button [ngClass]="{'button-selected': item.path === lastUrlPath}" class="clean-button text-start m-1" *ngFor="let item of items" (click)="buttonNavigate(item.path)"><i [ngClass]="[item.icon]" class="icon-button"></i> {{item.title}}</button>
+                <button [ngClass]="{'button-selected': item.path === lastUrlPath}" class="clean-button text-start m-1" *ngFor="let item of items" (click)="buttonNavigate(item.path)">
+                    <i [ngClass]="[item.icon]" class="icon-button"></i> 
+                    {{item.title}}
+                    <i *ngIf="!item.isValid" class="invalid-icon pi pi-exclamation-circle"></i>
+                </button>
             </div>
-
         </div>
         <div class="grow content-perfil-panel">
             <router-outlet />

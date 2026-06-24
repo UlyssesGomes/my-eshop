@@ -62,7 +62,7 @@ export class Login {
       },
       error: (e) => {
         this.messageService.add(
-          { severity: 'error', summary: 'Não Autorizado', detail: `Email ou Senha incorretos.`, life: 5000 }
+          { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
         );
       }
     });

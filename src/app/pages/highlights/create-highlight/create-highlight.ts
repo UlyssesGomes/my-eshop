@@ -72,8 +72,13 @@ export class CreateHighlight implements OnInit {
   private loadCreatOrEditRoute() {
     if (this.route.snapshot.url.toString().endsWith('edit')) {
       this.id = this.route.snapshot.paramMap.get('id');
-      this.highlightService.getById(this.id).subscribe((highlightResponse) => {
-        this.form.patchValue(highlightResponse);
+      this.highlightService.getById(this.id).subscribe({
+        next: (highlightResponse) => {
+          this.form.patchValue(highlightResponse);
+        },
+        error: (error) => {
+          this.messageService.add({ severity: 'error', summary: error.title, life: 6000, detail: error.description });
+        }
       });
 
       this.highlightService.getImageById(this.id).subscribe({

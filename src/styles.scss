@@ -25,6 +25,7 @@ body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, $contrast-background-value, var(--body-background), $contrast-background-value);
+    min-height: 100vh;
     @apply text-white;
 }
 

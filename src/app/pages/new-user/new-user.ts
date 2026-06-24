@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -12,9 +13,8 @@ import { ContentPanel } from '../../shared/components/content-panel/content-pane
 import { EmailValidator } from '../../shared/validators/email/email-validator';
 import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pipe';
 import { FieldConfirmValidator } from '../../shared/validators/confirm-field/field-confirm-validator';
-import { UserService } from '../users/user-service';
-import { take } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { NewUserService } from './new-user-service';
 
 @Component({
   selector: 'app-new-user',
@@ -39,7 +39,7 @@ export class NewUser {
 
   private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
 
-  constructor(private readonly fb: FormBuilder, private messageService: MessageService) {
+  constructor(private readonly fb: FormBuilder, private messageService: MessageService, private readonly newUserService: NewUserService, private readonly router: Router) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
       email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
@@ -51,10 +51,20 @@ export class NewUser {
 
   save() {
     const newUser = this.extractDataFromForm(this.form.value); 
-    // this.service.createNewCustomer(newUser).pipe(take(1)).subscribe(response => this.messageService.add(
-    //   { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
-    // ));
-    this.form.reset();
+    this.newUserService.create(newUser).subscribe({
+      next: (response) => {
+        this.messageService.add(
+            { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
+        );
+        this.form.reset();
+        this.router.navigate(['login']);
+      },
+      error: (error) => {
+        this.messageService.add(
+            { severity: 'error', summary: error.title, detail: error.description, life: 5000 }
+        );
+      }
+    });
   }
 
   private extractDataFromForm(valueObject: any) {

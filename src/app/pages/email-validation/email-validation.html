@@ -1,0 +1,9 @@
+<div class="flex justify-center flex-col md:flex-row pt-10">
+    <div class="m-2 md:me-7">
+        <h2 class="mt-5 mb-3">Validação de email</h2>
+        <p *ngIf="isBackendReplied && isValidEmail">Email validado com sucesso.</p>
+        <p *ngIf="isBackendReplied && !isValidEmail">Falha na confirmação do email.</p>
+        <a *ngIf="isBackendReplied" class="mt-3 block font-extrabold link-button" routerLink="/">Clique aqui para voltar</a>
+    </div>
+    <img class="p-2 md:w-4/10 image-not-found" src="resources/images/email-validation.png" alt="Image mostrando um envelope aberto com um papel saindo e um símbolo de verificado no papel."/>
+</div>
