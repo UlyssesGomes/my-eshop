@@ -1,49 +1,49 @@
-<h3>Nova Senha</h3>
-<form [formGroup]="form" (submit)="save()">
+<h3>Mudar Email</h3>
+<form [formGroup]="form" (submit)="save($event)">
     <div class="my-3">
         <!-- 
         // -----------------------------------------------------------------------------------------------------
-        // OLD PASSWORD
+        // NEW EMAIL
         // ----------------------------------------------------------------------------------------------------- 
         -->
         <p-floatlabel variant="on">
-            <p-password id="oldPassword" formControlName="oldPassword" fluid="true" [toggleMask]="true"/>
-            <label class="label-background font-semibold" for="oldPassword">Senha Antiga</label>
+            <input pInputText id="newEmail" formControlName="newEmail" fluid="true" />
+            <label class="label-background font-semibold" for="newEmail">Novo Email</label>
         </p-floatlabel>
         <p-message
-            *ngIf="form.get('oldPassword')?.errors && !form.get('oldPassword')?.pristine && form.get('oldPassword')?.touched"
+            *ngIf="form.get('newEmail')?.errors && !form.get('newEmail')?.pristine && form.get('newEmail')?.touched"
             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-            form.get('oldPassword')?.errors | errorReader}}</p-message>
+            form.get('newEmail')?.errors | errorReader}}</p-message>
     </div>
     <div class="my-3">
         <!-- 
         // -----------------------------------------------------------------------------------------------------
-        // NEW PASSWORD
+        // CONFIRM NEW EMAIL
         // ----------------------------------------------------------------------------------------------------- 
         -->
         <p-floatlabel variant="on">
-            <p-password id="newPassword" formControlName="newPassword" fluid="true" [toggleMask]="true"/>
-            <label class="label-background font-semibold" for="newPassword">Senha Nova</label>
+            <input pInputText id="confirmNewEmail" formControlName="confirmNewEmail" fluid="true" />
+            <label class="label-background font-semibold" for="confirmNewEmail">Confirmar Email</label>
         </p-floatlabel>
         <p-message
-            *ngIf="form.get('newPassword')?.errors && !form.get('newPassword')?.pristine && form.get('newPassword')?.touched"
+            *ngIf="form.get('confirmNewEmail')?.errors && !form.get('confirmNewEmail')?.pristine && form.get('confirmNewEmail')?.touched"
             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-            form.get('newPassword')?.errors | errorReader}}</p-message>
+            form.get('confirmNewEmail')?.errors | errorReader}}</p-message>
     </div>
     <div class="my-3">
         <!-- 
         // -----------------------------------------------------------------------------------------------------
-        // CONFIRM NEW PASSWORD
+        // PASSWORD
         // ----------------------------------------------------------------------------------------------------- 
         -->
         <p-floatlabel variant="on">
-            <p-password id="passwordConfirm" formControlName="passwordConfirm" fluid="true" [toggleMask]="true"/>
-            <label class="label-background font-semibold" for="passwordConfirm">Confirmar Senha Nova</label>
+            <p-password id="password" formControlName="password" fluid="true" [toggleMask]="true" />
+            <label class="label-background font-semibold" for="password">Senha</label>
         </p-floatlabel>
         <p-message
-            *ngIf="form.get('passwordConfirm')?.errors && !form.get('passwordConfirm')?.pristine && form.get('passwordConfirm')?.touched"
+            *ngIf="form.get('password')?.errors && !form.get('password')?.pristine && form.get('password')?.touched"
             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-            form.get('passwordConfirm')?.errors | errorReader}}</p-message>
+            form.get('password')?.errors | errorReader}}</p-message>
     </div>
     <div class="my-7 flex flex-row-reverse">
         <p-button class="show-element-md button-min-width-size" type="submit" [disabled]="form.invalid" label="Salvar"
@@ -52,3 +52,4 @@
             areaLabel="Salvar"></p-button>
     </div>
 </form>
+<p-confirmdialog />

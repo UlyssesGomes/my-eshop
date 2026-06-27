@@ -118,6 +118,42 @@ export class UserProfileService extends ErrorHandler {
     );
   }
 
+  updatePassword(data: any): Observable<any> {
+    const url = `${this.urlBase}${this.getEndpoint()}/change-password`;
+    const headers = this.getHeaders();
+
+    if (environment.enableDebug) {
+      console.info(`PATCH ${this.getEndpoint()}/change-password: `, url, data);
+    }
+
+    return this.http.patch(url, data, { headers }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.getEndpoint()}/change-password PATCH: `, response);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  updateEmail(data: any): Observable<any> {
+    const url = `${this.urlBase}${this.getEndpoint()}/change-email`;
+    const headers = this.getHeaders();
+
+    if (environment.enableDebug) {
+      console.info(`PATCH ${this.getEndpoint()}/change-email: `, url, data);
+    }
+
+    return this.http.patch(url, data, { headers }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.getEndpoint()}/change-email PATCH: `, response);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   setValidData(value: boolean) {
     this.userSubscriber.next({ subject: UserProfileService.USER_DATA, value: value });
   }

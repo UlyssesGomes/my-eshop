@@ -7,13 +7,14 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { EmailValidator } from '../../shared/validators/email/email-validator';
+import { emailRegex } from '../../shared/utils/email-regex';
 import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pipe';
 import { FieldConfirmValidator } from '../../shared/validators/confirm-field/field-confirm-validator';
-import { MessageService } from 'primeng/api';
 import { NewUserService } from './new-user-service';
 
 @Component({
@@ -37,13 +38,13 @@ export class NewUser {
 
   form!: FormGroup;
 
-  private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
+  private readonly customEmailRegex = emailRegex;
 
   constructor(private readonly fb: FormBuilder, private messageService: MessageService, private readonly newUserService: NewUserService, private readonly router: Router) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
-      email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
-      confirmEmail: ['', [Validators.required, new EmailValidator(this.emailRegex).validate(), new FieldConfirmValidator('email').validate()]],
+      email: ['', [Validators.required, new EmailValidator(this.customEmailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
+      confirmEmail: ['', [Validators.required, new EmailValidator(this.customEmailRegex).validate(), new FieldConfirmValidator('email').validate()]],
       password: ['', [Validators.required, Validators.minLength(7), new FieldConfirmValidator('confirmPassword').validate()]],
       confirmPassword: ['', [Validators.required, Validators.minLength(7), new FieldConfirmValidator('password').validate()]]
     });

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 import { AvatarModule } from 'primeng/avatar'
 import { BadgeModule } from 'primeng/badge';
@@ -29,9 +29,6 @@ export class UserProfile implements OnInit, OnDestroy {
 
   lastUrlPath?: string;
 
-  isValidData?: boolean;
-  isValidAddress?: boolean;
-
   subscriptions: any[] = [];
 
   constructor(private readonly router: Router, private readonly route: ActivatedRoute, private readonly userProfileService: UserProfileService, private readonly messageService: MessageService) { }
@@ -56,15 +53,21 @@ export class UserProfile implements OnInit, OnDestroy {
         isValid: true
       },
       {
-        title: 'Senha',
-        icon: 'pi pi-key',
-        path: 'senha',
-        isValid: true
-      },
-      {
         title: 'Endereços',
         icon: 'pi pi-home',
         path: 'enderecos',
+        isValid: true
+      },
+      {
+        title: 'Email',
+        icon: 'pi pi-envelope',
+        path: 'email',
+        isValid: true
+      },
+      {
+        title: 'Senha',
+        icon: 'pi pi-key',
+        path: 'senha',
         isValid: true
       }
     ];
@@ -95,19 +98,22 @@ export class UserProfile implements OnInit, OnDestroy {
   private loadUserPersonal() {
     this.userProfileService.getUserPersonalValidations().subscribe({
       next: response => {
-        this.isValidData = response.validData;
-        this.isValidAddress = response.validAddress;
-
-        if(!this.isValidData) {
+        if(!response.validData) {
           const index = this.items?.findIndex(i => i.title === 'Dados Pessoais');
           if(this.items && index != undefined && index >= 0)
-            this.items[index].isValid = this.isValidData;
+            this.items[index].isValid = response.validData;
         }
 
-        if(!this.isValidAddress) {
+        if(!response.validAddress) {
           const index = this.items?.findIndex(i => i.title === 'Endereços');
           if(this.items && index != undefined && index >= 0)
-            this.items[index].isValid = this.isValidAddress;
+            this.items[index].isValid = response.validAddress;
+        }
+
+        if(!response.emailConfirmed) {
+          const index = this.items?.findIndex(i => i.title === 'Email');
+          if(this.items && index != undefined && index >= 0)
+            this.items[index].isValid = response.emailConfirmed;
         }
       },
       error: error => {
@@ -119,9 +125,11 @@ export class UserProfile implements OnInit, OnDestroy {
   private updateUserValidations() {
     this.subscriptions.push(this.userProfileService.observable.subscribe( (updates: any) => {
       if(updates.subject === UserProfileService.USER_DATA){
-        this.isValidData = updates.value;
+        const item = this.items?.find(i => i.title === 'Dados Pessoais')
+        item!.isValid = updates.value;
       } else if(updates.subject === UserProfileService.USER_ADDRESS) {
-        this.isValidAddress = updates.value;
+        const item = this.items?.find(i => i.title === 'Endereços')
+        item!.isValid = updates.value;
       }
     }));
   }
