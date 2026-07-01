@@ -8,15 +8,14 @@ import { DividerModule } from 'primeng/divider';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 import { take } from 'rxjs';
 
 import { AuthenticationService } from '../../shared/services/auth/authentication.service';
 import { EmailValidator } from '../../shared/validators/email/email-validator';
 import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pipe';
-import { LocalStoageKey } from '../../shared/enums/localstorage-key';
 import { TokenUtils } from '../../shared/utils/token-utils';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 
 
 @Component({
@@ -29,8 +28,8 @@ import { TokenUtils } from '../../shared/utils/token-utils';
     DividerModule,
     FloatLabelModule,
     InputTextModule,
-    PasswordModule,
     MessageModule,
+    PasswordModule,
     ErrorReaderPipe,
     RouterLink
   ],
@@ -43,7 +42,7 @@ export class Login {
   form: FormGroup;
 
 
-  constructor(private fb: FormBuilder, private readonly authentication: AuthenticationService, private messageService: MessageService, private readonly router: Router) {
+  constructor(private fb: FormBuilder, private readonly authentication: AuthenticationService, private messageService: NotificationService, private readonly router: Router) {
     this.form = this.fb.group({
       email: ['', [Validators.required, new EmailValidator(this.emailRegex).validate()]],
       password: ['', [Validators.required, Validators.minLength(7)]]
@@ -53,17 +52,13 @@ export class Login {
   submit() {
     this.authentication.login(this.form.value.email, this.form.value.password).pipe(take(1)).subscribe({
       next: response => {
-        this.messageService.add(
-          { severity: 'success', summary: 'Autorizado', detail: `Login realizado com sucesso.`, life: 5000 }
-        );
+        this.messageService.success('Autorizado', `Login realizado com sucesso.`);
         TokenUtils.receiveJwtToken(response.accessToken);
         this.form.reset();
         this.router.navigate(['/']);
       },
       error: (e) => {
-        this.messageService.add(
-          { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
-        );
+        this.messageService.error(e.title, e.description);
       }
     });
   }

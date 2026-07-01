@@ -5,17 +5,18 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageModule } from 'primeng/message';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { HighlightsService } from './highlights.service';
 import { ItemList } from '../../shared/models/item-list/item-list';
 import { LoadingBlock } from '../../shared/components/loading-block/loading-block';
 import { SimpleItemCardList } from '../../shared/components/simple-item-card-list/simple-item-card-list';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-highlights',
-  imports: [CommonModule, ButtonModule, ConfirmDialogModule, ContentPanel, LoadingBlock, MessageModule, RouterLink, SimpleItemCardList],
+  imports: [CommonModule, ButtonModule, ConfirmDialogModule, ContentPanel, LoadingBlock, RouterLink, SimpleItemCardList],
   templateUrl: './highlights.html',
   styleUrl: './highlights.scss'
 })
@@ -30,7 +31,7 @@ export class Highlights {
 
   constructor(
     private readonly highlightService: HighlightsService,
-    private readonly messageService: MessageService,
+    private readonly messageService: NotificationService,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly confirmationService: ConfirmationService
@@ -65,14 +66,12 @@ export class Highlights {
 
       accept: () => {
         this.highlightService.deleteById(+event).subscribe(() => {
-          this.messageService.add(
-            { severity: 'success', summary: 'Deletado', detail: `Item ${+event} deletado com sucesso.`, life: 5000 }
-          );
+          this.messageService.success('Deletado', `Item ${+event} deletado com sucesso.`);
           this.reloadItems();
         });
       },
       reject: () => {
-        this.messageService.add({ severity: 'warn', summary: 'Cancelado', detail: 'Operação de remoção cancelada.' });
+        this.messageService.warning('Cancelado', 'Operação de remoção cancelada.' );
       }
     });
 
@@ -97,7 +96,7 @@ export class Highlights {
         this.isLoading = false;
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description });
+        this.messageService.error(error.title, error.description);
         this.isLoading = false;
       }
      });

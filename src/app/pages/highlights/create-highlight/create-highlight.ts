@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 
 import { take } from 'rxjs';
 
@@ -16,6 +15,7 @@ import { ContentPanel } from '../../../shared/components/content-panel/content-p
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
 import { HighlightsService } from '../highlights.service';
 import { AuthenticationService } from '../../../shared/services/auth/authentication.service';
@@ -29,9 +29,9 @@ import { AuthenticationService } from '../../../shared/services/auth/authenticat
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
-    MessageModule,
     ErrorReaderPipe,
     ContentPanel,
+    MessageModule,
     UploadFile
   ],
   templateUrl: './create-highlight.html',
@@ -54,7 +54,7 @@ export class CreateHighlight implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService,
+    private messageService: NotificationService,
     private highlightService: HighlightsService,
     private authService: AuthenticationService,
     private readonly location: Location,
@@ -77,7 +77,7 @@ export class CreateHighlight implements OnInit {
           this.form.patchValue(highlightResponse);
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: error.title, life: 6000, detail: error.description });
+          this.messageService.error(error.title, error.description);
         }
       });
 
@@ -90,15 +90,16 @@ export class CreateHighlight implements OnInit {
           });
 
           this.imgTemp.indexImage = 0,
-            this.imgTemp.file = f;
+          this.imgTemp.file = f;
           this.imgTemp.isHighlight = false;
 
           this.img.push(this.imgTemp);
           this.uploadFileComponent.setImage(this.imgTemp.file);
 
+          (this.form.get('img') as FormControl).setValue(this.img);
         },
         error: (error) => {
-          this.messageService.add({ severity: 'error', summary: error.title, life: 6000, detail: error.description });
+          this.messageService.error(error.title, error.description);
         }
       });
     }
@@ -121,7 +122,7 @@ export class CreateHighlight implements OnInit {
   }
 
   fileUploadErrorEvent(failFile: any) {
-    this.messageService.add({ severity: 'error', summary: 'Tamanho Inválido', life: 6000, detail: `Imagem [${failFile.name}] excede o tamnho máximo de ${this.byteToKB(this.maxFileSize)}KB.` });
+    this.messageService.error('Tamanho Inválido', `Imagem [${failFile.name}] excede o tamnho máximo de ${this.byteToKB(this.maxFileSize)}KB.`);
   }
 
   addImage(file: any) {
@@ -152,17 +153,13 @@ export class CreateHighlight implements OnInit {
   create(formData: any) {
     this.highlightService.createWithFormData(formData).pipe(take(1)).subscribe({
       next: (response) => {
-        this.messageService.add(
-          { severity: 'success', summary: 'Criado Com Sucesso', detail: `Highlight criado com sucesso.`, life: 5000 }
-        );
+        this.messageService.success('Criado Com Sucesso', `Highlight criado com sucesso.`);
         this.uploadFileComponent.clearList();
         this.imgPristineAttr = true;
         this.form.reset();
       },
-      error: (e) => {
-        this.messageService.add(
-          { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
-        );
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
       }
     });
   }
@@ -170,18 +167,14 @@ export class CreateHighlight implements OnInit {
   update(formData: any) {
     this.highlightService.updateWithFormData(this.id, formData).pipe(take(1)).subscribe({
       next: (response) => {
-        this.messageService.add(
-          { severity: 'success', summary: 'Atualizado Com Sucesso', detail: `Highlight atualizado com sucesso.`, life: 5000 }
-        );
+        this.messageService.success('Atualizado Com Sucesso', `Highlight atualizado com sucesso.`);
         this.uploadFileComponent.clearList();
         this.imgPristineAttr = true;
         this.form.reset();
         this.location.back();
       },
-      error: (e) => {
-        this.messageService.add(
-          { severity: 'error', summary: e.title, detail: e.description, life: 5000 }
-        );
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
       }
     });
   }

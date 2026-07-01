@@ -9,15 +9,13 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 import { SelectModule } from 'primeng/select';
-
-import { provideNgxMask } from 'ngx-mask';
 
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
 import { CpfValidator } from '../../../shared/validators/cpf/cpf-validator';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { EmailValidator } from '../../../shared/validators/email/email-validator';
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { UserType } from '../../../shared/enums/user-type';
 import { UserCommonForm } from '../../../shared/components/user-common-form/user-common-form';
 
@@ -54,7 +52,7 @@ export class CreateUser {
 
   private readonly emailRegex = /^[a-zA-Z0-9._&$#%+\-]+@[a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+$/;
 
-  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: MessageService) {
+  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: NotificationService) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(255), Validators.minLength(10)]],
       type: [0, [Validators.required]],

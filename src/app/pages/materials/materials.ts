@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { Material } from '../../shared/models/material/material';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 import { ProductType } from '../../shared/enums/product-type';
 import { UTable } from '../../shared/components/u-table/u-table';
 
@@ -44,7 +44,7 @@ export class Materials {
   rows: number = 10;
 
 
-  constructor(private messageService: MessageService,
+  constructor(private messageService: NotificationService,
     private readonly router: Router, 
     private readonly route: ActivatedRoute
   ) {

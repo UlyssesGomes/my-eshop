@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 
+import { debounceTime, Subject, take } from 'rxjs';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 import { ErrorReaderPipe } from '../../pipes/error-reader/error-reader-pipe';
 import { MultifieldPanel } from '../multifield-panel/multifield-panel';
-import { debounceTime, Subject, take } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { MessageService } from 'primeng/api';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-user-addresses-common-form',
@@ -45,7 +45,7 @@ export class UserAddressesCommonForm {
   _addressArray!: FormArray;
   get addressArray() { return this._addressArray; }
 
-  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: MessageService) { }
+  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: NotificationService) { }
 
   ngOnInit(): void {
     this.inputSubject
@@ -82,12 +82,7 @@ export class UserAddressesCommonForm {
     if (addressFormArray.length > 1) {
       addressFormArray.removeAt(index);
     } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Ação Bloqueada',
-        life: 4000,
-        detail: `É necessário cadastrar pelo menos 1 endereço.`
-      });
+      this.messageService.warning('Ação Bloqueada', `É necessário cadastrar pelo menos 1 endereço.`);
     }
   }
 

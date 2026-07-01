@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
-import { MessageService } from 'primeng/api';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 import { Product } from '../../shared/models/product/product';
 import { ShopItemCardList } from '../../shared/components/shop-item-card-list/shop-item-card-list';
 
@@ -99,9 +99,9 @@ export class Products {
     }
   ];
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: NotificationService) {}
 
   addFavoriteItem(item: Product) {
-    this.messageService.add({ severity: 'success', summary: 'Success', detail: `Item ${item.name} adicionado com sucesso.` });
+    this.messageService.success('Success', `Item ${item.name} adicionado com sucesso.`);
   }
 }

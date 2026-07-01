@@ -7,7 +7,6 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
@@ -16,6 +15,7 @@ import { emailRegex } from '../../shared/utils/email-regex';
 import { ErrorReaderPipe } from '../../shared/pipes/error-reader/error-reader-pipe';
 import { FieldConfirmValidator } from '../../shared/validators/confirm-field/field-confirm-validator';
 import { NewUserService } from './new-user-service';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-new-user',
@@ -40,7 +40,7 @@ export class NewUser {
 
   private readonly customEmailRegex = emailRegex;
 
-  constructor(private readonly fb: FormBuilder, private messageService: MessageService, private readonly newUserService: NewUserService, private readonly router: Router) {
+  constructor(private readonly fb: FormBuilder, private messageService: NotificationService, private readonly newUserService: NewUserService, private readonly router: Router) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(10)]],
       email: ['', [Validators.required, new EmailValidator(this.customEmailRegex).validate(), new FieldConfirmValidator('confirmEmail').validate()]],
@@ -54,16 +54,12 @@ export class NewUser {
     const newUser = this.extractDataFromForm(this.form.value); 
     this.newUserService.create(newUser).subscribe({
       next: (response) => {
-        this.messageService.add(
-            { severity: 'success', summary: 'Criado Com Sucesso', detail: `Cadastro de ${response.name} realizado com sucesso.`, life: 5000 }
-        );
+        this.messageService.success('Criado Com Sucesso',`Cadastro de ${response.name} realizado com sucesso.`);
         this.form.reset();
         this.router.navigate(['login']);
       },
       error: (error) => {
-        this.messageService.add(
-            { severity: 'error', summary: error.title, detail: error.description, life: 5000 }
-        );
+        this.messageService.error(error.title, error.description);
       }
     });
   }

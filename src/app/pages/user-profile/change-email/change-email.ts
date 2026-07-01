@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
+import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 
 import { emailRegex } from '../../../shared/utils/email-regex';
@@ -16,6 +16,7 @@ import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader
 import { UserProfileService } from '../user-profile.service';
 import { EmailValidator } from '../../../shared/validators/email/email-validator';
 import { FieldConfirmValidator } from '../../../shared/validators/confirm-field/field-confirm-validator';
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { TokenUtils } from '../../../shared/utils/token-utils';
 
 @Component({
@@ -27,10 +28,10 @@ import { TokenUtils } from '../../../shared/utils/token-utils';
     ButtonModule,
     ConfirmDialogModule,
     FloatLabelModule,
+    MessageModule,
     PasswordModule,
     InputTextModule,
     ErrorReaderPipe,
-    MessageModule,
   ],
   templateUrl: './change-email.html',
   styleUrl: './change-email.scss'
@@ -44,7 +45,7 @@ export class ChangeEmail {
   constructor(
     private readonly fb: FormBuilder,
     private readonly userProfileService: UserProfileService,
-    private readonly messageService: MessageService,
+    private readonly messageService: NotificationService,
     private readonly confirmationService: ConfirmationService,
     private readonly router: Router) {
     this.form = this.fb.group({
@@ -74,16 +75,16 @@ export class ChangeEmail {
       accept: () => {
         this.userProfileService.updateEmail(this.form.value).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Atualizado', detail: 'Email atualizado com sucesso.', life: 6000 });
+            this.messageService.success('Atualizado', 'Email atualizado com sucesso.');
             this.form.reset();
             TokenUtils.clearUserAndToken();
             this.router.navigate(['login']);
           },
-          error: (error) => { this.messageService.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000 }); }
+          error: (error) => { this.messageService.error(error.title, error.description); }
         });
       },
       reject: () => {
-        this.messageService.add({ severity: 'warn', summary: 'Cancelado', detail: 'Operação de remoção cancelada.' });
+        this.messageService.warning('Cancelado', 'Operação de remoção cancelada.');
       }
     });
   }

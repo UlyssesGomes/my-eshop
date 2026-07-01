@@ -5,19 +5,18 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 import { AvatarModule } from 'primeng/avatar'
 import { BadgeModule } from 'primeng/badge';
 import { MenuModule } from 'primeng/menu';
-import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { LocalStoageKey } from '../../shared/enums/localstorage-key';
 import { NavbarMenuItem } from '../../shared/models/menu-item/navbar-menu-item';
+import { NotificationService } from '../../shared/services/notification/notification.service';
 import { PerfilMenu } from '../../shared/models/perfil-menu/perfil-menu';
 import { ProfileView } from '../../shared/components/profile-view/profile-view';
 import { UserProfileService } from './user-profile.service';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, RouterOutlet, AvatarModule, BadgeModule, ContentPanel, MenuModule, MessageModule, ProfileView],
+  imports: [CommonModule, RouterOutlet, AvatarModule, BadgeModule, ContentPanel, MenuModule, ProfileView],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.scss'
 })
@@ -31,7 +30,7 @@ export class UserProfile implements OnInit, OnDestroy {
 
   subscriptions: any[] = [];
 
-  constructor(private readonly router: Router, private readonly route: ActivatedRoute, private readonly userProfileService: UserProfileService, private readonly messageService: MessageService) { }
+  constructor(private readonly router: Router, private readonly route: ActivatedRoute, private readonly userProfileService: UserProfileService, private readonly messageService: NotificationService) { }
 
   ngOnInit() {
     this.loadUserPerfil();
@@ -117,7 +116,7 @@ export class UserProfile implements OnInit, OnDestroy {
         }
       },
       error: error => {
-        this.messageService.add({ severity: 'error', summary: error.title, life: 6000, detail: error.description });
+        this.messageService.error(error.title, error.description);
       }
     });
   }

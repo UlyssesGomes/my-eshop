@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { UserAddressesCommonForm } from '../../../shared/components/user-addresses-common-form/user-addresses-common-form';
 import { UserProfileService } from '../user-profile.service';
 
@@ -17,7 +17,7 @@ import { UserProfileService } from '../user-profile.service';
 export class Address implements OnInit {
   form: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private messageService: MessageService) {
+  constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private messageService: NotificationService) {
     this.form = this.fb.group({
       addresses: this.fb.array([
         this.fb.group(
@@ -39,7 +39,7 @@ export class Address implements OnInit {
         this.form.patchValue(response);
       },
       error: error => {
-        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000 });
+        this.messageService.error(error.title, error.description);
       }
     });
   }
@@ -47,11 +47,11 @@ export class Address implements OnInit {
   save() {
     this.userProfileService.patchUserAddress(this.form.value).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Endereço do usuário atualizado com sucesso.', life: 6000 });
+        this.messageService.success('Sucesso', 'Endereço do usuário atualizado com sucesso.');
         this.userProfileService.setValidAddress(true);
       },
       error: error => {
-        this.messageService.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000 });
+        this.messageService.error(error.title, error.description);
       }
     });
   }

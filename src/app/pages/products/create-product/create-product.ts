@@ -7,7 +7,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
@@ -17,6 +16,7 @@ import { ContentPanel } from '../../../shared/components/content-panel/content-p
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
 import { MultifieldPanel } from '../../../shared/components/multifield-panel/multifield-panel';
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
 import { ProductType } from '../../../shared/enums/product-type';
 
@@ -29,7 +29,6 @@ import { ProductType } from '../../../shared/enums/product-type';
     ButtonModule,
     FloatLabelModule,
     InputTextModule,
-    MessageModule,
     MultifieldPanel,
     ErrorReaderPipe,
     TextareaModule,
@@ -37,6 +36,7 @@ import { ProductType } from '../../../shared/enums/product-type';
     ContentPanel,
     SelectModule,
     MultiSelectModule,
+    MessageModule,
     UploadFile
   ],
   templateUrl: './create-product.html',
@@ -63,7 +63,7 @@ export class CreateProduct implements OnInit {
     { type: 'Impressão 3D', value: ProductType.PRINT_3D, disabled: true }
   ];
 
-  constructor(private fb: FormBuilder, private messageService: MessageService) {
+  constructor(private fb: FormBuilder, private messageService: NotificationService) {
     this.form = fb.group({
       images: this.fb.array([]),
       type: ['', Validators.required],
@@ -146,7 +146,7 @@ export class CreateProduct implements OnInit {
     const type = this.form.get('type')?.value;
 
     if (type === '' || type === undefined  || type === null) {
-      this.messageService.add({ severity: 'warn', summary: 'Tipo Não Informado', life: 4000, detail: `Informe o tipo do produto antes de adicionar opções!` });
+      this.messageService.warning('Tipo Não Informado', `Informe o tipo do produto antes de adicionar opções!`);
       return;
     }
 
@@ -198,7 +198,7 @@ export class CreateProduct implements OnInit {
   }
 
   fileUploadErrorEvent(failFile: any) {
-    this.messageService.add({ severity: 'error', summary: 'Tamanho Inválido', life: 6000, detail: `Imagem [${failFile.name}] excede o tamnho máximo de ${this.byteToKB(this.maxFileSize)}KB.` });
+    this.messageService.error('Tamanho Inválido', `Imagem [${failFile.name}] excede o tamnho máximo de ${this.byteToKB(this.maxFileSize)}KB.`);
   }
 
   private byteToKB(byteValue: number) {

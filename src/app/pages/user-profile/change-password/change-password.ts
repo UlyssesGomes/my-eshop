@@ -5,11 +5,11 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 import { PasswordModule } from 'primeng/password';
 
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { FieldConfirmValidator } from '../../../shared/validators/confirm-field/field-confirm-validator';
+import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { UserProfileService } from '../user-profile.service';
 
 @Component({
@@ -20,9 +20,9 @@ import { UserProfileService } from '../user-profile.service';
     ReactiveFormsModule,
     ButtonModule,
     FloatLabelModule,
-    PasswordModule,
-    ErrorReaderPipe,
     MessageModule,
+    PasswordModule,
+    ErrorReaderPipe
   ],
   templateUrl: './change-password.html',
   styleUrl: './change-password.scss'
@@ -31,7 +31,7 @@ export class ChangePassword {
 
   form!: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private readonly message: MessageService) {
+  constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private readonly message: NotificationService) {
     this.form = this.fb.group({
       'oldPassword': ['', [Validators.required, Validators.minLength(7)]],
       'newPassword': ['', [Validators.required, Validators.minLength(7), new FieldConfirmValidator('passwordConfirm').validate()]],
@@ -42,10 +42,10 @@ export class ChangePassword {
   public save() {
     this.userProfileService.updatePassword(this.form.value).subscribe({
       next: () => {
-        this.message.add({ severity: 'success', summary: 'Atualizado', detail: 'Senha atualizada com sucesso.', life: 6000});
+        this.message.success('Atualizado', 'Senha atualizada com sucesso.');
         this.form.reset();
       },
-      error: error => this.message.add({ severity: 'error', summary: error.title, detail: error.description, life: 6000})
+      error: error => this.message.error(error.title, error.description)
     });
   }
 }

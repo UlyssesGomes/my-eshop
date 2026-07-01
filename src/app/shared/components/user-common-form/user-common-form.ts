@@ -9,7 +9,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
 
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
@@ -17,6 +16,7 @@ import { debounceTime, Subject, take } from 'rxjs';
 
 import { ErrorReaderPipe } from '../../pipes/error-reader/error-reader-pipe';
 import { MultifieldPanel } from '../multifield-panel/multifield-panel';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-user-common-form',
@@ -30,8 +30,8 @@ import { MultifieldPanel } from '../multifield-panel/multifield-panel';
     InputNumberModule,
     InputTextModule,
     ErrorReaderPipe,
-    MessageModule,
     MultifieldPanel,
+    MessageModule,
     NgxMaskDirective,
   ],
   templateUrl: './user-common-form.html',
@@ -52,7 +52,7 @@ export class UserCommonForm implements OnInit, OnDestroy {
   _addressArray!: FormArray;
   get addressArray() { return this._addressArray; }
 
-  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: MessageService) { }
+  constructor(private readonly fb: FormBuilder, private readonly http: HttpClient, private messageService: NotificationService) { }
 
   ngOnInit(): void {
     this.inputSubject
@@ -89,12 +89,7 @@ export class UserCommonForm implements OnInit, OnDestroy {
     if (addressFormArray.length > 1) {
       addressFormArray.removeAt(index);
     } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Ação Bloqueada',
-        life: 4000,
-        detail: `É necessário cadastrar pelo menos 1 endereço.`
-      });
+      this.messageService.warning('Ação Bloqueada', `É necessário cadastrar pelo menos 1 endereço.`);
     }
   }
 
