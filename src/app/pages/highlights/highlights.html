@@ -8,7 +8,7 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         @for (highlightItem of highlightList; track highlightItem.id) {
-        <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"
+        <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"  endpoint="highlights/highlight-image/{{highlightItem.id}}"
             (editButton)="editSelectedHightlight($event)" (deleteButton)="deleteSelectedHighlight($event)" />
         } @empty {
             @if(!isLoading) {
@@ -17,5 +17,8 @@
         }
     </div>
 </app-content-panel>
+@if(highlightList.length > 0) {
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements" [rowsPerPageOptions]="[10, 20, 30]" />
+}
 <p-confirmdialog />
 <app-loading-block [isLoading]="isLoading"/>

@@ -4,8 +4,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageModule } from 'primeng/message';
 import { ConfirmationService } from 'primeng/api';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { HighlightsService } from './highlights.service';
@@ -16,7 +16,7 @@ import { NotificationService } from '../../shared/services/notification/notifica
 
 @Component({
   selector: 'app-highlights',
-  imports: [CommonModule, ButtonModule, ConfirmDialogModule, ContentPanel, LoadingBlock, RouterLink, SimpleItemCardList],
+  imports: [CommonModule, ButtonModule, ConfirmDialogModule, ContentPanel, LoadingBlock, PaginatorModule, RouterLink, SimpleItemCardList],
   templateUrl: './highlights.html',
   styleUrl: './highlights.scss'
 })
@@ -24,8 +24,9 @@ export class Highlights {
 
   highlightList: ItemList[] = [];
 
-  page = 0
+  first = 0
   pageSize = 10;
+  totalElements = 0;
 
   isLoading = false;
 
@@ -71,7 +72,7 @@ export class Highlights {
         });
       },
       reject: () => {
-        this.messageService.warning('Cancelado', 'Operação de remoção cancelada.' );
+        this.messageService.warning('Cancelado', 'Operação de remoção cancelada.');
       }
     });
 
@@ -81,16 +82,20 @@ export class Highlights {
 
   reloadItems() {
     this.isLoading = true;
-    this.highlightService.listWithPagination(this.page, this.pageSize).subscribe({
+    this.highlightService.listWithPagination(this.first, this.pageSize).subscribe({
       next: (response) => {
         let highlights = response.content;
+        this.totalElements = response.page.totalElements;
+
+        if((this.first / this.pageSize) >= response.page.totalPages) {
+          this.first -= this.pageSize;
+          this.reloadItems();
+        }
 
         this.highlightList = highlights.map((h: any) => {
           const i = new ItemList();
           i.id = h.id;
           i.title = h.link;
-          i.img = `data:image/png;base64,${h.img}`;
-
           return i;
         });
         this.isLoading = false;
@@ -99,7 +104,13 @@ export class Highlights {
         this.messageService.error(error.title, error.description);
         this.isLoading = false;
       }
-     });
+    });
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first ?? 0;
+    this.pageSize = event.rows ?? 10;
+    this.reloadItems();
   }
 
 }

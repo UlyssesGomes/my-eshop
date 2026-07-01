@@ -79,16 +79,18 @@ export abstract class ServiceCore<M> extends ErrorHandler {
     }
 
     listWithPagination(
-        page: number = 1,
+        first: number = 1,
         pageSize: number = 10,
         filters?: { [key: string]: any }
     ): Observable<any> {
         const url = `${this.urlBase}${this.getEndpoint()}`;
         const headers = this.getHeaders();
 
+        const page = first / pageSize;
+
         let params = new HttpParams()
             .set('page', page.toString())
-            .set('pageSize', pageSize.toString());
+            .set('size', pageSize.toString());
 
         // Adiciona filtros opcionais
         if (filters) {

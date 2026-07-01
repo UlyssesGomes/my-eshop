@@ -11,14 +11,15 @@ import { MessageModule } from 'primeng/message';
 
 import { take } from 'rxjs';
 
+import { AuthenticationService } from '../../../shared/services/auth/authentication.service';
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
+import { HighlightsService } from '../highlights.service';
+import { LoadingBlock } from '../../../shared/components/loading-block/loading-block';
 import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
-import { HighlightsService } from '../highlights.service';
-import { AuthenticationService } from '../../../shared/services/auth/authentication.service';
 
 @Component({
   selector: 'app-create-highlight',
@@ -29,6 +30,7 @@ import { AuthenticationService } from '../../../shared/services/auth/authenticat
     ReactiveFormsModule,
     FloatLabelModule,
     InputTextModule,
+    LoadingBlock,
     ErrorReaderPipe,
     ContentPanel,
     MessageModule,
@@ -52,6 +54,8 @@ export class CreateHighlight implements OnInit {
   id: any;
   imgTemp: ProductImageModel = new ProductImageModel();
 
+  loading = false;
+
   constructor(
     private fb: FormBuilder,
     private messageService: NotificationService,
@@ -72,6 +76,7 @@ export class CreateHighlight implements OnInit {
   private loadCreatOrEditRoute() {
     if (this.route.snapshot.url.toString().endsWith('edit')) {
       this.id = this.route.snapshot.paramMap.get('id');
+      this.loading = true;
       this.highlightService.getById(this.id).subscribe({
         next: (highlightResponse) => {
           this.form.patchValue(highlightResponse);
@@ -97,9 +102,11 @@ export class CreateHighlight implements OnInit {
           this.uploadFileComponent.setImage(this.imgTemp.file);
 
           (this.form.get('img') as FormControl).setValue(this.img);
+          this.loading = false;
         },
         error: (error) => {
           this.messageService.error(error.title, error.description);
+          this.loading = false;
         }
       });
     }
