@@ -1,5 +1,5 @@
 export enum ProductType {
-    SHIRT = 'SHIRT',
+    SHIRT = 'T-SHIRT',
     MUG = 'MUG',
-    PRINT_3D = '3D_PRINT'
+    FILAMENT = 'FILAMENT'
 }

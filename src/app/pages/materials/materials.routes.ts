@@ -11,5 +11,9 @@ export const materialsRoutes: Routes = [
     {
         path: 'create',
         component: CreateMaterial
+    },
+    {
+        path: ':id/edit',
+        component: CreateMaterial
     }
 ];

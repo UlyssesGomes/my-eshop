@@ -9,15 +9,17 @@
         <div class="flex items-center">
             <!-- menu -->
             <div class="ms-2 nav-menus clean-button show-element-md" *ngFor="let item of menuButtons">
-                <ng-container *ngIf="item.icon; then showIcon else showImage"></ng-container>
-                <ng-template #showIcon>
-                    <i class="me-2 {{item.icon}} text-xl md:text-lg"></i>
-                </ng-template>
-                <ng-template #showImage>
-                    <img class="inline me-2 image-icon" [src]="item.alternativeIcon" alt="Ícone para {{item.title}}">
-                </ng-template>
-                <!-- <i class="me-2 {{item.icon}}"></i> -->
-                <a class="nav-link" [routerLink]="item.path">{{item.title}}</a>
+                @if(verifyPermissions(item.permission)) {
+                    <ng-container *ngIf="item.icon; then showIcon else showImage"></ng-container>
+                    <ng-template #showIcon>
+                        <i class="me-2 {{item.icon}} text-xl md:text-lg"></i>
+                    </ng-template>
+                    <ng-template #showImage>
+                        <img class="inline me-2 image-icon" [src]="item.alternativeIcon" alt="Ícone para {{item.title}}">
+                    </ng-template>
+                    <!-- <i class="me-2 {{item.icon}}"></i> -->
+                    <a class="nav-link" [routerLink]="item.path">{{item.title}}</a>
+                }
             </div>
         </div>
     </div>

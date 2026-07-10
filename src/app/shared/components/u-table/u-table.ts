@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
 
+import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { ShowDatePipe } from '../../pipes/show-date/show-date-pipe';
 import { TableModule } from 'primeng/table';
+
+import { ShowDatePipe } from '../../pipes/show-date/show-date-pipe';
 import { UTableColumnAction } from './u-table-column-action';
 import { UTableActionEnum } from './u-table-action-enum';
 

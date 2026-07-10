@@ -1,5 +1,8 @@
 <app-content-panel>
-    <div>
+    <div class="flex items-center">
+        <p class="mb-3 mr-2">
+            <a (click)="back()"><i class="pi pi-arrow-left text-xl md:text-lg cursor-pointer"></i></a>
+        </p>
         <h3 class="mb-4">CADASTRO DE MATERIAIS</h3>
     </div>
     <form [formGroup]="form" (ngSubmit)="save()">
@@ -14,16 +17,18 @@
                 <div>
                     <p-floatlabel class="w-full md:w-56" variant="on">
                         <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
-                            optionValue="value" (onChange)="materialChange($event)" optionDisabled="disabled" class="w-full" />
+                            optionValue="value" (onChange)="materialChange($event)" optionDisabled="disabled"
+                            class="w-full" />
                         <label class="label-background font-semibold" for="type">Tipo do Produto</label>
                     </p-floatlabel>
-                    <p-message *ngIf="form.get('type')?.errors && !form.get('type')?.pristine && form.get('type')?.touched"
+                    <p-message
+                        *ngIf="form.get('type')?.errors && !form.get('type')?.pristine && form.get('type')?.touched"
                         severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
                         form.get('type')?.errors | errorReader}}</p-message>
-                </div>                
+                </div>
             </div>
 
-            <div class="flex md:flex-row flex-col" >
+            <div class="flex md:flex-row flex-col">
                 <!-- 
                 // -----------------------------------------------------------------------------------------------------
                 // INPUT SELECT MATERIAL SIZE
@@ -35,7 +40,8 @@
                             optionValue="value" optionDisabled="disabled" class="w-full" />
                         <label class="label-background font-semibold" for="size">Tamanho do Produto</label>
                     </p-floatlabel>
-                    <p-message *ngIf="form.get('size')?.errors && !form.get('size')?.pristine && form.get('size')?.touched"
+                    <p-message
+                        *ngIf="form.get('size')?.errors && !form.get('size')?.pristine && form.get('size')?.touched"
                         severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
                         form.get('size')?.errors | errorReader}}</p-message>
                 </div>
@@ -57,11 +63,27 @@
                 form.get('name')?.errors | errorReader}}</p-message>
         </div>
         <div class="my-3">
+            <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT SELECT MATERIAL COLOR
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+            <p-floatlabel class="w-full md:w-56" variant="on">
+                <p-select formControlName="color" inputId="color" [options]="productColors" optionLabel="value"
+                    optionValue="value" optionDisabled="disabled" class="w-full" />
+                <label class="label-background font-semibold" for="color">Cor do Produto</label>
+            </p-floatlabel>
+            <p-message *ngIf="form.get('color')?.errors && !form.get('color')?.pristine && form.get('color')?.touched"
+                severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
+                form.get('color')?.errors | errorReader}}</p-message>
+        </div>
+        <div class="my-3">
             <p-floatlabel variant="on">
                 <p-inputnumber id="quantity" formControlName="quantity" fluid="true" />
                 <label class="label-background font-semibold" for="price">Quantidade</label>
             </p-floatlabel>
-            <p-message *ngIf="form.get('quantity')?.errors && !form.get('quantity')?.pristine && form.get('quantity')?.touched"
+            <p-message
+                *ngIf="form.get('quantity')?.errors && !form.get('quantity')?.pristine && form.get('quantity')?.touched"
                 severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
                 form.get('quantity')?.errors | errorReader}}</p-message>
         </div>
@@ -70,7 +92,7 @@
                 label="Salvar" fluid="false" areaLabel="Salvar"></p-button>
             <p-button class="hide-element-md flex-grow" type="submit" [disabled]="form.invalid" label="Salvar"
                 fluid="true" areaLabel="Salvar"></p-button>
-        </div>     
+        </div>
     </form>
 
 </app-content-panel>

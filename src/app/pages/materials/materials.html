@@ -4,14 +4,15 @@
         <button pButton pRipple type="button" icon="pi pi-plus" rounded (click)="goToNewMaterial()"></button>
     </div>
 
-    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="false" [size]="undefined" (columnAction)="columnActionEvent($event)"></app-u-table>
+    @if(totalElements > 0) {
+        <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="true" [size]="undefined"
+        (columnAction)="columnActionEvent($event)"></app-u-table>
+    } @else {
+        <p>Nenhum Material foi cadastrado ainda.</p>
+    }
 
-    <div class="flex items-center justify-end">
-        <span class="mx-1 text-color">Items per page: </span>
-        <p-select [options]="paginationOptions" optionLabel="label" optionValue="value" [(ngModel)]="rows"
-            (ngModelChange)="first = 0" (onChange)="onPageFrameSize()"/>
-        <p-paginator [first]="first" [rows]="rows" [totalRecords]="materials.length" (onPageChange)="onPageChange($event)"
-            [showCurrentPageReport]="true" currentPageReportTemplate="{first} - {last} of {totalRecords}"
-            [showPageLinks]="false" [showFirstLastIcon]="false"></p-paginator>
-    </div>
+    @if(totalElements > 0) {
+        <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements" [rowsPerPageOptions]="[10, 20, 30]" />
+    }
 </app-content-panel>
+<p-confirmdialog />

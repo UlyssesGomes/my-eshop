@@ -60,7 +60,7 @@ export class CreateProduct implements OnInit {
   productTypes = [
     { type: 'Camisa', value: ProductType.SHIRT, disabled: false },
     { type: 'Caneca', value: ProductType.MUG, disabled: false },
-    { type: 'Impressão 3D', value: ProductType.PRINT_3D, disabled: true }
+    { type: 'Impressão 3D', value: ProductType.FILAMENT, disabled: true }
   ];
 
   constructor(private fb: FormBuilder, private messageService: NotificationService) {

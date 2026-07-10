@@ -20,7 +20,7 @@ export abstract class ServiceCore<M> extends ErrorHandler {
     constructor(protected readonly http: HttpClient) {
         super();
         if (environment.enableDebug) {
-            console.log('Backend API URL:', this.urlBase);
+            console.info('Backend API URL:', this.urlBase);
         }
     }
 

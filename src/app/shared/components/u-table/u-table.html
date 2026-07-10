@@ -62,12 +62,12 @@
             </td> -->
             <td *ngIf="showActionColumn">
                 <div class="flex items-center justify-center gap-2">
-                    <button pButton pRipple type="button" icon="pi pi-eye"
-                        text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.VIEW, material)"></button>
+                    <!-- <button pButton pRipple type="button" icon="pi pi-eye"
+                        text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.VIEW, material)"></button> -->
                     <button pButton pRipple type="button" icon="pi pi-pencil"
-                            text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.EDIT, material)"></button>
+                            text rounded severity="primary" (click)="onColumnAction(columnActionEnum.EDIT, material)"></button>
                     <button pButton pRipple type="button" icon="pi pi-trash"
-                        text rounded severity="secondary" (click)="onColumnAction(columnActionEnum.DELETE, material)"></button>
+                        text rounded severity="danger" (click)="onColumnAction(columnActionEnum.DELETE, material)"></button>
                 </div>
             </td>
         </tr>

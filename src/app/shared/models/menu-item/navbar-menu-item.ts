@@ -4,4 +4,5 @@ export class NavbarMenuItem {
     title!: string;
     path!: string;
     isValid?: boolean;
+    permission?: string[];
 }

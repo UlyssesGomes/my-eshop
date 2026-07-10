@@ -33,7 +33,7 @@ export const homeRoutes: Routes = [
                 loadChildren: () => import('../highlights/highlights.routes').then(h => h.highlightsRoutes)
             },
             {
-                path: 'admin/materiais',
+                path: 'admin/materials',
                 loadChildren: () => import('../materials/materials.routes').then(p => p.materialsRoutes),
             },
             {

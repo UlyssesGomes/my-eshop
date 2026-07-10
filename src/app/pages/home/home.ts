@@ -4,12 +4,10 @@ import { Router, RouterOutlet } from '@angular/router';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { MenuItem } from 'primeng/api';
 
-import { HeaderHighlights } from '../../shared/components/header-highlights/header-highlights';
 import { NavbarMenuItem } from '../../shared/models/menu-item/navbar-menu-item';
 import { Navbar } from '../../core/components/navbar/navbar';
 import { PerfilMenu } from '../../shared/models/perfil-menu/perfil-menu';
 import { Footer } from '../../core/components/footer/footer';
-import { LocalStoageKey } from '../../shared/enums/localstorage-key';
 import { TokenUtils } from '../../shared/utils/token-utils';
 
 @Component({
@@ -42,6 +40,18 @@ export class Home implements OnInit {
       title: 'Personalize',
       path: '/personalize'
     },
+    {
+      icon: 'pi pi-warehouse',
+      title: 'Materiais',
+      path: '/admin/materials',
+      permission: ['READ_MATERIALS', 'READ_*']
+    },
+    {
+      icon: 'pi pi-sparkles',
+      title: 'Highlights',
+      path: '/admin/highlights',
+      permission: ['READ_MATERIALS', 'READ_*']
+    }
   ];
 
   profileMenuItems: MenuItem[] = [
@@ -76,6 +86,8 @@ export class Home implements OnInit {
     }
   ];
 
+  userPermissions?: string[];
+
   perfilInfo?: PerfilMenu;
 
   constructor(private readonly router: Router) { }
@@ -92,8 +104,10 @@ export class Home implements OnInit {
       this.perfilInfo!.name = nameSplited[0];
       this.perfilInfo!.lastName = nameSplited != null && nameSplited.length > 1 ? nameSplited[nameSplited.length - 1] : '';
       this.perfilInfo!.role = loggedUser.role.toString();
+      this.userPermissions = loggedUser.authorities;
     } else {
       this.perfilInfo = undefined;
+      this.userPermissions = [];
     }
   }
 }

@@ -33,6 +33,9 @@ export class Navbar {
   @Input()
   shopCartAmount!: number;
 
+  @Input()
+  permissions?: string [];
+
   isOpen = false;
 
   constructor(private router: Router) {}
@@ -48,5 +51,13 @@ export class Navbar {
 
   openSidebar() {
     this.isOpen = !this.isOpen;
+  }
+
+  verifyPermissions(permission: string [] | undefined) {
+    if(permission === undefined || permission === null || this.permissions == undefined || this.permissions === null)
+      return true;
+
+    const showElement = permission.some(p => this.permissions?.includes(p));
+    return showElement;
   }
 }

@@ -1,7 +1,6 @@
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
 import { ButtonModule } from 'primeng/button';
@@ -11,15 +10,16 @@ import { MessageModule } from 'primeng/message';
 
 import { take } from 'rxjs';
 
-import { AuthenticationService } from '../../../shared/services/auth/authentication.service';
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
+import { CreateEdit } from '../../../shared/core/create-edit';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
 import { HighlightsService } from '../highlights.service';
 import { LoadingBlock } from '../../../shared/components/loading-block/loading-block';
-import { NotificationService } from '../../../shared/services/notification/notification.service';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
+import { Highlight } from '../../../shared/models/highlight/highlight';
+import { ServiceCore } from '../../../shared/services/service-core';
 
 @Component({
   selector: 'app-create-highlight',
@@ -39,9 +39,7 @@ import { ProductImageModel } from '../../../shared/models/product/image-file/pro
   templateUrl: './create-highlight.html',
   styleUrl: './create-highlight.scss'
 })
-export class CreateHighlight implements OnInit {
-
-  form: FormGroup;
+export class CreateHighlight extends CreateEdit<Highlight> {
 
   maxFileSize = 2097152; // 2MB
 
@@ -51,65 +49,62 @@ export class CreateHighlight implements OnInit {
   @ViewChild('uploadFile')
   uploadFileComponent!: UploadFile;
 
-  id: any;
   imgTemp: ProductImageModel = new ProductImageModel();
 
-  loading = false;
-
   constructor(
-    private fb: FormBuilder,
-    private messageService: NotificationService,
-    private highlightService: HighlightsService,
-    private authService: AuthenticationService,
-    private readonly location: Location,
-    private readonly route: ActivatedRoute) {
-    this.form = fb.group({
+    private highlightService: HighlightsService) {
+    super();
+  }
+
+  override featureName() {
+    return 'Highlight';
+  }
+
+  override getService(): ServiceCore<Highlight> {
+    return this.highlightService;
+  }
+
+  override defineForm(): FormGroup {
+    return this.fb.group({
       img: ['', [Validators.required]],
       link: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(256)]],
     });
   }
 
-  ngOnInit(): void {
-    this.loadCreatOrEditRoute();
-  }
+  override loadData() {
+    this.highlightService.getById(this.id).subscribe({
+      next: (highlightResponse) => {
+        this.form.patchValue(highlightResponse);
+      },
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
+        this.loading = false;
+      }
+    });
 
-  private loadCreatOrEditRoute() {
-    if (this.route.snapshot.url.toString().endsWith('edit')) {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.loading = true;
-      this.highlightService.getById(this.id).subscribe({
-        next: (highlightResponse) => {
-          this.form.patchValue(highlightResponse);
-        },
-        error: (error) => {
-          this.messageService.error(error.title, error.description);
-        }
-      });
+    this.highlightService.getImageById(this.id).subscribe({
+      next: (image) => {
 
-      this.highlightService.getImageById(this.id).subscribe({
-        next: (image) => {
+        const f: File = new File([image], 'imagem.jpg', { type: image.type });
+        Object.defineProperty(f, 'objectURL', {
+          value: URL.createObjectURL(image)
+        });
 
-          const f: File = new File([image], 'imagem.jpg', { type: image.type });
-          Object.defineProperty(f, 'objectURL', {
-            value: URL.createObjectURL(image)
-          });
-
-          this.imgTemp.indexImage = 0,
+        this.imgTemp.indexImage = 0,
           this.imgTemp.file = f;
-          this.imgTemp.isHighlight = false;
+        this.imgTemp.isHighlight = false;
 
-          this.img.push(this.imgTemp);
-          this.uploadFileComponent.setImage(this.imgTemp.file);
+        this.img.push(this.imgTemp);
+        this.uploadFileComponent.setImage(this.imgTemp.file);
 
-          (this.form.get('img') as FormControl).setValue(this.img);
-          this.loading = false;
-        },
-        error: (error) => {
-          this.messageService.error(error.title, error.description);
-          this.loading = false;
-        }
-      });
-    }
+        (this.form.get('img') as FormControl).setValue(this.img);
+        this.loading = false;
+      },
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
+        this.loading = false;
+      }
+    });
   }
 
   onChangeImages(event: FileEvent) {
@@ -145,7 +140,7 @@ export class CreateHighlight implements OnInit {
     this.location.back();
   }
 
-  save() {
+  override save() {
     const formData = new FormData();
     formData.append('link', this.form.get('link')?.value);
     formData.append('img', this.img[0].file);
@@ -157,12 +152,11 @@ export class CreateHighlight implements OnInit {
 
   }
 
-  create(formData: any) {
+  override create(formData: any) {
     this.highlightService.createWithFormData(formData).pipe(take(1)).subscribe({
       next: (response) => {
-        this.messageService.success('Criado Com Sucesso', `Highlight criado com sucesso.`);
-        this.uploadFileComponent.clearList();
-        this.imgPristineAttr = true;
+        this.messageService.success('Criado Com Sucesso', `${this.featureName()} criado com sucesso.`);
+        this.afterCreate();
         this.form.reset();
       },
       error: (error) => {
@@ -171,18 +165,27 @@ export class CreateHighlight implements OnInit {
     });
   }
 
-  update(formData: any) {
+  override afterCreate() {
+    this.uploadFileComponent.clearList();
+    this.imgPristineAttr = true;
+  }
+
+  override update(formData: any) {
     this.highlightService.updateWithFormData(this.id, formData).pipe(take(1)).subscribe({
       next: (response) => {
-        this.messageService.success('Atualizado Com Sucesso', `Highlight atualizado com sucesso.`);
-        this.uploadFileComponent.clearList();
-        this.imgPristineAttr = true;
+        this.messageService.success('Atualizado Com Sucesso', `${this.featureName()} atualizado com sucesso.`);
         this.form.reset();
+        this.afterUpdate();
         this.location.back();
       },
       error: (error) => {
         this.messageService.error(error.title, error.description);
       }
     });
+  }
+
+  override afterUpdate() {
+    this.uploadFileComponent.clearList();
+    this.imgPristineAttr = true;
   }
 }
