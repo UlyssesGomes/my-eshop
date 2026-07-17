@@ -95,7 +95,7 @@ export abstract class ServiceCore<M> extends ErrorHandler {
         // Adiciona filtros opcionais
         if (filters) {
             Object.keys(filters).forEach(key => {
-                if (filters[key] !== null && filters[key] !== undefined) {
+                if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
                     params = params.set(key, filters[key].toString());
                 }
             });

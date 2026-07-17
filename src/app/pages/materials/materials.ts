@@ -1,11 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PopoverModule } from 'primeng/popover';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 
@@ -16,10 +20,29 @@ import { NotificationService } from '../../shared/services/notification/notifica
 import { ProductType } from '../../shared/enums/product-type';
 import { UTable } from '../../shared/components/u-table/u-table';
 import { UTableActionEnum } from '../../shared/components/u-table/u-table-action-enum';
+import { ProductColorEnum } from '../../shared/enums/product-color';
+import { BadgeModule } from 'primeng/badge';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-materials',
-  imports: [CommonModule, FormsModule, ButtonModule, ConfirmDialogModule, ContentPanel, PaginatorModule, SelectModule, UTable],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    AutoFocusModule,
+    BadgeModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    ContentPanel,
+    FloatLabelModule,
+    InputTextModule,
+    OverlayBadgeModule,
+    PopoverModule,
+    PaginatorModule,
+    SelectModule,
+    UTable
+  ],
   templateUrl: './materials.html',
   styleUrl: './materials.scss'
 })
@@ -28,13 +51,12 @@ export class Materials implements OnInit {
   paginatedMaterials: Material[] = [];
   columnsWidth: number[] = [10, 35, 15, 15, 15, 10];
 
+  filterForm: FormGroup;
+
   types = [
     { label: 'Camisas', value: ProductType.SHIRT },
     { label: 'Canecas', value: ProductType.MUG },
     { label: 'Filamento 3D', value: ProductType.FILAMENT }
-  ];
-  coresMock = ['branco', 'preto', 'azul', 'vermelho', 'rosa', 'bege', 'rosa', 'verde', 'amarelo', 'cinza',
-    'violeta', 'escarlate', 'cyano', 'limão', 'rosa', 'bege', 'rosa', 'verde', 'amarelo', 'cinza'
   ];
 
   paginationOptions = [
@@ -42,6 +64,21 @@ export class Materials implements OnInit {
     { label: 10, value: 10 },
     { label: 20, value: 20 },
     { label: 120, value: 120 }
+  ];
+
+  productTypes = [
+    { type: 'Camisa', value: ProductType.SHIRT, disabled: false },
+    { type: 'Caneca', value: ProductType.MUG, disabled: false },
+    { type: 'Filamento 3D', value: ProductType.FILAMENT, disabled: false }
+  ];
+
+  productColors = [
+    { value: ProductColorEnum.WHITE, disabled: false },
+    { value: ProductColorEnum.BLACK, disabled: false },
+    { value: ProductColorEnum.YELLOW, disabled: false },
+    { value: ProductColorEnum.RED, disabled: false },
+    { value: ProductColorEnum.GREEN, disabled: false },
+    { value: ProductColorEnum.BLUE, disabled: false },
   ];
 
   first = 0
@@ -53,8 +90,14 @@ export class Materials implements OnInit {
     private readonly route: ActivatedRoute,
     private materialService: MaterialService,
     private notification: NotificationService,
-    private readonly confirmationService: ConfirmationService
+    private readonly confirmationService: ConfirmationService,
+    private fb: FormBuilder
   ) {
+    this.filterForm = this.fb.group({
+      name: ['', []],
+      type: ['', []],
+      color: ['', []]
+    });
   }
 
   ngOnInit(): void {
@@ -134,12 +177,21 @@ export class Materials implements OnInit {
   }
 
   private loadMaterials() {
-    this.materialService.listWithPagination(this.first, this.pageSize).subscribe({
+    this.materialService.listWithPagination(this.first, this.pageSize, this.filterForm.value).subscribe({
       next: response => {
         this.paginatedMaterials = response.content;
         this.totalElements = response.page.totalElements;
       },
       error: error => this.notification.error(error.title, error.description)
     });
+  }
+
+  filter() {
+    this.loadMaterials();
+  }
+
+  clearForm() {
+    this.filterForm.reset();
+    this.loadMaterials();
   }
 }

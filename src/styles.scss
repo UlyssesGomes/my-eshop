@@ -7,6 +7,7 @@
 @use "resources/styles/table";
 @use "resources/styles/input";
 @use "resources/styles/responsive-objects";
+@use "resources/styles/popover";
 @use "tailwindcss";
 @import "primeicons/primeicons.css";
 
@@ -17,7 +18,7 @@ $contrast-background-value: #071446;
 :root {
   --body-background: var(--p-slate-950);
   --primary-background: rgb(108, 66, 192);
-  --secondary-background: #283f78;  
+  --secondary-background: #283f78;
   --third-background: rgb(69, 186, 134);
 }
 
