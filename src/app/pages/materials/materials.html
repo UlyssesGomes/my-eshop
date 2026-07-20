@@ -2,7 +2,7 @@
     <div class="flex justify-between mb-2">
         <h2 class="mb-3">Materiais</h2>
         <div class="flex items-center gap-x-2" #panel>
-            <button pButton pRipple type="button" icon="pi pi-plus" iconOnly (click)="goToNewMaterial()"></button>
+            <button pButton pRipple type="button" icon="pi pi-plus" iconOnly (click)="goToNewItem()"></button>
             <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="info"
                 styleClass="animate-pulse">
                 <button pButton pRipple type="button" icon="pi pi-filter" iconOnly

@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         @for (highlightItem of highlightList; track highlightItem.id) {
         <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"  endpoint="highlights/highlight-image/{{highlightItem.id}}"
-            (editButton)="editSelectedHightlight($event)" (deleteButton)="deleteSelectedHighlight($event)" />
+            (editButton)="columnActionEvent($event)" (deleteButton)="columnActionEvent($event)" />
         } @empty {
             @if(!isLoading) {
                 <p>Nenhum highlight foi cadastrado ainda.</p>

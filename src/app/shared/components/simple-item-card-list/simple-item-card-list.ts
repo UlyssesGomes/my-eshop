@@ -12,6 +12,7 @@ import { catchError, Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ErrorHandler } from '../../services/error-handler';
 import { ItemList } from '../../models/item-list/item-list';
+import { UTableActionEnum } from '../u-table/u-table-action-enum';
 
 @Component({
   selector: 'app-simple-item-card-list',
@@ -66,11 +67,17 @@ export class SimpleItemCardList extends ErrorHandler implements OnInit {
   }
 
   editClick(item: any) {
-    this.editButton.emit(item);
+    this.editButton.emit({
+      action: UTableActionEnum.EDIT,
+      item: item
+    });
   }
 
   deleteClick(item: any) {
-    this.deleteButton.emit(item);
+    this.deleteButton.emit({
+      action: UTableActionEnum.DELETE,
+      item: item
+    });
   }
 
   private getById(): Observable<any> {

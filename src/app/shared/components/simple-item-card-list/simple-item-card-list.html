@@ -5,9 +5,9 @@
         </div>
         <div>
             <p-button *ngIf="isShowDelete" icon="pi pi-trash" severity="danger" [rounded]="true" [raised]="true"
-                [text]="true" (click)="deleteClick(item.id)" />
+                [text]="true" (click)="deleteClick(item)" />
             <p-button *ngIf="isShowEdit" icon="pi pi-pencil" severity="success" [rounded]="true" [raised]="true"
-                [text]="true" (click)="editClick(item.id)" />
+                [text]="true" (click)="editClick(item)" />
         </div>
     </div>
 

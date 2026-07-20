@@ -21,6 +21,8 @@ export abstract class CoreList<M> implements OnInit {
     pageSize = 10;
     totalElements = 0;
 
+    isLoading = false;
+
     columnsWidth: number[] = [10, 35, 15, 15, 15, 10];
 
     paginatedMaterials: M[] = [];
@@ -45,7 +47,7 @@ export abstract class CoreList<M> implements OnInit {
         this.loadList();
     }
 
-    goToNewMaterial() {
+    goToNewItem() {
         this.router.navigate(['create'], { relativeTo: this.route });
     }
 
