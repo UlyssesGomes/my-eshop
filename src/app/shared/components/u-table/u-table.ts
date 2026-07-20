@@ -23,7 +23,7 @@ export class UTable implements OnInit, OnChanges {
   items: any[] = [];
 
   @Input()
-  size: 'small' | 'large' | undefined = "small";
+  size: 'small' | 'large' | undefined = undefined;
 
   @Input()
   scrollable = true;

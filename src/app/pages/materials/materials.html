@@ -1,66 +1,69 @@
 <app-content-panel>
-    <div class="flex justify-between">
+    <div class="flex justify-between mb-2">
         <h2 class="mb-3">Materiais</h2>
-        <div class="flex justify-between" #panel>
-            <button pButton pRipple type="button" icon="pi pi-plus" rounded (click)="goToNewMaterial()"></button>
-            <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="danger" styleClass="animate-pulse">
-                <button class="ml-4" pButton pRipple type="button" icon="pi pi-filter" rounded
+        <div class="flex items-center gap-x-2" #panel>
+            <button pButton pRipple type="button" icon="pi pi-plus" iconOnly (click)="goToNewMaterial()"></button>
+            <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="info"
+                styleClass="animate-pulse">
+                <button pButton pRipple type="button" icon="pi pi-filter" iconOnly
                     (click)="pop.toggle($event)"></button>
-                <!-- <p-badge severity="danger" class="animate-pulse" /> -->
             </p-overlay-badge>
-            <p-popover #pop [appendTo]="panel">
-                <form [formGroup]="filterForm" (ngSubmit)="filter()">
-                    <div class="flex flex-col gap-y-3">
-                        <!-- 
-                            // -----------------------------------------------------------------------------------------------------
-                            // INPUT MATERIAL NAME
-                            // ----------------------------------------------------------------------------------------------------- 
-                            -->
-                        <div>
-                            <p-floatlabel variant="on">
-                                <input [pAutoFocus]="true" pInputText id="name" formControlName="name" fluid="true" />
-                                <label class="label-background font-semibold" for="name">Nome do Material</label>
-                            </p-floatlabel>
-                        </div>
-                        <!-- 
-                            // -----------------------------------------------------------------------------------------------------
-                            // INPUT SELECT MATERIAL TYPE
-                            // ----------------------------------------------------------------------------------------------------- 
-                            -->
-                        <div>
-                            <p-floatlabel class="w-full" variant="on">
-                                <p-select formControlName="type" inputId="type" [options]="productTypes"
-                                    optionLabel="type" optionValue="value" optionDisabled="disabled" class="w-full" />
-                                <label class="label-background font-semibold" for="type">Tamanho do Produto</label>
-                            </p-floatlabel>
-                        </div>
-                        <!-- 
-                            // -----------------------------------------------------------------------------------------------------
-                            // INPUT SELECT MATERIAL COLOR
-                            // ----------------------------------------------------------------------------------------------------- 
-                            -->
-                        <div>
-                            <p-floatlabel class="w-full" variant="on">
-                                <p-select formControlName="color" inputId="color" [options]="productColors"
-                                    optionLabel="value" optionValue="value" optionDisabled="disabled" class="w-full" />
-                                <label class="label-background font-semibold" for="color">Cor do Produto</label>
-                            </p-floatlabel>
-                        </div>
-                        <div class="flex gap-x-2 flex-row-reverse">
-                            <p-button type="submit" [disabled]="filterForm.invalid" label="Filtrar" fluid="false"
-                                areaLabel="Filtrar" size="small" />
-                            <p-button (click)="clearForm()" variant="outlined" [disabled]="!filterForm.dirty"
-                                label="Limpar" fluid="false" areaLabel="Limpar" size="small" />
-                        </div>
-                    </div>
-                </form>
-            </p-popover>
+
         </div>
     </div>
+    <p-popover #pop [appendTo]="panel">
+        <form [formGroup]="filterForm" (ngSubmit)="filter()">
+            <div class="flex flex-col gap-y-3">
+                <!-- 
+                        // -----------------------------------------------------------------------------------------------------
+                        // INPUT MATERIAL NAME
+                        // ----------------------------------------------------------------------------------------------------- 
+                        -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <input [pAutoFocus]="true" pInputText id="name" formControlName="name" fluid="true" />
+                        <label class="label-background font-semibold" for="name">Nome do Material</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                        // -----------------------------------------------------------------------------------------------------
+                        // INPUT SELECT MATERIAL TYPE
+                        // ----------------------------------------------------------------------------------------------------- 
+                        -->
+                <div>
+                    <p-floatlabel class="w-full" variant="on">
+                        <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
+                            optionValue="value" optionDisabled="disabled" class="w-full" />
+                        <label class="label-background font-semibold" for="type">Tamanho do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                        // -----------------------------------------------------------------------------------------------------
+                        // INPUT SELECT MATERIAL COLOR
+                        // ----------------------------------------------------------------------------------------------------- 
+                        -->
+                <div>
+                    <p-floatlabel class="w-full" variant="on">
+                        <p-select formControlName="color" inputId="color" [options]="productColors" optionLabel="value"
+                            optionValue="value" optionDisabled="disabled" class="w-full" />
+                        <label class="label-background font-semibold" for="color">Cor do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <div class="flex gap-x-2 flex-row-reverse">
+                    <p-button type="submit" [disabled]="filterForm.invalid" label="Filtrar" fluid="false"
+                        areaLabel="Filtrar" size="small" />
+                    <p-button (click)="clearForm()" variant="outlined" [disabled]="!filterForm.dirty" label="Limpar"
+                        fluid="false" areaLabel="Limpar" size="small" />
+                </div>
+            </div>
+        </form>
+    </p-popover>
 
     @if(totalElements > 0) {
-    <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="true" [size]="undefined"
-        (columnAction)="columnActionEvent($event)"></app-u-table>
+        <div>
+            <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="true" size="small"
+                (columnAction)="columnActionEvent($event)"></app-u-table>
+        </div>
     } @else {
     <p>Nenhum Material foi cadastrado ainda.</p>
     }
