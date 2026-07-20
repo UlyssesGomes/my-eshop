@@ -8,7 +8,7 @@ import { ServiceCore } from "../services/service-core";
 import { take } from "rxjs";
 
 @Injectable()
-export abstract class CreateEdit<M> implements OnInit {
+export abstract class CoreCreateEdit<M> implements OnInit {
 
     protected route: ActivatedRoute = inject(ActivatedRoute);
     protected messageService = inject(NotificationService);

@@ -10,7 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { SelectChangeEvent, SelectModule } from 'primeng/select';
 
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
-import { CreateEdit } from '../../../shared/core/create-edit';
+import { CoreCreateEdit } from '../../../shared/core/core-create-edit';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { Material } from '../../../shared/models/material/material';
 import { MaterialService } from '../material.service';
@@ -37,7 +37,7 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-material.html',
   styleUrl: './create-material.scss'
 })
-export class CreateMaterial extends CreateEdit<Material> {
+export class CreateMaterial extends CoreCreateEdit<Material> {
 
   productTypes = [
     { type: 'Camisa', value: ProductType.SHIRT, disabled: false },

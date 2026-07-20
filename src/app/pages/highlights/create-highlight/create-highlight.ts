@@ -11,7 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { take } from 'rxjs';
 
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
-import { CreateEdit } from '../../../shared/core/create-edit';
+import { CoreCreateEdit } from '../../../shared/core/core-create-edit';
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
@@ -39,7 +39,7 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-highlight.html',
   styleUrl: './create-highlight.scss'
 })
-export class CreateHighlight extends CreateEdit<Highlight> {
+export class CreateHighlight extends CoreCreateEdit<Highlight> {
 
   maxFileSize = 2097152; // 2MB
 
