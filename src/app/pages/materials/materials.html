@@ -8,7 +8,6 @@
                 <button pButton pRipple type="button" icon="pi pi-filter" iconOnly
                     (click)="pop.toggle($event)"></button>
             </p-overlay-badge>
-
         </div>
     </div>
     <p-popover #pop [appendTo]="panel">
@@ -34,7 +33,7 @@
                     <p-floatlabel class="w-full" variant="on">
                         <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
                             optionValue="value" optionDisabled="disabled" class="w-full" />
-                        <label class="label-background font-semibold" for="type">Tamanho do Produto</label>
+                        <label class="label-background font-semibold" for="type">Tipo do Produto</label>
                     </p-floatlabel>
                 </div>
                 <!-- 
@@ -61,7 +60,7 @@
 
     @if(totalElements > 0) {
         <div>
-            <app-u-table [items]="paginatedMaterials" [columnsWidth]="columnsWidth" [showActionColumn]="true" size="small"
+            <app-u-table [items]="paginatedItems" [columnsWidth]="columnsWidth" [showActionColumn]="true" size="small"
                 (columnAction)="columnActionEvent($event)"></app-u-table>
         </div>
     } @else {

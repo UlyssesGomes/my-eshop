@@ -23,21 +23,24 @@ export abstract class CoreList<M> implements OnInit {
 
     isLoading = false;
 
-    columnsWidth: number[] = [10, 35, 15, 15, 15, 10];
-
-    paginatedMaterials: M[] = [];
+    paginatedItems: M[] = [];
 
     ngOnInit(): void {
         this.loadList();
     }
 
     loadList() {
+        this.isLoading = true;
         this.getService().listWithPagination(this.first, this.pageSize, this.getFilterForm().value).subscribe({
             next: response => {
-                this.paginatedMaterials = response.content;
+                this.paginatedItems = response.content;
                 this.totalElements = response.page.totalElements;
+                this.isLoading = false;
             },
-            error: error => this.notification.error(error.title, error.description)
+            error: error => {
+                this.notification.error(error.title, error.description);
+                this.isLoading = false;
+            }
         });
     }
 

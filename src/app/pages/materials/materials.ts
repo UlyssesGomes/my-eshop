@@ -77,6 +77,7 @@ export class Materials extends CoreList<Material>{
     { value: ProductColorEnum.BLUE, disabled: false },
   ];
 
+  columnsWidth: number[] = [10, 35, 15, 15, 15, 10];
 
   constructor(private materialService: MaterialService,
     private fb: FormBuilder
