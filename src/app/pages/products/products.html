@@ -1,8 +1,19 @@
 <app-content-panel>
-    <h2>Camisetas</h2>
+    <div class="flex justify-between mb-2">
+        <h2 class="mb-3">Produtos</h2>
+        <div class="flex items-center gap-x-2" #panel>
+            <button pButton pRipple type="button" icon="pi pi-plus" iconOnly (click)="goToNewItem()"></button>
+            <!-- <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="info" styleClass="animate-pulse">
+                <button pButton pRipple type="button" icon="pi pi-filter" iconOnly
+                    (click)="pop.toggle($event)"></button>
+            </p-overlay-badge> -->
+        </div>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-        @for (product of productList; track product.id) {
-        <app-shop-item-card-list [item]="product" (favoriteButton)="addFavoriteItem(product)" />
+        @for (product of paginatedItems; track product.id) {
+        <app-product-item-card-list [item]="product" (actionButton)="columnActionEvent($event)"/>
+        } @empty {
+        <p>Nenhum produto foi cadastrado ainda.</p>
         }
     </div>
 </app-content-panel>

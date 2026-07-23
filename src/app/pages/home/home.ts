@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MenuItem } from 'primeng/api';
 
 import { NavbarMenuItem } from '../../shared/models/menu-item/navbar-menu-item';
@@ -12,7 +13,7 @@ import { TokenUtils } from '../../shared/utils/token-utils';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterOutlet, ContextMenuModule, Navbar, Footer],
+  imports: [RouterOutlet, ContextMenuModule, ConfirmDialogModule, Navbar, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -41,16 +42,22 @@ export class Home implements OnInit {
       path: '/personalize'
     },
     {
-      icon: 'pi pi-warehouse',
+      alternativeIcon: 'resources/images/icon/material/outline/icon-widgets-24.svg',
+      title: 'Produtos',
+      path: '/admin/products',
+      permission: ['READ_PRODUCT', 'READ_*']
+    },
+    {
+      icon: 'pi pi-objects-column',
       title: 'Materiais',
       path: '/admin/materials',
-      permission: ['READ_MATERIALS', 'READ_*']
+      permission: ['READ_MATERIAL', 'READ_*']
     },
     {
       icon: 'pi pi-sparkles',
       title: 'Highlights',
       path: '/admin/highlights',
-      permission: ['READ_MATERIALS', 'READ_*']
+      permission: ['READ_MATERIAL', 'READ_*']
     }
   ];
 

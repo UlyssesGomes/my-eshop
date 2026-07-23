@@ -13,7 +13,7 @@ export const homeRoutes: Routes = [
                 component: Showcase
             },
             {
-                path: 'produtos',
+                path: 'admin/products',
                 loadChildren: () => import('../products/products.routes').then(p => p.productRoutes),
             },
             {

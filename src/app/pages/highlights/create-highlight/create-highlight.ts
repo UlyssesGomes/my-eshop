@@ -136,10 +136,6 @@ export class CreateHighlight extends CoreCreateEdit<Highlight> {
     return (byteValue / 1024.0).toFixed(2);
   }
 
-  back() {
-    this.location.back();
-  }
-
   override save() {
     const formData = new FormData();
     formData.append('link', this.form.get('link')?.value);

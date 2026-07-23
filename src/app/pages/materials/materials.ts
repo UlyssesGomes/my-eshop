@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PopoverModule } from 'primeng/popover';
@@ -15,7 +14,6 @@ import { ContentPanel } from '../../shared/components/content-panel/content-pane
 import { CoreList } from '../../shared/core/core-list';
 import { Material } from '../../shared/models/material/material';
 import { MaterialService } from './material.service';
-import { NotificationService } from '../../shared/services/notification/notification.service';
 import { ProductType } from '../../shared/enums/product-type';
 import { UTable } from '../../shared/components/u-table/u-table';
 import { ProductColorEnum } from '../../shared/enums/product-color';
@@ -32,7 +30,6 @@ import { ServiceCore } from '../../shared/services/service-core';
     AutoFocusModule,
     BadgeModule,
     ButtonModule,
-    ConfirmDialogModule,
     ContentPanel,
     FloatLabelModule,
     InputTextModule,

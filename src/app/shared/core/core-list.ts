@@ -58,7 +58,6 @@ export abstract class CoreList<M> implements OnInit {
         if (event.action === UTableActionEnum.EDIT) {
             this.router.navigate([event.item.id, 'edit'], { relativeTo: this.route });
         } else if (event.action === UTableActionEnum.DELETE) {
-
             this.confirmationService.confirm({
                 target: event.target as EventTarget,
                 message: 'Você tem certeza que deseja deletar esse item?',
@@ -82,7 +81,7 @@ export abstract class CoreList<M> implements OnInit {
                             this.loadList();
                         },
                         error: error => {
-                            this.notification.success(error.title, error.description);
+                            this.notification.error(error.title, error.description);
                         }
                     });
                 },

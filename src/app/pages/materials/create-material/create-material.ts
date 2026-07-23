@@ -83,19 +83,11 @@ export class CreateMaterial extends CoreCreateEdit<Material> {
     }
   }
 
-  back() {
-    this.location.back();
-  }
-
   override preLoadData(material: Material): void {
     if(material.type === ProductType.SHIRT) {
       this.addSizeControl();
     }
   }
-
-  override afterCreate(): void { return; }
-
-  override afterUpdate(): void { return; }
 
   override getService(): ServiceCore<Material> {
     return this.materialService;
@@ -104,7 +96,7 @@ export class CreateMaterial extends CoreCreateEdit<Material> {
   override defineForm(): FormGroup {
     return this.fb.group({
       id: [null, []],
-      name: ['', [Validators.minLength(5), Validators.maxLength(100), Validators.required]],
+      name: ['', [Validators.minLength(3), Validators.maxLength(100), Validators.required]],
       type: [null, [Validators.required]],
       color: [null, [Validators.required]],
       quantity: [0, [Validators.required]],

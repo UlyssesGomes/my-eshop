@@ -1,5 +1,8 @@
 <app-content-panel>
-    <div>
+    <div class="flex items-center">
+        <p class="mb-3 mr-2">
+            <a (click)="back()"><i class="pi pi-arrow-left text-xl md:text-lg cursor-pointer"></i></a>
+        </p>
         <h3 class="mb-4">CADASTRO DE PRODUTOS</h3>
     </div>
     <form [formGroup]="form" (ngSubmit)="save()">
@@ -39,7 +42,8 @@
         // INPUT OPTIONS
         // ----------------------------------------------------------------------------------------------------- 
         -->
-        <app-multifield-panel title="Opções do Produto" buttonLabel="Adicionar Opções" (eventButton)="createProductOption()">
+        <app-multifield-panel title="Opções do Produto" buttonLabel="Adicionar Opções"
+            (eventButton)="createProductOption()">
             <ng-container *ngIf="form.get('options')" formArrayName="options">
                 <div *ngFor="let option of options.controls; index as i">
                     <div [formGroupName]="i" class="flex">

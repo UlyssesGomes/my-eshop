@@ -56,7 +56,6 @@ export class Navbar {
   verifyPermissions(permission: string [] | undefined) {
     if(permission === undefined || permission === null || this.permissions == undefined || this.permissions === null)
       return true;
-
     const showElement = permission.some(p => this.permissions?.includes(p));
     return showElement;
   }

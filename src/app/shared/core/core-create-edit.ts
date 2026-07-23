@@ -47,7 +47,7 @@ export abstract class CoreCreateEdit<M> implements OnInit {
         });
     }
 
-    protected preLoadData(m: M): void {}
+    protected preLoadData(m: M): void { }
 
     save() {
         if (!this.id)
@@ -70,7 +70,9 @@ export abstract class CoreCreateEdit<M> implements OnInit {
         });
     }
 
-    abstract afterCreate(): void;
+    afterCreate(): void {
+        return;
+    }
 
     update(formData: any) {
         this.getService().updateById(this.id, formData).pipe(take(1)).subscribe({
@@ -86,7 +88,13 @@ export abstract class CoreCreateEdit<M> implements OnInit {
         });
     }
 
-    abstract afterUpdate(): void;
+    afterUpdate(): void {
+        return;
+    }
+
+    back() {
+        this.location.back();
+    }
 
     abstract getService(): ServiceCore<M>;
     abstract defineForm(): FormGroup;

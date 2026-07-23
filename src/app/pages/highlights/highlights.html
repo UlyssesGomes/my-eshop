@@ -1,24 +1,41 @@
 <app-content-panel>
     <div class="mb-6 flex justify-between">
         <h2>Highlights</h2>
-        <div>
-            <p-button routerLink="/admin/highlights/create" class="show-element-md button-min-width-size" type="submit"
-                label="Cadastrar" fluid="false" areaLabel="Cadastrar"></p-button>
+        <div class="flex items-center gap-x-2">
+            <form [formGroup]="filterForm" (ngSubmit)="filter()">
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT HIGHLIGHT LINK
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <p-iconfield>
+                            <p-inputicon class="pi pi-search" />
+                            <input pInputText id="link" formControlName="link" fluid="true" />
+                        </p-iconfield>
+                        <label class="label-background font-semibold" for="link">Buscar por nome</label>
+                    </p-floatlabel>
+                </div>
+            </form>
+            <p-button routerLink="/admin/highlights/create" class="show-element-md" pRipple icon="pi pi-plus"
+                type="submit" fluid="false" iconOnly />
         </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-        @for (highlightItem of highlightList; track highlightItem.id) {
-        <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"  endpoint="highlights/highlight-image/{{highlightItem.id}}"
-            (editButton)="columnActionEvent($event)" (deleteButton)="columnActionEvent($event)" />
+        @for (highlightItem of paginatedItems; track highlightItem.id) {
+        <app-simple-item-card-list [isShowEdit]="true" [isShowDelete]="true" [item]="highlightItem"
+            endpoint="highlights/highlight-image/{{highlightItem.id}}" (editButton)="columnActionEvent($event)"
+            (deleteButton)="columnActionEvent($event)" />
         } @empty {
-            @if(!isLoading) {
-                <p>Nenhum highlight foi cadastrado ainda.</p>
-            }
+        @if(!isLoading) {
+        <p>Nenhum highlight foi cadastrado ainda.</p>
+        }
         }
     </div>
 </app-content-panel>
-@if(highlightList.length > 0) {
-    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements" [rowsPerPageOptions]="[10, 20, 30]" />
+@if(totalElements > 0) {
+<p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements"
+    [rowsPerPageOptions]="[10, 20, 30]" />
 }
-<p-confirmdialog />
-<app-loading-block [isLoading]="isLoading"/>
+<app-loading-block [isLoading]="isLoading" />
