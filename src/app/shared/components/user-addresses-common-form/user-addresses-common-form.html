@@ -18,14 +18,14 @@
                     <!-- CEP -->
                     <div class="m-3">
                         <p-floatlabel variant="on">
-                            <input mask="00000-000" pInputText id="cep" formControlName="cep" fluid="true"
+                            <input mask="00000-000" [validation]="false" pInputText id="cep" formControlName="cep" fluid="true"
                                 (input)="getDelayedAddress($event, i)" />
                             <label class="label-background font-semibold" for="cep">CEP</label>
                         </p-floatlabel>
                         <p-message
-                            *ngIf="form.get('cep')?.errors && !form.get('cep')?.pristine && form.get('cep')?.touched"
+                            *ngIf="address.get('cep')?.errors && !address.get('cep')?.pristine && address.get('cep')?.touched"
                             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                            form.get('cep')?.errors | errorReader}}</p-message>
+                            address.get('cep')?.errors | errorReader}}</p-message>
                     </div>
 
                     <div class="m-3 flex md:flex-row flex-col gap-3">
@@ -36,9 +36,9 @@
                                 <label class="label-background font-semibold" for="street">Rua</label>
                             </p-floatlabel>
                             <p-message
-                                *ngIf="form.get('street')?.errors && !form.get('street')?.pristine && form.get('street')?.touched"
+                                *ngIf="address.get('street')?.errors && !address.get('street')?.pristine && address.get('street')?.touched"
                                 severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                                form.get('street')?.errors | errorReader}}</p-message>
+                                address.get('street')?.errors | errorReader}}</p-message>
                         </div>
                         <!-- NUMBER -->
                         <div>
@@ -47,9 +47,9 @@
                                 <label class="label-background font-semibold" for="number">Número</label>
                             </p-floatlabel>
                             <p-message
-                                *ngIf="form.get('number')?.errors && !form.get('number')?.pristine && form.get('number')?.touched"
+                                *ngIf="address.get('number')?.errors && !address.get('number')?.pristine && address.get('number')?.touched"
                                 severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                                form.get('number')?.errors | errorReader}}</p-message>
+                                address.get('number')?.errors | errorReader}}</p-message>
                         </div>
                     </div>
                     <!-- COMPLEMENT -->
@@ -59,9 +59,9 @@
                             <label class="label-background font-semibold" for="complement">Complemento</label>
                         </p-floatlabel>
                         <p-message
-                            *ngIf="form.get('complement')?.errors && !form.get('complement')?.pristine && form.get('complement')?.touched"
+                            *ngIf="address.get('complement')?.errors && !address.get('complement')?.pristine && address.get('complement')?.touched"
                             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                            form.get('complement')?.errors | errorReader}}</p-message>
+                            address.get('complement')?.errors | errorReader}}</p-message>
                     </div>
                     <!-- NEIGHBORHOOD -->
                     <div class="m-3">
@@ -70,9 +70,9 @@
                             <label class="label-background font-semibold" for="neighborhood">Biarro</label>
                         </p-floatlabel>
                         <p-message
-                            *ngIf="form.get('neighborhood')?.errors && !form.get('neighborhood')?.pristine && form.get('neighborhood')?.touched"
+                            *ngIf="address.get('neighborhood')?.errors && !address.get('neighborhood')?.pristine && address.get('neighborhood')?.touched"
                             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                            form.get('neighborhood')?.errors | errorReader}}</p-message>
+                            address.get('neighborhood')?.errors | errorReader}}</p-message>
                     </div>
                     <!-- CITY -->
                     <div class="m-3">
@@ -81,9 +81,9 @@
                             <label class="label-background font-semibold" for="city">Cidade</label>
                         </p-floatlabel>
                         <p-message
-                            *ngIf="form.get('city')?.errors && !form.get('city')?.pristine && form.get('city')?.touched"
+                            *ngIf="address.get('city')?.errors && !address.get('city')?.pristine && address.get('city')?.touched"
                             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                            form.get('city')?.errors | errorReader}}</p-message>
+                            address.get('city')?.errors | errorReader}}</p-message>
                     </div>
                     <!-- STATE -->
                     <div class="m-3">
@@ -92,9 +92,9 @@
                             <label class="label-background font-semibold" for="state">Estado</label>
                         </p-floatlabel>
                         <p-message
-                            *ngIf="form.get('state')?.errors && !form.get('state')?.pristine && form.get('state')?.touched"
+                            *ngIf="address.get('state')?.errors && !address.get('state')?.pristine && address.get('state')?.touched"
                             severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                            form.get('state')?.errors | errorReader}}</p-message>
+                            address.get('state')?.errors | errorReader}}</p-message>
                     </div>
                 </div>
             </div>

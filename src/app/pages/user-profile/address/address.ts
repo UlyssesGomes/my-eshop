@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 
@@ -19,23 +19,21 @@ export class Address implements OnInit {
 
   constructor(private readonly fb: FormBuilder, private readonly userProfileService: UserProfileService, private messageService: NotificationService) {
     this.form = this.fb.group({
-      addresses: this.fb.array([
-        this.fb.group(
-          {
-            cep: ['', [Validators.required]],
-            street: ['', [Validators.required, Validators.maxLength(60)]],
-            number: ['', [Validators.required, Validators.minLength(1)]],
-            complement: ['', [Validators.maxLength(20)]],
-            neighborhood: ['', [Validators.required, Validators.maxLength(40)]],
-            city: ['', [Validators.required, Validators.maxLength(40)]],
-            state: ['', [Validators.required, Validators.maxLength(20)]]
-          })])
+      addresses: this.fb.array([])
     });
+
+    this.addAddressField();
   }
 
   ngOnInit(): void {
     this.userProfileService.getUserAddresses().subscribe({
       next: response => {
+        if(response.addresses.length > 1) {
+          const newQuantity = response.addresses.length - 1;
+          for(let u = 0; u < newQuantity; u++) {
+            this.addAddressField();
+          }
+        }
         this.form.patchValue(response);
       },
       error: error => {
@@ -54,5 +52,19 @@ export class Address implements OnInit {
         this.messageService.error(error.title, error.description);
       }
     });
+  }
+
+  private addAddressField() {
+    const formArray = this.form.get('addresses') as FormArray;
+
+    formArray.push(this.fb.group({
+      cep: ['', [Validators.required, Validators.minLength(8)]],
+      street: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(60)]],
+      number: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
+      complement: ['', [Validators.maxLength(20)]],
+      neighborhood: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]]
+    }));
   }
 }

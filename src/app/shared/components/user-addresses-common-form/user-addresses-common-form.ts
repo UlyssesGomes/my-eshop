@@ -67,13 +67,13 @@ export class UserAddressesCommonForm {
       this.form.addControl('addresses', this._addressArray);
 
     this._addressArray.push(this.fb.group({
-      cep: ['', [Validators.required]],
-      street: ['', [Validators.required, Validators.maxLength(60)]],
-      number: ['', [Validators.required, Validators.minLength(2)]],
+      cep: ['', [Validators.required, Validators.minLength(8)]],
+      street: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(60)]],
+      number: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
       complement: ['', [Validators.maxLength(20)]],
-      neighborhood: ['', [Validators.required, Validators.maxLength(20)]],
-      city: ['', [Validators.required, Validators.maxLength(20)]],
-      state: ['', [Validators.required, Validators.maxLength(20)]]
+      neighborhood: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      city: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      state: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]]
     }));
   }
 

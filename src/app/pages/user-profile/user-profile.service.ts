@@ -82,7 +82,7 @@ export class UserProfileService extends ErrorHandler {
     );
   }
 
-  getUserAddresses(): Observable<UserAddress[]> {
+  getUserAddresses(): Observable<any> {
     const url = `${this.urlBase}${this.getEndpoint()}/user-address`;
     const headers = this.getHeaders();
 
