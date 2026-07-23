@@ -75,7 +75,6 @@ export class CreateUser {
   }
 
   save() {
-    console.log('Salvando usuário: ', this.form.value);
     
     let formArray: FormArray = this.form.get('addresses') as FormArray;
     if(formArray.length > 1) {

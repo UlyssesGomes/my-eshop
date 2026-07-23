@@ -100,16 +100,6 @@ export class UploadFile {
     });
     this.filesChange.emit(this.files);
     this.onChangeFilesSelected.emit({ eventType: FileEventEnum.ADDED, index: newFilesIndex });
-    // this.files.forEach((file: any) => {
-    // //FormData é a forma de enviar o arquivo para o backend.
-    // const formData = new FormData();
-    // formData.append('image', file, file.name);
-    // console.log('img: ',formData.get('image'));
-    // console.log('image data: ', formData);
-
-    // //this.totalSize += parseInt(this.formatSize(file.size));
-    // });
-    // this.totalSizePercent = this.totalSize / 10;
   }
 
   private validateFiles(event: any) {

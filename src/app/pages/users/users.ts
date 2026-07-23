@@ -68,7 +68,6 @@ export class Users {
   }
 
   onPageChange(event: PaginatorState) {
-    console.log('event: ', event);
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
 
