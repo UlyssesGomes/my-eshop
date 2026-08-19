@@ -11,7 +11,7 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         @for (product of paginatedItems; track product.id) {
-        <app-product-item-card-list [item]="product" (actionButton)="columnActionEvent($event)"/>
+        <app-product-item-card-list [item]="product" endpoint="product-images/highlight/{{product.id}}" (actionButton)="columnActionEvent($event)"/>
         } @empty {
         <p>Nenhum produto foi cadastrado ainda.</p>
         }

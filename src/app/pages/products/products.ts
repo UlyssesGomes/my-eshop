@@ -1,107 +1,38 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
-import { NotificationService } from '../../shared/services/notification/notification.service';
+import { CoreList } from '../../shared/core/core-list';
 import { Product } from '../../shared/models/product/product';
-import { ShopItemCardList } from '../../shared/components/shop-item-card-list/shop-item-card-list';
+import { ProductItemCardList } from '../../shared/components/product-item-card-list/product-item-card-list';
+import { ProductService } from './product.service';
+import { ServiceCore } from '../../shared/services/service-core';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, ButtonModule, MenuModule, ShopItemCardList, ContentPanel],
+  imports: [CommonModule, ButtonModule, MenuModule, ProductItemCardList, ContentPanel],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })
-export class Products {
-  productList: Product[] = [
-    {
-      id: 0,
-      image: 'image 1',
-      name: 'Camisa Fullmetal Alchemist - adicionando nome extremamente longo!!!',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 5,
-      price: 59.50
-    },
-    {
-      id: 1,
-      image: 'image 2',
-      name: 'Camisa Dragon Ball Z',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 4.5,
-      price: 59.50
-    },
-    {
-      id: 2,
-      image: 'image ',
-      name: 'Camisa Zelda',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 5,
-      price: 59.50
-    },
-    {
-      id: 3,
-      image: 'image ',
-      name: 'Camisa de Link',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 5,
-      price: 59.50
-    },
-    {
-      id: 4,
-      image: 'image ',
-      name: 'Sonic',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 4,
-      price: 59.50
-    },
-    {
-      id: 5,
-      image: 'image ',
-      name: 'Foto Pessoal',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 4,
-      price: 79.50
-    },
-    {
-      id: 6,
-      image: 'image ',
-      name: 'Charizard',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 5,
-      price: 59.50
-    },
-    {
-      id: 7,
-      image: 'image ',
-      name: 'Mewtwo',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 2,
-      price: 59.50
-    },
-    {
-      id: 8,
-      image: 'image ',
-      name: 'Espada de Xenoblade',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 5,
-      price: 59.50
-    },
-    {
-      id: 9,
-      image: 'image ',
-      name: 'Batman',
-      description: 'Camisa branca 60% poliester e 40% algodão.',
-      rate: 4,
-      price: 59.50
-    }
-  ];
+export class Products extends CoreList<Product> {
 
-  constructor(private messageService: NotificationService) {}
+  filterForm: FormGroup;
 
-  addFavoriteItem(item: Product) {
-    this.messageService.success('Success', `Item ${item.name} adicionado com sucesso.`);
+  constructor(private service: ProductService, private fb: FormBuilder) {
+    super();
+    this.filterForm = this.fb.group({
+      name: ['', []]
+    });
+  }
+
+  public override getService(): ServiceCore<Product> {
+    return this.service;
+  }
+  public override getFilterForm(): FormGroup {
+    return this.filterForm;
   }
 }
