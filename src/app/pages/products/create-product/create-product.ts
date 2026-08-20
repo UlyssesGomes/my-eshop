@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { FormArray, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -11,18 +11,20 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 
+import { take } from 'rxjs';
+
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
+import { CoreCreateEdit } from '../../../shared/core/core-create-edit';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
 import { MultifieldPanel } from '../../../shared/components/multifield-panel/multifield-panel';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
 import { ProductType } from '../../../shared/enums/product-type';
 import { Product } from '../../../shared/models/product/product';
-import { CoreCreateEdit } from '../../../shared/core/core-create-edit';
-import { ServiceCore } from '../../../shared/services/service-core';
 import { ProductService } from '../product.service';
-import { take } from 'rxjs';
+import { ProductImageService } from '../product-image.service';
+import { ServiceCore } from '../../../shared/services/service-core';
 
 @Component({
   selector: 'app-create-product',
@@ -51,6 +53,7 @@ export class CreateProduct extends CoreCreateEdit<Product> {
   previousProductTypeValue = '';
   files: ProductImageModel[] = [];
   maxFileSize = 2097152; // 2MB
+  imgPristineAttr = true;
 
   imagesSelectOptions: any = [];
   productsMaterialOptions: any = [];
@@ -66,9 +69,52 @@ export class CreateProduct extends CoreCreateEdit<Product> {
     { type: 'Impressão 3D', value: ProductType.FILAMENT, disabled: true }
   ];
 
-  constructor(private service: ProductService) {
+  constructor(private service: ProductService, private productImageService: ProductImageService) {
     super();
     this.options = this.fb.array([]);
+  }
+
+  override loadData() {
+    super.loadData();
+
+    this.productImageService.getByProductId(this.id).subscribe({
+      next: (images: any[]) => {
+        let index = 0;
+        images.forEach((image: any) => {
+          const imageType = image.contentType.split('/')[1];          
+
+          const byteString = atob(image.img);
+          const arrayBuffer = new ArrayBuffer(byteString.length);
+          const uint8Array = new Uint8Array(arrayBuffer);
+
+          for (let i = 0; i < byteString.length; i++) {
+            uint8Array[i] = byteString.charCodeAt(i);
+          }
+          const blob = new Blob([arrayBuffer], { type: 'image/png' });
+          const f: File = new File([blob], `image.${imageType}`, { type: image.contentType });
+          Object.defineProperty(f, 'objectURL', {
+            value: URL.createObjectURL(blob)
+          });
+          const imgTemp: ProductImageModel = new ProductImageModel();
+          imgTemp.indexImage = index++;
+          imgTemp.file = f;
+          imgTemp.isHighlight = false;
+
+          this.files.push(imgTemp);
+          this.uploadFileComponent.setImage(imgTemp.file);
+
+          this.files.forEach(file => {
+            this.addImage(file);
+          });
+        });
+
+        this.loading = false;
+      },
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
+        this.loading = false;
+      }
+    });
   }
 
   onChangeImages(event: FileEvent) {
@@ -123,6 +169,7 @@ export class CreateProduct extends CoreCreateEdit<Product> {
 
   addImage(file: ProductImageModel) {
     (this.form.controls['images'] as FormArray).push(this.createNewImageControl(file));
+    this.imgPristineAttr = false;
   }
 
   removeImage(index: number) {
@@ -196,12 +243,33 @@ export class CreateProduct extends CoreCreateEdit<Product> {
   }
 
   override afterCreate() {
+    this.clearImageField();
+  }
+
+  override update(formData: any) {
+    this.service.updateWithFormData(this.form.value, this.files, this.id).pipe(take(1)).subscribe({
+      next: (response) => {
+        this.messageService.success('Atualizado Com Sucesso', `${this.featureName()} atualizado com sucesso.`);
+        this.afterCreate();
+        this.form.reset();
+      },
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
+      }
+    });
+  }
+
+  override afterUpdate() {
+    this.clearImageField();
+  }
+
+  private clearImageField() {
     this.uploadFileComponent.clearList();
-    if(this.form.get('images'))
+    if (this.form.get('images'))
       (this.form.get('images') as FormArray).clear();
 
     this.files = [];
-    // this.imgPristineAttr = true;
+    this.imgPristineAttr = true;
   }
 
   override getService(): ServiceCore<Product> {

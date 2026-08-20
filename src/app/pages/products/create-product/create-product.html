@@ -115,7 +115,7 @@
             // ----------------------------------------------------------------------------------------------------- 
             -->
             <p-floatlabel variant="on">
-                <textarea pTextarea id="description" formControlName="description" rows="5" fluid="true"
+                <textarea pTextarea [class.p-filled]="form.controls['description'].value" id="description" formControlName="description" rows="5" fluid="true"
                     style="resize: none"></textarea>
                 <label class="label-background font-semibold" for="description">Descrição</label>
             </p-floatlabel>
