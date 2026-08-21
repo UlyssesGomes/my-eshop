@@ -1,17 +1,20 @@
 $card-item-border-radius: 8px;
 
 .card-item {
-    min-width: 320px;
-    max-width: 410px;
+    min-width: 350px;
+    max-width: 350px;
     min-height: 400px;
+    height: 410px;
+    max-height: 410px;
     border: 1px solid white;
     border-radius: $card-item-border-radius;
     padding: 7px;
     overflow: hidden;
     box-sizing: border-box;
 
-    img {
+    .image-viewer {
         border-radius: $card-item-border-radius;
+        height: 100%;
         object-fit: scale-down;
         cursor: zoom-in;
     }

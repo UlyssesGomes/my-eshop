@@ -14,6 +14,7 @@ $card-item-border-radius: 8px;
     img {
         border-radius: $card-item-border-radius;
         object-fit: scale-down;
+        height: auto;
         cursor: zoom-in;
     }
 }
