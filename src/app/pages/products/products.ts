@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
 import { CoreList } from '../../shared/core/core-list';
@@ -14,7 +15,7 @@ import { ServiceCore } from '../../shared/services/service-core';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, ButtonModule, MenuModule, ProductItemCardList, ContentPanel],
+  imports: [CommonModule, ButtonModule, MenuModule, ProductItemCardList, PaginatorModule, ContentPanel],
   templateUrl: './products.html',
   styleUrl: './products.scss'
 })

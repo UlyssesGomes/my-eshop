@@ -98,11 +98,10 @@ export class CreateProduct extends CoreCreateEdit<Product> {
           const imgTemp: ProductImageModel = new ProductImageModel();
           imgTemp.indexImage = index++;
           imgTemp.file = f;
-          imgTemp.isHighlight = false;
+          imgTemp.isHighlight = image.highlight;
 
           this.files.push(imgTemp);
           this.uploadFileComponent.setImage(imgTemp.file);
-
           this.files.forEach(file => {
             this.addImage(file);
           });
@@ -172,8 +171,9 @@ export class CreateProduct extends CoreCreateEdit<Product> {
     this.imgPristineAttr = false;
   }
 
-  removeImage(index: number) {
-    (this.form.controls['images'] as FormArray).removeAt(index);
+  removeImage(arrayIndex: number) {
+    (this.form.controls['images'] as FormArray).removeAt(arrayIndex);
+    const filtred = this.files.filter((_, index) => index !== arrayIndex);
     this.loadFilesToSelectOption();
   }
 

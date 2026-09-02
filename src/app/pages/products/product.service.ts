@@ -20,9 +20,7 @@ export class ProductService extends ServiceCore<Product> {
     const formData = new FormData();
     formData.append('modelDTO', new Blob([JSON.stringify(product)], { type: 'application/json' }));
 
-    images.forEach(image => {
-      formData.append('images', image.file);
-    });
+    this.fillImagesAndHighlightArray(images, formData);
 
     const url = this.urlBase + this.getEndpoint() + '/with-image';
     const headers = new HttpHeaders();
@@ -46,9 +44,7 @@ export class ProductService extends ServiceCore<Product> {
     const formData = new FormData();
     formData.append('modelDTO', new Blob([JSON.stringify(product)], { type: 'application/json' }));
 
-    images.forEach(image => {
-      formData.append('images', image.file);
-    });
+    this.fillImagesAndHighlightArray(images, formData);
 
     const url = this.urlBase + this.getEndpoint() + '/with-image/' + id;
     const headers = new HttpHeaders();
@@ -65,5 +61,23 @@ export class ProductService extends ServiceCore<Product> {
       }),
       catchError(this.handleError)
     );
+  }
+
+  private fillImagesAndHighlightArray(images: any, formData: any) {
+    const highlightArray: string[] = [];
+    let count = 0;
+    let hasHighlight = false;
+    images.forEach((image: any) => {
+      formData.append('images', image.file);
+      const isHighlight = image.isHighlight? 'true' : 'false';
+      highlightArray[count++] = isHighlight;
+      if (isHighlight === 'true') {
+        hasHighlight = true;
+      }
+    });
+    if(!hasHighlight && highlightArray.length > 0) {
+      highlightArray[0] = 'true';
+    }
+    formData.append('highlightMarks', new Blob([JSON.stringify(highlightArray)], { type: 'application/json' }));
   }
 }

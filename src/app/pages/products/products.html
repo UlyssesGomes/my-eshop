@@ -16,4 +16,8 @@
         <p>Nenhum produto foi cadastrado ainda.</p>
         }
     </div>
+    @if(totalElements > 0) {
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements"
+        [rowsPerPageOptions]="[10, 20, 30]" />
+    }
 </app-content-panel>

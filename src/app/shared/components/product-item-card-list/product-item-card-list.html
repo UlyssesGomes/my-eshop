@@ -2,7 +2,9 @@
 
         <div class="overflow-hidden flex flex-grow justify-center content-center">
             @if(loading) {
-                <p-progress-spinner ariaLabel="loading" />
+                <div class="self-center">
+                    <p-progress-spinner ariaLabel="loading" />
+                </div>
             } @else {
                 <img class="image-viewer" [src]="img" [alt]="item?.name" (click)="imageZoom()">
             }
