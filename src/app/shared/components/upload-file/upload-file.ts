@@ -49,7 +49,7 @@ export class UploadFile {
 
   constructor(private config: PrimeNG) { }
 
-  get customFiles() {
+  get customFiles(): any {
     return this.files;
   }
 
@@ -71,33 +71,32 @@ export class UploadFile {
   }
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: number) {
-    removeFileCallback(event, index);
-    this.files = this.files.map(file => {
-      if (file.indexImage !== undefined && file.indexImage > index) {
-        file.indexImage--;
-      }
-      return file;
-    });
-    this.filesChange.emit(this.files);
-    this.onChangeFilesSelected.emit({ eventType: FileEventEnum.REMOVED, index: [index] });
+    // This callback call onRemoveFile()
+    removeFileCallback(index);
+    let currentIndex = 0;
+    this.files.forEach(f => f.indexImage = currentIndex++);  
     this.previousSize--;
   }
 
   onRemoveFile(event: any) {
-    this.files = this.files.filter((f: any) => f.file.name !== event.file.name && f.file.name);
+    this.files = this.files.filter((f: any) => f.indexImage !== event.originalEvent);
     this.filesChange.emit(this.files);
+    this.onChangeFilesSelected.emit({ eventType: FileEventEnum.REMOVED, index: [event.originalEvent] });
   }
 
   onSelectedFiles(event: any) {
-    let count = 0;
+    let count = this.files.length;
     const newFilesIndex = this.validateFiles(event);
-    this.files = event.currentFiles.map((f: any) => {
+    const fileListArray = [...event.files];
+    const incomingFiles = fileListArray.map((f: any) => {
       return {
         indexImage: count++,
         file: f,
         isHighlight: false
       }
     });
+
+    this.files.push(...incomingFiles);
     this.filesChange.emit(this.files);
     this.onChangeFilesSelected.emit({ eventType: FileEventEnum.ADDED, index: newFilesIndex });
   }

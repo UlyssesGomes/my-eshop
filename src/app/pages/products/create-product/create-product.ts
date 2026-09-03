@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -93,6 +93,8 @@ export class CreateProduct extends CoreCreateEdit<Product> {
           const blob = new Blob([arrayBuffer], { type: 'image/png' });
           const f: File = new File([blob], `image.${imageType}`, { type: image.contentType });
           Object.defineProperty(f, 'objectURL', {
+            writable: true,
+            configurable: true,
             value: URL.createObjectURL(blob)
           });
           const imgTemp: ProductImageModel = new ProductImageModel();
@@ -101,7 +103,6 @@ export class CreateProduct extends CoreCreateEdit<Product> {
           imgTemp.isHighlight = image.highlight;
 
           this.files.push(imgTemp);
-          this.uploadFileComponent.setImage(imgTemp.file);
           this.files.forEach(file => {
             this.addImage(file);
           });
@@ -125,6 +126,12 @@ export class CreateProduct extends CoreCreateEdit<Product> {
     } else if (event.eventType === FileEventEnum.UPDATE) {
       if (event.index)
         (this.form.get('images') as FormArray).at(event.index[0])?.setValue(this.files[event.index[0]]);
+      this.files.forEach(f => {
+        if(event?.index && f.indexImage != event.index[0])
+          f.isHighlight = false;
+        else
+          f.isHighlight = true;
+      });
     } else if (event.eventType === FileEventEnum.REMOVED) {
       if (event.index)
         this.removeImage(event.index[0]);
@@ -173,7 +180,6 @@ export class CreateProduct extends CoreCreateEdit<Product> {
 
   removeImage(arrayIndex: number) {
     (this.form.controls['images'] as FormArray).removeAt(arrayIndex);
-    const filtred = this.files.filter((_, index) => index !== arrayIndex);
     this.loadFilesToSelectOption();
   }
 
