@@ -6,8 +6,9 @@ import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { PopoverModule } from 'primeng/popover';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PaginatorModule } from 'primeng/paginator';
 import { SelectModule } from 'primeng/select';
 
 import { ContentPanel } from '../../shared/components/content-panel/content-panel';
@@ -18,7 +19,6 @@ import { ProductType } from '../../shared/enums/product-type';
 import { UTable } from '../../shared/components/u-table/u-table';
 import { ProductColorEnum } from '../../shared/enums/product-color';
 import { BadgeModule } from 'primeng/badge';
-import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { ServiceCore } from '../../shared/services/service-core';
 
 @Component({

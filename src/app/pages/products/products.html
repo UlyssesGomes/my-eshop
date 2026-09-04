@@ -3,10 +3,10 @@
         <h2 class="mb-3">Produtos</h2>
         <div class="flex items-center gap-x-2" #panel>
             <button pButton pRipple type="button" icon="pi pi-plus" iconOnly (click)="goToNewItem()"></button>
-            <!-- <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="info" styleClass="animate-pulse">
+            <p-overlay-badge [badgeDisabled]="!filterForm.dirty" severity="info" styleClass="animate-pulse">
                 <button pButton pRipple type="button" icon="pi pi-filter" iconOnly
                     (click)="pop.toggle($event)"></button>
-            </p-overlay-badge> -->
+            </p-overlay-badge>
         </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 justify-items-center">
@@ -16,6 +16,76 @@
         <p>Nenhum produto foi cadastrado ainda.</p>
         }
     </div>
+    <p-popover #pop [appendTo]="panel">
+        <form [formGroup]="filterForm" (ngSubmit)="filter()">
+            <div class="flex flex-col gap-y-3">
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT PRODUCT NAME
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <input [pAutoFocus]="true" pInputText id="name" formControlName="name" fluid="true" />
+                        <label class="label-background font-semibold" for="name">Nome do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT PRODUCT DESRIPTION
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <input [pAutoFocus]="true" pInputText id="description" formControlName="description" fluid="true" />
+                        <label class="label-background font-semibold" for="description">Descrição do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT PRODUCT TYPE
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel class="w-full" variant="on">
+                        <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
+                            optionValue="value" optionDisabled="disabled" class="w-full" />
+                        <label class="label-background font-semibold" for="type">Tipo do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT PRODUCT MIN PRICE
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <p-inputnumber id="minPrice" formControlName="minPrice" fluid="true" />
+                        <label class="label-background font-semibold" for="minPrice">Preço Mínimo</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT PRODUCT MAX PRICE
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <p-inputnumber id="maxPrice" formControlName="maxPrice" fluid="true" />
+                        <label class="label-background font-semibold" for="maxPrice">Preço Máximo</label>
+                    </p-floatlabel>
+                </div>
+
+
+                <div class="flex gap-x-2 flex-row-reverse">
+                    <p-button type="submit" [disabled]="filterForm.invalid" label="Filtrar" fluid="false"
+                        areaLabel="Filtrar" size="small" />
+                    <p-button (click)="clearForm()" variant="outlined" [disabled]="!filterForm.dirty" label="Limpar"
+                        fluid="false" areaLabel="Limpar" size="small" />
+                </div>
+            </div>
+        </form>
+    </p-popover>
     @if(totalElements > 0) {
     <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="pageSize" [totalRecords]="totalElements"
         [rowsPerPageOptions]="[10, 20, 30]" />
