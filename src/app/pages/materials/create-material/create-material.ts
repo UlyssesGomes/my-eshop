@@ -62,6 +62,10 @@ export class CreateMaterial extends CoreCreateEdit<Material> {
     { value: ProductColorEnum.BLUE,  disabled: false},
   ];
 
+  typeName?: string;
+  colorName?: string;
+  sizeName?: string;
+
   typeShirt = ProductType.SHIRT;
   
   constructor(private materialService: MaterialService)
