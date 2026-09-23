@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -37,7 +37,7 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-material.html',
   styleUrl: './create-material.scss'
 })
-export class CreateMaterial extends CoreCreateEdit<Material> {
+export class CreateMaterial extends CoreCreateEdit<Material> implements OnInit {
 
   productTypes = [
     { type: 'Camisa', value: ProductType.SHIRT, disabled: false },
@@ -71,6 +71,23 @@ export class CreateMaterial extends CoreCreateEdit<Material> {
   constructor(private materialService: MaterialService)
   {
     super();
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    
+    this.form.valueChanges.subscribe(values => {
+      const total = `${this.getTypeValue(values.type)}${values.color? ` ${values.color}` : ''}${values.size? ` ${values.size}` : ''}`;
+      this.form.get('name')!.setValue(total, { emitEvent: false });
+    });
+  }
+
+  private getTypeValue(value: any): string {
+    for(let attribute of this.productTypes) {
+      if(attribute.value === value)
+        return attribute.type;
+    }
+    return '';
   }
 
   addSizeControl() {

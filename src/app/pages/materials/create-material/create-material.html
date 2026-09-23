@@ -86,8 +86,8 @@
             // INPUT MATERIAL NAME
             // ----------------------------------------------------------------------------------------------------- 
             -->
-            <p-floatlabel variant="on">
-                <input pInputText id="name" formControlName="name" fluid="true" />
+            <p-floatlabel variant="on" disabled>
+                <input pInputText id="name" formControlName="name" fluid="true"/>
                 <label class="label-background font-semibold" for="name">Nome do Material</label>
             </p-floatlabel>
             <p-message *ngIf="form.get('name')?.errors && !form.get('name')?.pristine && form.get('name')?.touched"
