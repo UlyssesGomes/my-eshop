@@ -14,10 +14,10 @@
         <form [formGroup]="filterForm" (ngSubmit)="filter()">
             <div class="flex flex-col gap-y-3">
                 <!-- 
-                        // -----------------------------------------------------------------------------------------------------
-                        // INPUT MATERIAL NAME
-                        // ----------------------------------------------------------------------------------------------------- 
-                        -->
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT MATERIAL NAME
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
                 <div>
                     <p-floatlabel variant="on">
                         <input [pAutoFocus]="true" pInputText id="name" formControlName="name" fluid="true" />
@@ -25,10 +25,10 @@
                     </p-floatlabel>
                 </div>
                 <!-- 
-                        // -----------------------------------------------------------------------------------------------------
-                        // INPUT SELECT MATERIAL TYPE
-                        // ----------------------------------------------------------------------------------------------------- 
-                        -->
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT SELECT MATERIAL TYPE
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
                 <div>
                     <p-floatlabel class="w-full" variant="on">
                         <p-select formControlName="type" inputId="type" [options]="productTypes" optionLabel="type"
@@ -37,15 +37,38 @@
                     </p-floatlabel>
                 </div>
                 <!-- 
-                        // -----------------------------------------------------------------------------------------------------
-                        // INPUT SELECT MATERIAL COLOR
-                        // ----------------------------------------------------------------------------------------------------- 
-                        -->
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT SELECT MATERIAL COLOR
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
                 <div>
                     <p-floatlabel class="w-full" variant="on">
                         <p-select formControlName="color" inputId="color" [options]="productColors" optionLabel="value"
                             optionValue="value" optionDisabled="disabled" class="w-full" />
                         <label class="label-background font-semibold" for="color">Cor do Produto</label>
+                    </p-floatlabel>
+                </div>
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT MATERIAL MIN QUANTITY
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <input [pAutoFocus]="true" pInputText id="minQuantity" formControlName="minQuantity" fluid="true" />
+                        <label class="label-background font-semibold" for="minQuantity">Quantidade mínima</label>
+                    </p-floatlabel>
+                </div>
+
+                <!-- 
+                // -----------------------------------------------------------------------------------------------------
+                // INPUT MATERIAL MAX QUANTITY
+                // ----------------------------------------------------------------------------------------------------- 
+                -->
+                <div>
+                    <p-floatlabel variant="on">
+                        <input [pAutoFocus]="true" pInputText id="maxQuantity" formControlName="maxQuantity" fluid="true" />
+                        <label class="label-background font-semibold" for="maxQuantity">Quantidade máxima</label>
                     </p-floatlabel>
                 </div>
                 <div class="flex gap-x-2 flex-row-reverse">

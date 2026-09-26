@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { AutoFocusModule } from 'primeng/autofocus';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { PopoverModule } from 'primeng/popover';
@@ -33,6 +34,7 @@ import { ServiceCore } from '../../shared/services/service-core';
     ContentPanel,
     FloatLabelModule,
     InputTextModule,
+    InputNumberModule,
     OverlayBadgeModule,
     PopoverModule,
     PaginatorModule,
@@ -84,7 +86,9 @@ export class Materials extends CoreList<Material>{
     this.filterForm = this.fb.group({
       name: ['', []],
       type: ['', []],
-      color: ['', []]
+      color: ['', []],
+      minQuantity: [null, []],
+      maxQuantity: [null, []]
     });
   }
 
