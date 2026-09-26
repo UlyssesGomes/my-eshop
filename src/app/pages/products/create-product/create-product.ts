@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ import { ContentPanel } from '../../../shared/components/content-panel/content-p
 import { CoreCreateEdit } from '../../../shared/core/core-create-edit';
 import { FileEventEnum, UploadFile } from '../../../shared/components/upload-file/upload-file';
 import { FileEvent } from '../../../shared/components/upload-file/file-event';
+import { MaterialService } from '../../materials/material.service';
 import { MultifieldPanel } from '../../../shared/components/multifield-panel/multifield-panel';
 import { ProductImageModel } from '../../../shared/models/product/image-file/product-image-model';
 import { ProductType } from '../../../shared/enums/product-type';
@@ -48,7 +49,7 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-product.html',
   styleUrl: './create-product.scss'
 })
-export class CreateProduct extends CoreCreateEdit<Product> {
+export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
 
   previousProductTypeValue = '';
   files: ProductImageModel[] = [];
@@ -69,9 +70,17 @@ export class CreateProduct extends CoreCreateEdit<Product> {
     { type: 'Impressão 3D', value: ProductType.FILAMENT, disabled: true }
   ];
 
-  constructor(private service: ProductService, private productImageService: ProductImageService) {
+  constructor(private service: ProductService, private productImageService: ProductImageService, private  materialService: MaterialService) {
     super();
     this.options = this.fb.array([]);
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+    
+    this.materialService.listWithPagination(0, 50, { type: ProductType.SHIRT, minQuantity: 1}).subscribe(response => {
+      this.productsMaterialOptions = response.content;
+    });
   }
 
   override loadData() {
