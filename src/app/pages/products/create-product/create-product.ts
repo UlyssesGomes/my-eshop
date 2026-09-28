@@ -100,7 +100,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
             uint8Array[i] = byteString.charCodeAt(i);
           }
           const blob = new Blob([arrayBuffer], { type: 'image/png' });
-          const f: File = new File([blob], `image.${imageType}`, { type: image.contentType });
+          const f: File = new File([blob], `${image.imageName}.${imageType}`, { type: image.contentType });
           Object.defineProperty(f, 'objectURL', {
             writable: true,
             configurable: true,
@@ -109,6 +109,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
           const imgTemp: ProductImageModel = new ProductImageModel();
           imgTemp.indexImage = index++;
           imgTemp.file = f;
+          imgTemp.imageName = f.name;
           imgTemp.isHighlight = image.highlight;
 
           this.files.push(imgTemp);
@@ -210,8 +211,9 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
 
     if (type === ProductType.SHIRT) {
       this.options.push(this.fb.group({
+        id: [null, []],
         indexImage: [null, [Validators.required]],
-        idMaterial: [null, [Validators.required]]
+        materialId: [null, [Validators.required]]
       }));
     }
     this.loadFilesToSelectOption();

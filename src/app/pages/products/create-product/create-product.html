@@ -61,15 +61,15 @@
                         </div>
                         <div class="m-3">
                             <p-floatlabel class="w-full md:w-56" variant="on">
-                                <p-select formControlName="idMaterial" inputId="type"
+                                <p-select formControlName="materialId" inputId="type"
                                     [options]="productsMaterialOptions" optionLabel="name" optionValue="id"
                                     (onChange)="productChange()" class="w-full" />
                                 <label class="label-background font-semibold" for="type">Tipo do Produto</label>
                             </p-floatlabel>
                             <p-message
-                                *ngIf="form.get('idMaterial')?.errors && !form.get('idMaterial')?.pristine && form.get('idMaterial')?.touched"
+                                *ngIf="form.get('materialId')?.errors && !form.get('materialId')?.pristine && form.get('materialId')?.touched"
                                 severity="error" size="small" variant="simple" icon="pi pi-exclamation-triangle">{{
-                                form.get('idMaterial')?.errors | errorReader}}</p-message>
+                                form.get('materialId')?.errors | errorReader}}</p-message>
                         </div>
                         <div class="m-3">
                             <p-button icon="pi pi-times" (click)="removeProductOption(i)" [outlined]="true"
