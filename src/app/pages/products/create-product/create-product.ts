@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -11,7 +11,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 
 import { ErrorReaderPipe } from '../../../shared/pipes/error-reader/error-reader-pipe';
 import { ContentPanel } from '../../../shared/components/content-panel/content-panel';
@@ -49,7 +49,9 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-product.html',
   styleUrl: './create-product.scss'
 })
-export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
+export class CreateProduct extends CoreCreateEdit<Product> implements OnInit, OnDestroy {
+
+  subscription?: Subscription;
 
   previousProductTypeValue = '';
   files: ProductImageModel[] = [];
@@ -70,27 +72,48 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
     { type: 'Impressão 3D', value: ProductType.FILAMENT, disabled: true }
   ];
 
-  constructor(private service: ProductService, private productImageService: ProductImageService, private  materialService: MaterialService) {
+  constructor(private service: ProductService, private productImageService: ProductImageService, private materialService: MaterialService) {
     super();
     this.options = this.fb.array([]);
   }
 
   override ngOnInit(): void {
     super.ngOnInit();
-    
-    this.materialService.listWithPagination(0, 50, { type: ProductType.SHIRT, minQuantity: 1}).subscribe(response => {
-      this.productsMaterialOptions = response.content;
+
+    this.subscription = this.form.get('type')!.valueChanges.subscribe(value => {
+      this.loadMaterialList({type: value, minQuantity: 1});
     });
   }
 
+  ngOnDestroy(): void {
+    if(this.subscription)
+      this.subscription.unsubscribe();
+  }
+
+  override preLoadData(data: any) {
+    if (data.options.length > 0) {
+      for (let u = 0; u < data.options.length; u++)
+        this.createProductOption();
+    }
+  }
+
   override loadData() {
-    super.loadData();
+    this.service.getProductWithOption(this.id).subscribe({
+      next: (highlightResponse: any) => {
+        this.preLoadData(highlightResponse);
+        this.form.patchValue(highlightResponse);
+      },
+      error: (error) => {
+        this.messageService.error(error.title, error.description);
+        this.loading = false;
+      }
+    });
 
     this.productImageService.getByProductId(this.id).subscribe({
       next: (images: any[]) => {
         let index = 0;
         images.forEach((image: any) => {
-          const imageType = image.contentType.split('/')[1];          
+          const imageType = image.contentType.split('/')[1];
 
           const byteString = atob(image.img);
           const arrayBuffer = new ArrayBuffer(byteString.length);
@@ -100,14 +123,14 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
             uint8Array[i] = byteString.charCodeAt(i);
           }
           const blob = new Blob([arrayBuffer], { type: 'image/png' });
-          const f: File = new File([blob], `${image.imageName}.${imageType}`, { type: image.contentType });
+          const f: File = new File([blob], `${image.imageName}`, { type: image.contentType });
           Object.defineProperty(f, 'objectURL', {
             writable: true,
             configurable: true,
             value: URL.createObjectURL(blob)
           });
           const imgTemp: ProductImageModel = new ProductImageModel();
-          imgTemp.indexImage = index++;
+          imgTemp.indexImage = image.index;
           imgTemp.file = f;
           imgTemp.imageName = f.name;
           imgTemp.isHighlight = image.highlight;
@@ -118,6 +141,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
           });
         });
 
+        this.loadFilesToSelectOption();
         this.loading = false;
       },
       error: (error) => {
@@ -137,7 +161,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
       if (event.index)
         (this.form.get('images') as FormArray).at(event.index[0])?.setValue(this.files[event.index[0]]);
       this.files.forEach(f => {
-        if(event?.index && f.indexImage != event.index[0])
+        if (event?.index && f.indexImage != event.index[0])
           f.isHighlight = false;
         else
           f.isHighlight = true;
@@ -178,6 +202,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
   createNewImageControl(file: ProductImageModel) {
     return this.fb.group({
       file: [file.file, Validators.required],
+      imageName: [file.imageName? file.imageName : file.file.name, Validators.required],
       isHighlight: [file.isHighlight, []],
       indexImage: [file.indexImage, Validators.required]
     });
@@ -197,7 +222,7 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
 
   }
 
-  createProductOption() {
+  createAndValidateProductOption() {
     const type = this.form.get('type')?.value;
 
     if (type === '' || type === undefined || type === null) {
@@ -205,28 +230,29 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
       return;
     }
 
+    this.createProductOption();
+  }
+
+  createProductOption() {
     if (!this.form.get('options')) {
       this.form.addControl('options', this.options);
     }
 
-    if (type === ProductType.SHIRT) {
-      this.options.push(this.fb.group({
-        id: [null, []],
-        indexImage: [null, [Validators.required]],
-        materialId: [null, [Validators.required]]
-      }));
-    }
+    this.options.push(this.fb.group({
+      id: [null, []],
+      indexImage: [null, [Validators.required]],
+      materialId: [null, [Validators.required]]
+    }));
+
     this.loadFilesToSelectOption();
   }
 
   private loadFilesToSelectOption() {
-    let count = 0;
-
     if (this.files.length > 0) {
       this.imagesSelectOptions = this.files.map((file) => {
         return {
           name: file.file.name,
-          index: count++
+          index: file.indexImage
         }
       });
     } else {
@@ -267,8 +293,9 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
     this.service.updateWithFormData(this.form.value, this.files, this.id).pipe(take(1)).subscribe({
       next: (response) => {
         this.messageService.success('Atualizado Com Sucesso', `${this.featureName()} atualizado com sucesso.`);
-        this.afterCreate();
         this.form.reset();
+        this.afterUpdate();
+        this.location.back();
       },
       error: (error) => {
         this.messageService.error(error.title, error.description);
@@ -305,5 +332,11 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit {
 
   override featureName(): string {
     return 'Products';
+  }
+
+  private loadMaterialList(filters: any) {
+    this.materialService.listWithPagination(0, 50, filters).subscribe(response => {
+      this.productsMaterialOptions = response.content;
+    });
   }
 }

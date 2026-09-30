@@ -63,21 +63,42 @@ export class ProductService extends ServiceCore<Product> {
     );
   }
 
+  getProductWithOption(id: number): Observable<Product> {
+    const url = `${this.urlBase}${this.getEndpoint()}/${id}/with-option`;
+    const headers = this.getHeaders();
+
+    if (environment.enableDebug) {
+      console.info(`GET ${this.getEndpoint()}/with-option: `, url);
+    }
+
+    return this.http.get<Product>(url, { headers }).pipe(
+      tap(response => {
+        if (environment.enableDebug) {
+          console.info(`${this.getEndpoint()}/with-option GET response by ID: `, response);
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   private fillImagesAndHighlightArray(images: any, formData: any) {
     const highlightArray: string[] = [];
+    const indexesArray: number[] = [];
     let count = 0;
     let hasHighlight = false;
     images.forEach((image: any) => {
       formData.append('images', image.file);
-      const isHighlight = image.isHighlight? 'true' : 'false';
+      indexesArray[count] = image.indexImage;
+      const isHighlight = image.isHighlight ? 'true' : 'false';
       highlightArray[count++] = isHighlight;
       if (isHighlight === 'true') {
         hasHighlight = true;
       }
     });
-    if(!hasHighlight && highlightArray.length > 0) {
+    if (!hasHighlight && highlightArray.length > 0) {
       highlightArray[0] = 'true';
     }
     formData.append('highlightMarks', new Blob([JSON.stringify(highlightArray)], { type: 'application/json' }));
+    formData.append('indexes', new Blob([JSON.stringify(indexesArray)], { type: 'application/json' }));
   }
 }

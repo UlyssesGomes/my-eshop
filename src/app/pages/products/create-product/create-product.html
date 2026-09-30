@@ -43,7 +43,7 @@
         // ----------------------------------------------------------------------------------------------------- 
         -->
         <app-multifield-panel title="Opções do Produto" buttonLabel="Adicionar Opções"
-            (eventButton)="createProductOption()">
+            (eventButton)="createAndValidateProductOption()">
             <ng-container *ngIf="form.get('options')" formArrayName="options">
                 <div *ngFor="let option of options.controls; index as i">
                     <div [formGroupName]="i" class="flex">

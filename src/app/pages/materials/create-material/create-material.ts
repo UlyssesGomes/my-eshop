@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,7 @@ import { ProductType } from '../../../shared/enums/product-type';
 import { ProductSizeEnum } from '../../../shared/enums/product-size';
 import { ProductColorEnum } from '../../../shared/enums/product-color';
 import { ServiceCore } from '../../../shared/services/service-core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-material',
@@ -37,7 +38,9 @@ import { ServiceCore } from '../../../shared/services/service-core';
   templateUrl: './create-material.html',
   styleUrl: './create-material.scss'
 })
-export class CreateMaterial extends CoreCreateEdit<Material> implements OnInit {
+export class CreateMaterial extends CoreCreateEdit<Material> implements OnInit, OnDestroy {
+
+  subscription?: Subscription;
 
   productTypes = [
     { type: 'Camisa', value: ProductType.SHIRT, disabled: false },
@@ -76,10 +79,16 @@ export class CreateMaterial extends CoreCreateEdit<Material> implements OnInit {
   override ngOnInit(): void {
     super.ngOnInit();
     
-    this.form.valueChanges.subscribe(values => {
+    this.subscription = this.form.valueChanges.subscribe(values => {
       const total = `${this.getTypeValue(values.type)}${values.color? ` ${values.color}` : ''}${values.size? ` ${values.size}` : ''}`;
       this.form.get('name')!.setValue(total, { emitEvent: false });
     });
+  }
+
+  ngOnDestroy(): void {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   private getTypeValue(value: any): string {
