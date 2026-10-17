@@ -287,6 +287,8 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit, On
 
   override afterCreate() {
     this.clearImageField();
+    this.form.removeControl('options');
+    this.options.clear();
   }
 
   override update(formData: any) {
@@ -305,6 +307,8 @@ export class CreateProduct extends CoreCreateEdit<Product> implements OnInit, On
 
   override afterUpdate() {
     this.clearImageField();
+    this.form.removeControl('options');
+    this.options.clear();
   }
 
   private clearImageField() {
